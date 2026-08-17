@@ -1,0 +1,12 @@
+#pragma once
+#include "CGameObject.h"
+class CPlayer :
+    public CGameObject
+{
+    char lastInput;
+public:
+    void SetlastInput(char input);
+    void Move(char map[100][100], int max_size);
+    CPlayer();
+};
+
