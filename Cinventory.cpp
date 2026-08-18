@@ -3,16 +3,16 @@
 void inventorySystem::renderInventory() {
 	system("cls");
 	cout << "       [Inventory]\n";
-	cout << "+------------------------+\n";
+	cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
 	for (int i = 0; i < maxItem; i++) {
 		if (i == itemPosition) {
-			cout << "-> " << inventorySpace[i] << endl;
+			cout << "~> " << inventorySpace[i] << endl;
 		}
 		else {
 			cout << "   " << inventorySpace[i] << endl;
 		}
 	}
-	cout << "+------------------------+\n";
+	cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
 }
 
 void inventorySystem::showInventory(char input) {

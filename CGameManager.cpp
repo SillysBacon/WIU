@@ -53,17 +53,20 @@ void CGameManager::changeMaps(char input)
 {
     if (input == 'm') {
 
-        std::vector<int>& option = Connect[currentMap];
+        vector<int>& option = Connect[currentMap];
 
-        std::cout << "\n Where do you want to go now, Mr Black?\n";
-        std::cout << "Current Location: " << map[currentMap].GetName() << endl;
+        UI.typeText( "\n Where do you want to go now, Mr Black?\n");
+        UI.typeText("Current Location: "); UI.typeText(map[currentMap].GetName());
+        cout << endl;
 
         for (int i = 0; i < (int)option.size(); i++) {
-            std::cout << "(" << i + 1 << ")" << map[option[i]].GetName() << std::endl;
+            cout << "(" << i + 1 << ") "; 
+            UI.typeText(map[option[i]].GetName());
+            cout << endl;
         }
 
         int choice;
-        std::cin >> choice;
+        cin >> choice;
 
         if (choice >= 0 && choice <= (int)option.size()) {
 
@@ -79,11 +82,11 @@ void CGameManager::changeMaps(char input)
             map[currentMap].SetPosition();
             map[currentMap].RenderMap();
 
-            std::cout << "You are now at " << map[currentMap].GetName() << "." << std::endl;
+            UI.typeText("You are now at "); UI.typeText(map[currentMap].GetName()); UI.typeText(".\n");
         }
 
         else {
-            std::cout << "Invalid Choice!";
+            UI.typeText("Invalid Choice!");
         }
     }
     else if (input == 'e') {
@@ -100,14 +103,33 @@ void CGameManager::changeMaps(char input)
     }
 }
 
-CGameManager::CGameManager() {
-    currentMap = 0;
-    currentUI = 0;
-    SetMaps();
+void CGameManager::TestDialogue() {
+    UI.RenderDialougeBox("Game", "Detective black Sits in his chair as he chainsmokes a cigar");
+    UI.RenderDialougeBox("Game", "Like its another one of his noir movies that he larps");
+    UI.RenderDialougeBox("Game", "One more and Cancer is calling his name but whatever");
+    UI.RenderDialougeBox("Game", "Its been a while since the poor man has gotten a case");
+    UI.RenderDialougeBox("Game", "One more cigar and the only thing calling him will be bankrupcy");
+    UI.RenderDialougeBox("Game", "Oh whats that. why its his equally good for nothing assistant");
+    UI.RenderDialougeBox("Game", "Maybe its a case, maybe not. Oh i wonder");
     map[currentMap].RenderMap();
+}
 
-    for (int i = 0; i < 100; i++) {
+void CGameManager::RunGame() {
+    map[currentMap].RenderMap();
+    TestDialogue();
+    while (IsGameRunning) {
         char input = _getch();
+
+        if (input == 'p') {
+            bool keepPlaying = UI.PauseMenu();
+            if (!keepPlaying) {
+                IsGameRunning = false;
+            }
+            else {
+                map[currentMap].RenderMap();
+            }
+            continue;
+        }
 
         if (input == 'i') {
             inventory.showInventory(input);
@@ -124,5 +146,24 @@ CGameManager::CGameManager() {
             inventory.switchItem(input);
             inventory.renderInventory();
         }
+    }
+}
+
+CGameManager::CGameManager() {
+    currentMap = 0;
+    currentUI = 0;
+    SetMaps();
+    UI.Run();
+    if (UI.GetGameStart()){
+        IsGameRunning = true;
+    }
+    else {
+        IsGameRunning = false;
+    }
+    if (IsGameRunning) {
+        RunGame();
+    }
+    else {
+        return;
     }
 }

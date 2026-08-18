@@ -17,7 +17,7 @@ void CUI::typeText(const string text) {
 void CUI::RenderSettings() {
     system("cls");
     cout << "       [SETTINGS]\n";
-    cout << "+------------------------+\n";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
     for (int i = 0; i < MaxSetting; i++) {
         if (i == SettingPos) {
             cout << "-> " << Settings[i] << endl << endl;
@@ -26,7 +26,7 @@ void CUI::RenderSettings() {
             cout << "   " << Settings[i] << endl << endl;
         }
     }
-    cout << "+------------------------+\n";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
 }
 
 void CUI::SwitchSetting(int input) {
@@ -43,6 +43,7 @@ void CUI::SwitchSetting(int input) {
 }
 
 void CUI::RenderDialougeBox(const string character, const string text) {
+    system("cls");
     string fullLine = character + ": " + text;
     int boxWidth = (int)fullLine.length() + 6;
     cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
@@ -50,6 +51,17 @@ void CUI::RenderDialougeBox(const string character, const string text) {
     typeText(fullLine);
     cout << "  |\n";
     cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
+    NextDialouge();
+}
+
+void CUI::NextDialouge() {
+    cout << "\n[ Continue... ]";
+    while (true) {
+        int input = _getch();
+        if (input == 13 || input == 32) {
+            break;
+        }
+    }
 }
 
 void CUI::SetTextSpeed(int speed) {
@@ -59,16 +71,17 @@ void CUI::SetTextSpeed(int speed) {
 void CUI::DisplayTextSpeedSettings() {
     system("cls");
     cout << "       [Text Speed]\n";
-    cout << "+------------------------+\n";
-    cout << "          < " << textSpeed << " >";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+    cout << "          < " << textSpeed << " >\n";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
 }
 
 void CUI::ChangeSpeed(char input) {
     if (input == 77 && textSpeed < 50) {
-        textSpeed += 10;
+        textSpeed += 5;
     }
     else if (input == 75 && textSpeed > 10) {
-        textSpeed -= 10;
+        textSpeed -= 5;
     }
 }
 
@@ -76,6 +89,10 @@ void CUI::HandleArrow(int input) {
     if (isSpeedSettingOpen) {
         ChangeSpeed((char)input);
         DisplayTextSpeedSettings();
+    }
+    else if (isPauseMenuOpen) {
+        SwitchPauseMenuOption(input);
+        RenderPauseMenu();
     }
     else if (isSettingsOpen) {
         SwitchSetting(input);
@@ -95,11 +112,34 @@ void CUI::HandleEnter() {
         return;
     }
 
+    if (isPauseMenuOpen) {
+        switch (PauseMenuPos) {
+        case 0:
+            isPauseMenuOpen = false;
+            isPauseLoopActive = false;
+            break;
+        case 1:
+            isPauseMenuOpen = false;
+            isSettingsOpen = true;
+            Settings[1] = "Return to Pause Menu";
+            RenderSettings();
+            break;
+        case 2:
+            isPauseMenuOpen = false;
+            isPauseLoopActive = false;
+            ExitToDesktop = true;
+            break;
+        }
+        return;
+    }
+
     if (isStartMenuOpen) {
         switch (StartMenuPos) {
         case 0:
             isStartMenuOpen = false;
-            Settings[MaxSetting -1] = "Resume Game";
+            Settings[MaxSetting - 1] = "Resume Game";
+            isRunning = false;
+            GameStart = true;
             break;
         case 1:
             isStartMenuOpen = false;
@@ -107,6 +147,7 @@ void CUI::HandleEnter() {
             RenderSettings();
             break;
         case 2:
+            GameStart = false;
             isRunning = false;
             break;
         }
@@ -122,26 +163,22 @@ void CUI::HandleEnter() {
             break;
         case 1:
             isSettingsOpen = false;
-            isStartMenuOpen = true;
-            RenderStartMenu();
+            if (PausedFromGame) {
+                Settings[1] = "Return to Start Menu";
+                PausedFromGame = false;
+                isPauseMenuOpen = true;
+                RenderPauseMenu();
+            }
+            else {
+                isStartMenuOpen = true;
+                RenderStartMenu();
+            }
             break;
         case 2:
+            isPauseLoopActive = false;
+            GameStart = false;
             isRunning = false;
             break;
-        }
-    }
-}
-
-void CUI::Run() {
-    while (isRunning) {
-        int input = _getch();
-
-        if (input == 0 || input == 224) {
-            input = _getch();
-            HandleArrow(input);
-        }
-        else if (input == 13) {
-            HandleEnter();
         }
     }
 }
@@ -150,11 +187,11 @@ void CUI::RenderStartMenu() {
     system("cls");
     string title = "A Liar's Paradox";
     int boxWidth = (int)title.length() + 6;
-    cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
+    cout << "+" << std::string(boxWidth - 2, '~') << "+\n";
     cout << "|  ";
     cout << title;
     cout << "  |\n";
-    cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
+    cout << "+" << std::string(boxWidth - 2, '~') << "+\n";
 
 
     for (int i = 0; i < MaxStartOptions; i++) {
@@ -179,10 +216,84 @@ void CUI::SwitchStartMenuOption(int input) {
         }
     }
 }
+bool CUI::GetGameStart() {
+    return GameStart;
+}
+
+
+void CUI::RenderPauseMenu() {
+    system("cls");
+    cout << "       [PAUSED]\n";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+    for (int i = 0; i < MaxPauseOptions; i++) {
+        if (i == PauseMenuPos) {
+            cout << "-> " << PauseMenuOptions[i] << endl << endl;
+        }
+        else {
+            cout << "   " << PauseMenuOptions[i] << endl << endl;
+        }
+    }
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+}
+
+void CUI::SwitchPauseMenuOption(int input) {
+    if (input == 72) {
+        if (PauseMenuPos > 0) {
+            PauseMenuPos -= 1;
+        }
+    }
+    else if (input == 80) {
+        if (PauseMenuPos < MaxPauseOptions - 1) {
+            PauseMenuPos += 1;
+        }
+    }
+}
+
+bool CUI::PauseMenu() {
+    isPauseMenuOpen = true;
+    isSettingsOpen = false;
+    isSpeedSettingOpen = false;
+    isStartMenuOpen = false;
+    PausedFromGame = true;
+    ExitToDesktop = false;
+    PauseMenuPos = 0;
+
+    RenderPauseMenu();
+    isPauseLoopActive = true;
+    while (isPauseLoopActive) {
+        int input = _getch();
+
+        if (input == 0 || input == 224) {
+            input = _getch();
+            HandleArrow(input);
+        }
+        else if (input == 13) {
+            HandleEnter();
+        }
+    }
+
+    return !ExitToDesktop;
+}
+
+
+void CUI::Run() {
+    while (isRunning) {
+        int input = _getch();
+
+        if (input == 0 || input == 224) {
+            input = _getch();
+            HandleArrow(input);
+        }
+        else if (input == 13) {
+            HandleEnter();
+        }
+    }
+}
+
 
 
 CUI::CUI() {
-    SetTextSpeed(30);
+    SetTextSpeed(50);
     SettingPos = 0;
     StartMenuPos = 0;
     isStartMenuOpen = true;
