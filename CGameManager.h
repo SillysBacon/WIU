@@ -9,6 +9,7 @@ class CGameManager
 	int currentUI;
 	inventorySystem inventory;
 public:
+	void interact();
 	void SetMaps();
 	void changeMaps(char input);
 	CGameManager();
