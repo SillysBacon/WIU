@@ -2,7 +2,7 @@
 void CPlayer::SetlastInput(char input) {
 	lastInput = input;
 }
-void CPlayer::Move(char map[100][100], int max_size) {
+void CPlayer::Move(char map[100][100], int map_size_x, int map_size_y) {
 	int NewY = GetPosY();
 	int NewX = GetPosX();
 	switch (lastInput) {
@@ -11,7 +11,7 @@ void CPlayer::Move(char map[100][100], int max_size) {
             NewY = NewY - 1;
         break;
     case 's':
-        if (GetPosY() < max_size - 1)
+        if (GetPosY() < map_size_y - 1)
             NewY = NewY + 1;
         break;
     case 'a':
@@ -19,7 +19,7 @@ void CPlayer::Move(char map[100][100], int max_size) {
             NewX = NewX - 1;
         break;
     case 'd':
-        if (GetPosX() < max_size - 1)
+        if (GetPosX() < map_size_x - 1)
             NewX = NewX + 1;
         break;
 	}
