@@ -66,6 +66,16 @@ void CMap::SetRoom(int map_size_x, int map_size_y) {
 	RenderMap();
 }
 
+void CMap::SetName(const std::string& n)
+{
+    name = n;
+}
+
+std::string CMap::GetName() const
+{
+    return name;
+}
+
 CMap::~CMap() {
     delete player;
 }
