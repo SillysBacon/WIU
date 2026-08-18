@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
+#include <stdlib.h>
 #include "CPlayer.h"
 using namespace std;
 class CMap

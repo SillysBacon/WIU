@@ -17,6 +17,7 @@ void CMap::SetPosition() {
 
 void CMap::RenderMap() {
     int width = 2 * MAP_SIZE_X + 2;
+    system("cls");
 
     for (int j = 0; j < width; j++) {
         cout << "=";
