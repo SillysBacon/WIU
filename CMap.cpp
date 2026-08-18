@@ -7,6 +7,32 @@ void CMap::SetMAP_SIZE(int size_x, int size_y) {
 CPlayer* CMap::GetPlayer(){
     return player;
 }
+
+char CMap::GetItem(int x, int y) {
+    char item;
+
+    if (MAP[x][y + 1] != ' ') {
+        item = MAP[x][y + 1];
+        MAP[x][y + 1] == '\0';
+    }
+    else if (MAP[x + 1][y] != ' ') {
+        item = MAP[x + 1][y];
+        MAP[x + 1][y] == '\0';
+    }
+    else if (MAP[x][y - 1] != ' ') {
+        item = MAP[x][y - 1];
+        MAP[x][y - 1] == '\0';
+    }
+    else if (MAP[x - 1][y] != ' ') {
+        item = MAP[x - 1][y];
+        MAP[x - 1][y] == '\0';
+    }
+    else {
+        item = ' ';
+    }
+    return item;
+}
+
 void CMap::SetMap() {
 	for (int i = 0; i < MAP_SIZE_X; i++) {
 		for (int j = 0; j < MAP_SIZE_Y; j++) {
@@ -27,7 +53,7 @@ void CMap::RenderMap() {
     system("cls");
 
     for (int j = 0; j < width; j++) {
-        cout << "=";
+        cout << "~";
     }
     cout << endl;
 
@@ -47,7 +73,7 @@ void CMap::RenderMap() {
     }
 
     for (int j = 0; j < width; j++) {
-        cout << "=";
+        cout << "~";
     }
     cout << endl;
 }

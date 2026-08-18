@@ -86,6 +86,15 @@ void CGameManager::changeMaps(char input)
             std::cout << "Invalid Choice!";
         }
     }
+    else if (input == 'e') {
+        char object;
+        object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
+        std::cout << object << '\n';
+    }
+    else if (input == 'f') {
+        char npc;
+        npc = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
+    }
     else {
         map[currentMap].Movement(input);
     }
