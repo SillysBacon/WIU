@@ -14,6 +14,7 @@ class CMap
 	char MAP[MAX_SIZE][MAX_SIZE];
 	CPlayer* player;
 public:
+	char GetItem(int x, int y);
 	void SetMap();
 	void SetPosition();
 	void removePosition(int x, int y);
