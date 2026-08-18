@@ -1,4 +1,5 @@
 #include "CGameManager.h"
+
 void CGameManager::SetMaps() {
     map[0].SetRoom(10, 6);
     map[1].SetRoom(6, 10);
@@ -21,14 +22,6 @@ void CGameManager::changeMaps(char input)
         map[currentMap].GetPlayer()->SetPosY(0);
         map[currentMap].SetPosition();
         map[currentMap].RenderMap();
-    }else if(input == 'e') {
-        char object;
-        object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        std::cout << object << '\n';
-    }
-    else if (input == 'f') {
-        char npc;
-        npc = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
     }
     else {
         map[currentMap].Movement(input);
