@@ -16,6 +16,7 @@ class CMap
 	CPlayer* player;
 	std::string name;
 public:
+	char GetItem(int x, int y);
 	void SetMap();
 	void SetPosition();
 	void removePosition(int x, int y);
