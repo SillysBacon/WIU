@@ -30,11 +30,27 @@ void CGameManager::changeMaps(char input)
 
 CGameManager::CGameManager() {
     currentMap = 0;
+    currentUI = 0;
     SetMaps();
     map[currentMap].RenderMap();
 
     for (int i = 0; i < 100; i++) {
         char input = _getch();
-        changeMaps(input);
+
+        if (input == 'i') {
+            inventory.showInventory(input);
+            if (!inventory.getInventoryState()) {
+                map[currentMap].RenderMap();
+            }
+            continue;
+        }
+
+        if (inventory.getInventoryState() == false) {
+            changeMaps(input);
+        }
+        else {
+            inventory.switchItem(input);
+            inventory.renderInventory();
+        }
     }
 }
