@@ -89,7 +89,6 @@ void CMap::SetRoom(int map_size_x, int map_size_y) {
 	SetMAP_SIZE(map_size_x, map_size_y);
 	SetMap();
 	SetPosition();
-	RenderMap();
 }
 
 void CMap::SetName(const std::string& n)
