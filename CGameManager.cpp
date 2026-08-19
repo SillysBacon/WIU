@@ -89,6 +89,7 @@ int CGameManager::SelectDestination(vector<int>& options) {
 
     return destination;
 }
+//KAI XIN change this part for the change map mechanic
 void CGameManager::changeMaps(char input)
 {
     if (input == 'm') {
@@ -152,7 +153,7 @@ void CGameManager::TestDialogue() {
 
 void CGameManager::RunGame() {
     map[currentMap].RenderMap();
-    TestDialogue();
+    //TestDialogue();
     while (IsGameRunning) {
         char input = _getch();
 
@@ -167,7 +168,7 @@ void CGameManager::RunGame() {
             continue;
         }
 
-        if (input == 'i') {
+        else if (input == 'i' && caseFileSystem.getCFSState() == false) {
             inventory.showInventory(input);
             if (!inventory.getInventoryState()) {
                 map[currentMap].RenderMap();
@@ -175,8 +176,22 @@ void CGameManager::RunGame() {
             continue;
         }
 
-        if (inventory.getInventoryState() == false) {
-            changeMaps(input);
+        else if (input == 'c' && inventory.getInventoryState() == false) {
+            caseFileSystem.showFiles(input);
+            if (!caseFileSystem.getCFSState()) {
+                map[currentMap].RenderMap();
+            }
+            continue;
+        }
+
+        else if (inventory.getInventoryState() == false) {
+            if (caseFileSystem.getCFSState() == false) {
+                changeMaps(input);
+            }
+            else {
+                caseFileSystem.changeFiles(input);
+                caseFileSystem.renderFiles();
+            }
         }
         else {
             inventory.switchItem(input);
