@@ -7,6 +7,10 @@ void CMap::SetMAP_SIZE(int size_x, int size_y) {
 CPlayer* CMap::GetPlayer(){
     return player;
 }
+void CMap::SetPlayerPOS(int x, int y) {
+    player->SetPosX(x);
+    player->SetPosY(y);
+}
 
 char CMap::GetItem(int x, int y) {
     char item;
@@ -41,7 +45,15 @@ void CMap::SetMap() {
 	}
 }
 void CMap::SetPosition() {
-	MAP[player->GetPosY()][player->GetPosX()] = 'd';
+    MAP[player->GetPosY()][player->GetPosX()] = 'd';
+}
+
+void CMap::SetObstacle(int width, int height, char symbol, int x, int y) {
+    for (int i = y; i < y + height; i++) {
+        for (int j = x; j <x + width; j++) {
+            MAP[i][j] = symbol;
+        }
+    }
 }
 
 void CMap::removePosition(int y, int x) {
@@ -64,6 +76,9 @@ void CMap::RenderMap() {
             case 'd':
                 cout << " D";
                 break;
+            case '=':
+                cout << "==";
+                break;
             default:
                 cout << "  ";
                 break;
@@ -85,9 +100,10 @@ void CMap::Movement(char input) {
     RenderMap();
 }
 
-void CMap::SetRoom(int map_size_x, int map_size_y) {
+void CMap::SetRoom(int map_size_x, int map_size_y, int playerSpawnX, int playerSpawnY) {
 	SetMAP_SIZE(map_size_x, map_size_y);
 	SetMap();
+    SetPlayerPOS(playerSpawnX, playerSpawnY);
 	SetPosition();
 }
 

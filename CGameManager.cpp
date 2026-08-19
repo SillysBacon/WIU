@@ -2,38 +2,41 @@
 #include <iostream>
 
 void CGameManager::SetMaps() {
-    map[0].SetRoom(10, 12);//office
+    map[0].SetRoom(11, 6, 5 ,1);//office
     map[0].SetName("Detective Black's Office");
 
-    map[1].SetRoom(20, 10);//Mansion living room
+    map[1].SetRoom(20, 10, 0,0);//Mansion living room
     map[1].SetName("The Mansion's Living room");
 
-    map[2].SetRoom(6, 6);//Mansion toilet
+    map[2].SetRoom(6, 6, 0, 0);//Mansion toilet
     map[2].SetName("The Mansion's toilet");
 
-    map[3].SetRoom(10, 10);//Mansion masterbedrm
+    map[3].SetRoom(10, 10, 0, 0);//Mansion masterbedrm
     map[3].SetName("The Mansion's Master bedroom");
 
-    map[4].SetRoom(8, 10);//Mansion bedrm
+    map[4].SetRoom(8, 10, 0, 0);//Mansion bedrm
     map[4].SetName("The Mansion's Child's bedroom");
 
-    map[5].SetRoom(30, 30);//Mansion garden
+    map[5].SetRoom(30, 30, 0, 0);//Mansion garden
     map[5].SetName("The Mansion's Garden");
 
-    map[6].SetRoom(10, 10);//Mansion study rm
+    map[6].SetRoom(10, 10, 0, 0);//Mansion study rm
     map[6].SetName("The Mansion's Study room");
 
-    map[7].SetRoom(20, 10);//Mansion kitchen
+    map[7].SetRoom(20, 10, 0, 0);//Mansion kitchen
     map[7].SetName("The Mansion's Kitchen");
 
-    map[8].SetRoom(30, 10);//Neighbour hse living rm
+    map[8].SetRoom(30, 10, 0, 0);//Neighbour hse living rm
     map[8].SetName("The Collins' Living room");
 
-    map[9].SetRoom(10, 10);//Neighbour hse bedrm
+    map[9].SetRoom(10, 10, 0, 0);//Neighbour hse bedrm
     map[9].SetName("The Collins' Bedroom");
 
-    map[10].SetRoom(15, 10);//Prosecutor office
+    map[10].SetRoom(15, 10, 0, 0);//Prosecutor office
     map[10].SetName("The Prosecutors' Office");
+
+    map[0].SetObstacle(4, 1, '=', 7, 0);
+    map[0].SetObstacle(4, 1, '=', 0, 0);
 
     Connect.resize(11);
     Connect[0] = { 1, 8, 10 };
@@ -155,7 +158,7 @@ void CGameManager::TestDialogue() {
 
 void CGameManager::RunGame() {
     map[currentMap].RenderMap();
-    TestDialogue();
+    //TestDialogue();
     while (IsGameRunning) {
         char input = _getch();
 

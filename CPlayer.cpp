@@ -23,8 +23,10 @@ void CPlayer::Move(char map[100][100], int map_size_x, int map_size_y) {
             NewX = NewX + 1;
         break;
 	}
-		SetPosX(NewX);
-		SetPosY(NewY);
+    if (NewX >= 0 && NewX <= map_size_x - 1 && NewY >= 0 && NewY <= map_size_y - 1 && map[NewY][NewX] == '\0') {
+        SetPosX(NewX);
+        SetPosY(NewY);
+        }
 }
 
 CPlayer::CPlayer() {
