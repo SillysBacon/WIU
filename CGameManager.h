@@ -6,6 +6,7 @@
 #include <vector>
 class CGameManager
 {
+	int item = 1;
 	int static const MAX_MAPS = 11;
 	CMap map[MAX_MAPS];
 	CUI UI;
