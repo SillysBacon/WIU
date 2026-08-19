@@ -12,10 +12,10 @@ void CObstacle::SetType(Furniture f)
 		width = 1; height = 1; symbol = '#';
 		break;
 	case Small_Shelf:
-		width = 3; height = 1; symbol = 'X';
+		width = 3; height = 1; symbol = '=';
 		break;
 	case Long_Shelf:
-		width = 4; height = 1; symbol = 'X';
+		width = 4; height = 1; symbol = '=';
 		break;
 	case Sofa:
 		width = 2; height = 1; symbol = 'L';
@@ -34,6 +34,18 @@ void CObstacle::SetType(Furniture f)
 		break;
 	case Tree:
 		width = 1; height = 1; symbol = '@';
+		break;
+	case Bed:
+		width = 2; height = 3; symbol = 'X';
+		break;
+	case ToiletBowl:
+		width = 1; height = 1; symbol = 'O';
+		break;
+	case BathTub:
+		width = 2; height = 1; symbol = 'H';
+		break;
+	case Sink:
+		width = 1; height = 1; symbol = 'a';
 		break;
 	}
 
