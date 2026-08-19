@@ -117,8 +117,10 @@ void CGameManager::changeMaps(char input)
     }
     else if (input == 'e') {
         string object;
-        object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
+        //object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
+        object = "item" + to_string(item);
         inventory.addToInventory(object);
+        item++;
     }
     else if (input == 'f') {
         char npc;
@@ -153,7 +155,7 @@ void CGameManager::TestDialogue() {
 
 void CGameManager::RunGame() {
     map[currentMap].RenderMap();
-    //TestDialogue();
+    TestDialogue();
     while (IsGameRunning) {
         char input = _getch();
 
