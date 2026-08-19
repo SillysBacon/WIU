@@ -14,6 +14,7 @@ class CMap
 	char MAP[MAX_SIZE][MAX_SIZE];
 	CPlayer* player;
 	std::string name;
+
 public:
 	char GetItem(int x, int y);
 	void SetMap();
