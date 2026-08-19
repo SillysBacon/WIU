@@ -2,6 +2,9 @@
 void CPlayer::SetlastInput(char input) {
 	lastInput = input;
 }
+char CPlayer::GetlastInput() {
+    return lastInput;
+}
 void CPlayer::Move(char map[100][100], int map_size_x, int map_size_y) {
 	int NewY = GetPosY();
 	int NewX = GetPosX();

@@ -24,12 +24,13 @@ class CGameManager
 	int item = 1;
 public:
 	int SelectDestination(vector<int>& options);
-	void AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y);
+	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);
 	void displayDialogue(string c, string t);
 	void TestDialogue();
 	void SetMaps();
 	void changeMaps(char input);
 	void RunGame();
+	CObstacle* FindObstacle(int mapIndex, int x, int y);
 
 	CGameManager();
 

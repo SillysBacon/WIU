@@ -17,19 +17,19 @@ char CMap::GetItem(int x, int y) {
 
     if (MAP[x][y + 1] != ' ') {
         item = MAP[x][y + 1];
-        MAP[x][y + 1] == '\0';
+        MAP[x][y + 1] = '\0';
     }
     else if (MAP[x + 1][y] != ' ') {
         item = MAP[x + 1][y];
-        MAP[x + 1][y] == '\0';
+        MAP[x + 1][y] = '\0';
     }
     else if (MAP[x][y - 1] != ' ') {
         item = MAP[x][y - 1];
-        MAP[x][y - 1] == '\0';
+        MAP[x][y - 1] = '\0';
     }
     else if (MAP[x - 1][y] != ' ') {
         item = MAP[x - 1][y];
-        MAP[x - 1][y] == '\0';
+        MAP[x - 1][y] = '\0';
     }
     else {
         item = ' ';
