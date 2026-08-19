@@ -15,7 +15,11 @@ public:
         Door,
         Window,
         Flower,
-        Tree
+        Tree,
+        Bed,
+        ToiletBowl,
+        BathTub,
+        Sink
     };
     void SetType(Furniture f);
     void Rotate();
