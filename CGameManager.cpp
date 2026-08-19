@@ -38,6 +38,8 @@ void CGameManager::SetMaps() {
     map[0].SetObstacle(4, 1, '=', 7, 0);
     map[0].SetObstacle(4, 1, '=', 0, 0);
 
+    map[7].SetNPC(NPCs.getSymbol(0), 3, 3);
+
     Connect.resize(11);
     Connect[0] = { 1, 8, 10 };
     Connect[1] = { 0, 2, 3, 4, 5, 6, 7, 8, 10 };
