@@ -30,6 +30,7 @@ public:
 	char GetMap();
 	CPlayer* GetPlayer();
 	void SetObstacle(int width, int height, char symbol, int x, int y);
+	void SetNPC(char symbol, int x, int y);
 
 	~CMap();
 	CMap();
