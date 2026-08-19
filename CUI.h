@@ -7,6 +7,7 @@ using namespace std;
 class CUI
 {
 	int textSpeed;
+	int A_SkipSpeed = 1000;
 	int PlayerColor;
 	bool isSettingsOpen;
 	bool isSpeedSettingOpen;
@@ -21,15 +22,18 @@ class CUI
 	int StartMenuPos;
 	string StartMenuOptions[MaxStartOptions] = { "Start Game", "Settings", "Leave Game" };
 	bool isStartMenuOpen = true;
+	bool isSkipPressed = false;
 
 	int const static MaxPauseOptions = 3;
 	string PauseMenuOptions[MaxPauseOptions] = { "Continue", "Settings", "Exit" };
 	int PauseMenuPos;
+	bool GetSkip();
+	void SkipReset();
 	bool isPauseMenuOpen;
 	bool isPauseLoopActive;
 	bool PausedFromGame;
 	bool ExitToDesktop;
-
+	bool autoSkip = false;
 
 
 

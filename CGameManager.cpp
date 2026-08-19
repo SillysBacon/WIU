@@ -89,7 +89,6 @@ int CGameManager::SelectDestination(vector<int>& options) {
 
     return destination;
 }
-//KAI XIN change this part for the change map mechanic
 void CGameManager::changeMaps(char input)
 {
     if (input == 'm') {
@@ -117,10 +116,8 @@ void CGameManager::changeMaps(char input)
     }
     else if (input == 'e') {
         string object;
-        //object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        object = "item" + to_string(item);
+        object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
         inventory.addToInventory(object);
-        item++;
     }
     else if (input == 'f') {
         char npc;
