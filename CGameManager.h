@@ -1,6 +1,7 @@
 #pragma once
 #include "CMap.h"
 #include "Cinventory.h"
+#include "CcaseFileSystem.h"
 #include "CUI.h"
 #include <vector>
 class CGameManager
@@ -12,6 +13,7 @@ class CGameManager
 	int currentUI;
 	bool IsGameRunning;
 	inventorySystem inventory;
+	CcaseFileSystem caseFileSystem;
 	vector<vector<int>> Connect;
 public:
 	int SelectDestination(vector<int>& options);
