@@ -56,6 +56,10 @@ void CMap::SetObstacle(int width, int height, char symbol, int x, int y) {
     }
 }
 
+void CMap::SetNPC(char s, int x, int y) {
+    MAP[y][x] = s;
+}
+
 void CMap::removePosition(int y, int x) {
     MAP[y][x] = '\0';
 }
