@@ -79,6 +79,36 @@ void CMap::RenderMap() {
             case '=':
                 cout << "==";
                 break;
+            case '#':
+                cout << " #";
+                break;
+            case 'L':
+                cout << " L";
+                break;
+            case '/':
+                cout << " /";
+                break;
+            case '+':
+                cout << " +";
+                break;
+            case '*':
+                cout << " *";
+                break;
+            case '@':
+                cout << " @";
+                break;
+            case 'X':
+                cout << " X";
+                break;
+            case 'O':
+                cout << " O";
+                break;
+            case 'H':
+                cout << " H";
+                break;
+            case 'a':
+                cout << " a";
+                break;
             default:
                 cout << "  ";
                 break;
