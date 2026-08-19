@@ -1,7 +1,5 @@
 #include "CGameManager.h"
 #include <iostream>
-#include <string>
-using namespace std;
 
 void CGameManager::SetMaps() {
     map[0].SetRoom(10, 12);//office
@@ -50,29 +48,56 @@ void CGameManager::SetMaps() {
     Connect[9] = { 8 };
     Connect[10] = { 0, 1 };
 }
+int CGameManager::SelectDestination(vector<int>& options) {
+    int pos = 0;
+    bool selecting = true;
+    int destination = -1;
+
+    while (selecting) {
+        system("cls");
+        cout << "\n      [Where do you want to go now, Mr Black?]\n";
+        cout << "+====Current Location: " << map[currentMap].GetName() << "====+" << endl << endl;
+
+        for (int i = 0; i < (int)options.size(); i++) {
+            if (i == pos) {
+                cout << "      ~> " << "[" << map[options[i]].GetName() << "]" << endl;
+            }
+            else {
+                cout << "         " << "[" << map[options[i]].GetName() << "]" << endl;
+            }
+        }
+
+        int input = _getch();
+
+        if (input == 0 || input == 224) {
+            input = _getch();
+            if (input == 72 && pos > 0) {
+                pos -= 1;
+            }
+            else if (input == 80 && pos < (int)options.size() - 1) {
+                pos += 1;
+            }
+        }
+        else if (input == 13) {
+            destination = options[pos];
+            selecting = false;
+        }
+        else if (input == 27) {
+            selecting = false;
+        }
+    }
+
+    return destination;
+}
 //KAI XIN change this part for the change map mechanic
 void CGameManager::changeMaps(char input)
 {
     if (input == 'm') {
 
         vector<int>& option = Connect[currentMap];
+        int destination = SelectDestination(option);
 
-        UI.typeText( "\n Where do you want to go now, Mr Black?\n");
-        UI.typeText("Current Location: "); UI.typeText(map[currentMap].GetName());
-        cout << endl;
-
-        for (int i = 0; i < (int)option.size(); i++) {
-            cout << "(" << i + 1 << ") "; 
-            UI.typeText(map[option[i]].GetName());
-            cout << endl;
-        }
-
-        int choice;
-        cin >> choice;
-
-        if (choice >= 0 && choice <= (int)option.size()) {
-
-            int destination = option[choice - 1];
+        if (destination != -1) {
             map[currentMap].removePosition(
                 map[currentMap].GetPlayer()->GetPosY(),
                 map[currentMap].GetPlayer()->GetPosX()
@@ -86,15 +111,14 @@ void CGameManager::changeMaps(char input)
 
             UI.typeText("You are now at "); UI.typeText(map[currentMap].GetName()); UI.typeText(".\n");
         }
-
         else {
-            UI.typeText("Invalid Choice!");
+            map[currentMap].RenderMap();
         }
     }
     else if (input == 'e') {
-        string object;
+        char object;
         object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        inventory.addToInventory(object);
+        std::cout << object << '\n';
     }
     else if (input == 'f') {
         char npc;
@@ -122,7 +146,7 @@ void CGameManager::RunGame() {
     while (IsGameRunning) {
         char input = _getch();
 
-        if (input == 'p') {
+        if (input == 27) {
             bool keepPlaying = UI.PauseMenu();
             if (!keepPlaying) {
                 IsGameRunning = false;

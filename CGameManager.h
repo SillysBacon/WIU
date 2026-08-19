@@ -12,11 +12,12 @@ class CGameManager
 	int currentUI;
 	bool IsGameRunning;
 	inventorySystem inventory;
+	vector<vector<int>> Connect;
 public:
+	int SelectDestination(vector<int>& options);
 	void TestDialogue();
 	void SetMaps();
 	void changeMaps(char input);
-	vector<vector<int>> Connect;
 	void RunGame();
 
 	CGameManager();
