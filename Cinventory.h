@@ -7,7 +7,7 @@ using namespace std;
 class inventorySystem
 {
 	string inventorySpace[10] = {"A","B","C","D","y"};
-	int maxItem = 10;
+	int maxItem = 5;
 	int itemPosition = 0;
 	bool isInventoryOpen = false;
 public:
