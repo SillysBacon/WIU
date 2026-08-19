@@ -2,6 +2,7 @@
 #include "CMap.h"
 #include "Cinventory.h"
 #include "CcaseFileSystem.h"
+#include "CNPC.h"
 #include "CUI.h"
 #include <vector>
 class CGameManager
@@ -13,7 +14,8 @@ class CGameManager
 	int currentUI;
 	bool IsGameRunning;
 	inventorySystem inventory;
-	CcaseFileSystem caseFileSystem;
+	CaseFileSystem caseFileSystem;
+	NPC NPCs;
 	vector<vector<int>> Connect;
 	int item = 1;
 public:
