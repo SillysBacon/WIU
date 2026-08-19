@@ -8,11 +8,36 @@ void CUI::delayMs(int ms) {
 }
 
 void CUI::typeText(const string text) {
-    for (char c : text) {
-        cout << c << std::flush;
+    isSkipPressed = false;
+
+    for (size_t i = 0; i < text.length(); i++) {
+        if (_kbhit()) {
+            int key = _getch();
+            if (key == 13 || key == 32) {
+                isSkipPressed = true;
+            }
+            else if (key == 9 && autoSkip) {
+                autoSkip = false;
+            }
+            else if (key == 9) {
+                autoSkip = true;
+            }
+        }
+
+        if (isSkipPressed) {
+            cout << text.substr(i) << std::flush;
+            break;
+        }
+
+        cout << text[i] << std::flush;
         delayMs(textSpeed);
     }
+
+    while (_kbhit()) {
+        (void)_getch(); 
+    }
 }
+
 
 void CUI::RenderSettings() {
     system("cls");
@@ -41,16 +66,38 @@ void CUI::SwitchSetting(int input) {
         }
     }
 }
+bool CUI::GetSkip() {
+    return isSkipPressed;
+}
+void CUI::SkipReset() {
+    isSkipPressed = false;
+}
 
 void CUI::RenderDialougeBox(const string character, const string text) {
     string fullLine = character + ": " + text;
     int boxWidth = (int)fullLine.length() + 6;
+
     cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
     cout << "|  ";
     typeText(fullLine);
     cout << "  |\n";
     cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
-    NextDialouge();
+    if (!autoSkip) {
+        cout << "\n   [Press Enter to continue or Press Tab for Auto-Skip]";
+    }
+    else if (autoSkip) {
+        cout << "\n   [Auto Skip Is enabled]";
+        delayMs(A_SkipSpeed);
+        return;
+    }
+    int skip;
+    do {
+        skip = _getch();
+        if (skip == 9) {
+            autoSkip = !autoSkip;
+            if (autoSkip) return;
+        }
+    } while (skip != 13 && skip != 32);
 }
 
 void CUI::NextDialouge() {
