@@ -43,7 +43,6 @@ void CUI::SwitchSetting(int input) {
 }
 
 void CUI::RenderDialougeBox(const string character, const string text) {
-    system("cls");
     string fullLine = character + ": " + text;
     int boxWidth = (int)fullLine.length() + 6;
     cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
@@ -293,7 +292,7 @@ void CUI::Run() {
 
 
 CUI::CUI() {
-    SetTextSpeed(50);
+    SetTextSpeed(10);
     SettingPos = 0;
     StartMenuPos = 0;
     isStartMenuOpen = true;

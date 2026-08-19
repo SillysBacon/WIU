@@ -15,6 +15,7 @@ class CGameManager
 	vector<vector<int>> Connect;
 public:
 	int SelectDestination(vector<int>& options);
+	void displayDialogue(string c, string t);
 	void TestDialogue();
 	void SetMaps();
 	void changeMaps(char input);
