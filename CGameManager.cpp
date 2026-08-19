@@ -1,5 +1,7 @@
 #include "CGameManager.h"
 #include <iostream>
+#include <string>
+using namespace std;
 
 void CGameManager::SetMaps() {
     map[0].SetRoom(10, 12);//office
@@ -90,9 +92,9 @@ void CGameManager::changeMaps(char input)
         }
     }
     else if (input == 'e') {
-        char object;
+        string object;
         object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        std::cout << object << '\n';
+        inventory.addToInventory(object);
     }
     else if (input == 'f') {
         char npc;
