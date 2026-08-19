@@ -116,9 +116,9 @@ void CGameManager::changeMaps(char input)
         }
     }
     else if (input == 'e') {
-        char object;
+        string object;
         object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        std::cout << object << '\n';
+        inventory.addToInventory(object);
     }
     else if (input == 'f') {
         char npc;
@@ -129,15 +129,26 @@ void CGameManager::changeMaps(char input)
     }
 }
 
-void CGameManager::TestDialogue() {
-    UI.RenderDialougeBox("Game", "Detective black Sits in his chair as he chainsmokes a cigar");
-    UI.RenderDialougeBox("Game", "Like its another one of his noir movies that he larps");
-    UI.RenderDialougeBox("Game", "One more and Cancer is calling his name but whatever");
-    UI.RenderDialougeBox("Game", "Its been a while since the poor man has gotten a case");
-    UI.RenderDialougeBox("Game", "One more cigar and the only thing calling him will be bankrupcy");
-    UI.RenderDialougeBox("Game", "Oh whats that. why its his equally good for nothing assistant");
-    UI.RenderDialougeBox("Game", "Maybe its a case, maybe not. Oh i wonder");
+void CGameManager::displayDialogue(string c, string t) {
+    UI.RenderDialougeBox(c, t);
     map[currentMap].RenderMap();
+}
+
+void CGameManager::TestDialogue() {
+    displayDialogue("Game", "Detective black Sits in his chair as he chainsmokes a cigar");
+    displayDialogue("Game", "Like its another one of his noir movies that he larps");
+    displayDialogue("Game", "One more and Cancer is calling his name but whatever");
+    displayDialogue("Game", "Its been a while since the poor man has gotten a case");
+    displayDialogue("Game", "One more cigar and the only thing calling him will be bankrupcy");
+    displayDialogue("Game", "Oh whats that. why its his equally good for nothing assistant");
+    displayDialogue("Game", "Maybe its a case, maybe not. Oh i wonder");
+    displayDialogue("Game", "It's Thursday night, 18:34. Detective Black sits in his office, smoking a cigar. A knock sounds at the door.");
+    displayDialogue("Game", "Come in.");
+    displayDialogue("Game", "He stubs out the cigar in the ashtray as the door opens.");
+    displayDialogue("Game", "In comes a tall, leanly built man, hair side-parted, a visible eye bag under each eye.");
+    displayDialogue("Game", "It's Silas Reed, Black's partner and assistant.");
+    displayDialogue("Game", "We just got a call, Silas says.");
+    displayDialogue("Game", "Sounds like a murder down in Willow's Creek. We're up.");
 }
 
 void CGameManager::RunGame() {
