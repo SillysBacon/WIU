@@ -2,20 +2,58 @@
 #include <iostream>
 
 
-void CGameManager::AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y)
+CObstacle* CGameManager::AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation)
 {
     CObstacle* Furniture = new CObstacle();
-    Furniture->SetType(type);      // sets width, height, symbol based on the enum
+    Furniture->SetType(type);
     Furniture->SetPosX(x);
     Furniture->SetPosY(y);
+    if (rotation) {
+        Furniture->Rotate();
+    }
     mapObstacles[mapIndex].push_back(Furniture);
+    return Furniture;
 }
+
+CObstacle* CGameManager::FindObstacle(int mapIndex, int x, int y) {
+    for (int i = 0; i < (int)(mapObstacles[mapIndex].size()); i++) {
+        CObstacle* O = mapObstacles[mapIndex][i];
+
+        int OX = O->GetPosX();
+        int OY = O->GetPosY();
+        int OWidth = O->GetWidth();
+        int OHeight = O->GetHeight();
+
+        if (x >= OX && x < OX + OWidth && y >= OY && y < OY + OHeight) {
+            return O;
+        }
+    }
+    return nullptr;
+}
+
 
 void CGameManager::SetMaps() {
 
+
+    mapObstacles.resize(MAX_MAPS);
+
+    /*Detective Black's office ROOM 0*/
+    {
+        map[0].SetRoom(11, 6, 5, 1);//office
+        map[0].SetName("Detective Black's Office");
+        AddObstacle(0, CObstacle::Long_Shelf, 0, 0,0)->SetDialogue(0, "a picture of you and silas at the play ground..... why? well why not");
+        AddObstacle(0, CObstacle::Long_Shelf, 7, 0,0);
+        AddObstacle(0, CObstacle::Table ,8 ,2,1);
+        AddObstacle(0, CObstacle::Table ,2 ,2,1)->SetDialogue(0, "you find a twenty that Silas left on the table as you look around before pocketing it");
+        AddObstacle(0, CObstacle::Sofa ,7 ,5,0);
+        AddObstacle(0, CObstacle::Sofa ,2 ,5,0)->SetDialogue(0,"its messy from all the times you slept here like your homeless... oh wait you are");
+        AddObstacle(0, CObstacle::Desk ,5 ,2,0)->SetDialogue(0, "Your desk. Cigarette burns and coffee rings... really trying to sell the depressed detective trope");
+        AddObstacle(0, CObstacle::Window ,5 ,0,0)->SetDialogue(0, "a beautiful Scenery Of... the neighbouring buildings red wall... truely to die for");
+    }
+
+
+
     /*ROOMS AND MAPS*/
-    map[0].SetRoom(11, 6, 5 ,1);//office
-    map[0].SetName("Detective Black's Office");
 
     map[1].SetRoom(20, 10, 0,2);//Mansion living room
     map[1].SetName("The Mansion's Living room");
@@ -48,18 +86,7 @@ void CGameManager::SetMaps() {
     map[10].SetName("The Prosecutors' Office");
 
 
-
-
-
-    /*OBSTACLES*/
-
-    mapObstacles.resize(MAX_MAPS);
-
-
-    AddObstacle(0, CObstacle::Long_Shelf, 0, 0);
-
-
-    /*DO NOT TOUCH THIS AT ALL*/
+    /*To place The Objects with height and symbol*/
     for (int i = 0; i < MAX_MAPS; i++) {
         for (int j = 0; j < mapObstacles[i].size(); j++) {
             CObstacle* o = mapObstacles[i][j];
@@ -171,13 +198,56 @@ void CGameManager::changeMaps(char input)
             map[currentMap].RenderMap();
         }
     }
+
+
+    /*Interaction Code*/
     else if (input == 'e') {
-        string object;
-        //object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        object = "item" + to_string(item);
-        inventory.addToInventory(object);
-        item++;
+
+        //string object;
+        ////object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
+        //object = "item" + to_string(item);
+        //inventory.addToInventory(object);
+        //item++;
+
+        CPlayer* player = map[currentMap].GetPlayer();
+        int tx = player->GetPosX();
+        int ty = player->GetPosY();
+
+        switch (player->GetlastInput()) {
+        case 'w':
+            ty--;
+            break;
+        case 'a':
+            tx--;
+            break;
+        case 's':
+            ty++;
+            break;
+        case 'd':
+            tx++;
+            break;
+        }
+        
+        CObstacle* ObstacleInteract = FindObstacle(currentMap, tx, ty);
+
+        if (ObstacleInteract != nullptr) {
+            displayDialogue("game", ObstacleInteract->GetNextDialouge());
+        }
+        else {
+            displayDialogue("Silas", "theres nothing there... might be losing it pal");
+        }
+
+
+
+
+
+
+
+
     }
+
+
+
     else if (input == 'f') {
         char npc;
         npc = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
@@ -193,13 +263,6 @@ void CGameManager::displayDialogue(string c, string t) {
 }
 
 void CGameManager::TestDialogue() {
-    displayDialogue("Game", "Detective black Sits in his chair as he chainsmokes a cigar");
-    displayDialogue("Game", "Like its another one of his noir movies that he larps");
-    displayDialogue("Game", "One more and Cancer is calling his name but whatever");
-    displayDialogue("Game", "Its been a while since the poor man has gotten a case");
-    displayDialogue("Game", "One more cigar and the only thing calling him will be bankrupcy");
-    displayDialogue("Game", "Oh whats that. why its his equally good for nothing assistant");
-    displayDialogue("Game", "Maybe its a case, maybe not. Oh i wonder");
     displayDialogue("Game", "It's Thursday night, 18:34. Detective Black sits in his office, smoking a cigar. A knock sounds at the door.");
     displayDialogue("Game", "Come in.");
     displayDialogue("Game", "He stubs out the cigar in the ashtray as the door opens.");
@@ -211,7 +274,7 @@ void CGameManager::TestDialogue() {
 
 void CGameManager::RunGame() {
     map[currentMap].RenderMap();
-    //TestDialogue();
+    TestDialogue();
     while (IsGameRunning) {
         char input = _getch();
 

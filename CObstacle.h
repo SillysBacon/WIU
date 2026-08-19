@@ -1,4 +1,10 @@
 #pragma once
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <conio.h>
+#include <stdlib.h>
+using namespace std;
 #include "CGameObject.h"
 class CObstacle :
     public CGameObject
@@ -27,12 +33,22 @@ public:
     int GetHeight();
     char GetSymbol();
     Furniture GetType();
+    string GetNextDialouge();
+    void SetDialogue(int index, const string text);
     CObstacle();
 
 private:
     Furniture type;
     int width, height;
     char symbol;
+    string IDialouge[3];
+    int dialougeidx;
+
+
+    //Placeholders for later;
+    bool isKeyObject = false;
+    void SetKeyObject(bool val);
+    bool IsKeyObject();
 
 };
 

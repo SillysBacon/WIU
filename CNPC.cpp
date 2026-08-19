@@ -1,4 +1,4 @@
-#include "CNPC.h"
+ #include "CNPC.h"
 
 string NPC::getName(int num) {
 	return name[num];
