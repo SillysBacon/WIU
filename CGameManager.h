@@ -6,7 +6,6 @@
 #include <vector>
 class CGameManager
 {
-	int item = 1;
 	int static const MAX_MAPS = 11;
 	CMap map[MAX_MAPS];
 	CUI UI;
@@ -16,6 +15,7 @@ class CGameManager
 	inventorySystem inventory;
 	CcaseFileSystem caseFileSystem;
 	vector<vector<int>> Connect;
+	int item = 1;
 public:
 	int SelectDestination(vector<int>& options);
 	void displayDialogue(string c, string t);
@@ -25,5 +25,6 @@ public:
 	void RunGame();
 
 	CGameManager();
+
 };
 
