@@ -16,24 +16,19 @@ class CUI
 	string Settings[MaxSetting] = { "Change Text Speed", "Return to Start Menu", "Exit to Desktop" };
 	bool GameStart;
 	bool isRunning = true;
-
 	void HandleArrow(int input);
 	void HandleEnter();
-
 	int StartMenuPos;
 	string StartMenuOptions[MaxStartOptions] = { "Start Game", "Settings", "Leave Game" };
 	bool isStartMenuOpen = true;
-
-
-
 
 	int const static MaxPauseOptions = 3;
 	string PauseMenuOptions[MaxPauseOptions] = { "Continue", "Settings", "Exit" };
 	int PauseMenuPos;
 	bool isPauseMenuOpen;
 	bool isPauseLoopActive;
-	bool PausedFromGame;   // true when Settings was opened from the Pause menu, not Start menu
-	bool ExitToDesktop;    // set true if "Exit" chosen from the pause menu
+	bool PausedFromGame;
+	bool ExitToDesktop;
 
 
 
