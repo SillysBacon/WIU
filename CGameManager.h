@@ -2,6 +2,7 @@
 #include "CMap.h"
 #include "Cinventory.h"
 #include "CcaseFileSystem.h"
+#include "CNPC.h"
 #include "CUI.h"
 #include "CObstacle.h"
 #include <vector>
@@ -16,6 +17,7 @@ class CGameManager
 	bool IsGameRunning;
 	inventorySystem inventory;
 	CcaseFileSystem caseFileSystem;
+	NPC NPCs;
 	vector<vector<int>> Connect;
 	vector<vector<CObstacle*>> mapObstacles;
 	CObstacle* Obstacle[MAX_OBSTACLE];
