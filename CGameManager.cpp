@@ -265,10 +265,18 @@ void CGameManager::changeMaps(char input)
         int ty = player->GetPosY();
 
         switch (player->GetlastInput()) {
-        case 'w': ty--; break;
-        case 'a': tx--; break;
-        case 's': ty++; break;
-        case 'd': tx++; break;
+        case 'w':
+            ty--;
+            break;
+        case 'a':
+            tx--;
+            break;
+        case 's':
+            ty++;
+            break;
+        case 'd':
+            tx++;
+            break;
         }
 
         NPC* NPCInteract = FindNPC(currentMap, tx, ty);
@@ -314,7 +322,7 @@ void CGameManager::TestDialogue() {
 
 void CGameManager::RunGame() {
     map[currentMap].RenderMap();
-    //TestDialogue();
+    TestDialogue();
     while (IsGameRunning) {
         char input = _getch();
 
