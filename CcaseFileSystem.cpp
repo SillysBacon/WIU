@@ -54,7 +54,7 @@ void CcaseFileSystem::renderFiles() {
 		break;
 	}
 
-	UI.Clear();
+	CUI::GetInstance().Clear();
 	cout << "             " << currentFiles + 1 << " / 3" << endl;
 	cout << "#=============================#" << endl;
 	cout << documentFiles[currentFiles] << endl << endl << "Description:" << endl;
@@ -64,7 +64,7 @@ void CcaseFileSystem::renderFiles() {
 }
 
 void CcaseFileSystem::renderEvidenceFiles() {
-	UI.Clear();
+	CUI::GetInstance().Clear();
 	cout << "             " << currentEvidenceFiles + 1 << " / 11" << endl;
 	cout << "#=============================#" << endl;
 	cout << evidenceFiles[currentEvidenceFiles] << endl << endl << "Description:" << endl;
@@ -74,7 +74,7 @@ void CcaseFileSystem::renderEvidenceFiles() {
 
 void CcaseFileSystem::renderSuspectFiles()
 {
-	UI.Clear();
+	CUI::GetInstance().Clear();
 	cout << "             " << currentSuspectFiles + 1 << " / 5" << endl;
 	cout << "#=============================#" << endl;
 	cout << suspectFiles[currentSuspectFiles] << endl << endl << "Description:" << endl;

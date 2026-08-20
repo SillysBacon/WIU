@@ -66,7 +66,7 @@ void CMap::removePosition(int y, int x) {
 
 void CMap::RenderMap() {
     int width = 2 * MAP_SIZE_X + 2;
-    UI.Clear();
+    CUI::GetInstance().Clear();
 
     for (int j = 0; j < width; j++) {
         cout << "~";
@@ -154,14 +154,14 @@ std::string CMap::GetName() const
     return name;
 }
 
-CMap::~CMap() {
-    delete player;
-}
-
 CMap::CMap() {
     player = new CPlayer();
 	SetMap();
 	MAP_SIZE_X = 0;
 	MAP_SIZE_Y = 0;
 
+}
+
+CMap::~CMap() {
+    delete player;
 }

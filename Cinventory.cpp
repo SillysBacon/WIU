@@ -1,7 +1,7 @@
 #include "Cinventory.h"
 
 void inventorySystem::renderInventory() {
-	UI.Clear();
+	CUI::GetInstance().Clear();
 	cout << "       [Inventory]\n";
 	cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
 	for (int i = 0; i < maxItem; i++) {

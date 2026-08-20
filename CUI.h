@@ -60,6 +60,12 @@ public:
 	void SwitchPauseMenuOption(int input);
 	bool PauseMenu();
 
+	static CUI& GetInstance() {
+		static CUI instance;
+		return instance;
+	}
+	CUI(const CUI&) = delete;
+	CUI& operator=(const CUI&) = delete;
 
 	CUI();
 

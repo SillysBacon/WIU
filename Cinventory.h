@@ -7,7 +7,6 @@ using namespace std;
 
 class inventorySystem
 {
-	CUI UI;
 	string inventorySpace[10] = {"A","B","C","D","y"};
 	int maxItem = 5;
 	int itemPosition = 0;
@@ -19,4 +18,3 @@ public:
 	void switchItem(int input);
 	bool getInventoryState();
 };
-

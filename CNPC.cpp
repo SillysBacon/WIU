@@ -116,7 +116,7 @@ string NPC::getDialogue() {
 	return dialogue;
 }
 void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
-	UI.Clear();
+	CUI::GetInstance().Clear();
 	map->RenderMap();
 	bool dialougePrintoutFinished = false;
 	const DialogueNode& node = DialougeTree[currentNode]; 
@@ -126,7 +126,7 @@ void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
 	cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
 	cout << "|  ";
 	if (typetext) {
-		UI.typeText(fullLine);
+		CUI::GetInstance().typeText(fullLine);
 	}
 	else if(!typetext){
 		cout << fullLine;
