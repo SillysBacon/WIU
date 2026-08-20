@@ -116,7 +116,7 @@ string NPC::getDialogue() {
 	return dialogue;
 }
 void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
-	system("cls");
+	UI.Clear();
 	map->RenderMap();
 	bool dialougePrintoutFinished = false;
 	const DialogueNode& node = DialougeTree[currentNode]; 

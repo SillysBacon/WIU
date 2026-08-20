@@ -2,10 +2,12 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include "CUI.h";
 using namespace std;
 
 class inventorySystem
 {
+	CUI UI;
 	string inventorySpace[10] = {"A","B","C","D","y"};
 	int maxItem = 5;
 	int itemPosition = 0;

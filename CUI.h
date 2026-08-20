@@ -53,7 +53,7 @@ public:
 	void ChangeSpeed(char input);
 	void SwitchSetting(int input);
 	void Run();
-
+	void Clear();
 
 
 	void RenderPauseMenu();
