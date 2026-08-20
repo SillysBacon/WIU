@@ -15,6 +15,17 @@ CObstacle* CGameManager::AddObstacle(int mapIndex, CObstacle::Furniture type, in
     return Furniture;
 }
 
+NPC* CGameManager::AddNPC(int mapIndex, NPC::People type, int x, int y)
+{
+    NPC* People = new NPC();
+    People->setPerson(type);
+    People->SetPosX(x);
+    People->SetPosY(y);
+
+    mapNPCs[mapIndex].push_back(People);
+    return People;
+}
+
 CObstacle* CGameManager::FindObstacle(int mapIndex, int x, int y) {
     for (int i = 0; i < (int)(mapObstacles[mapIndex].size()); i++) {
         CObstacle* O = mapObstacles[mapIndex][i];
@@ -51,6 +62,13 @@ void CGameManager::SetMaps() {
         AddObstacle(0, CObstacle::Window ,5 ,0,0)->SetDialogue(0, "a beautiful Scenery Of... the neighbouring buildings red wall... truely to die for");
     }
 
+    // Adding NPCs to the map
+
+    mapNPCs.resize(MAX_MAPS);
+
+    
+        AddNPC(0, NPC::Sarah_Collins, 3, 3);
+    
 
 
     /*ROOMS AND MAPS*/
@@ -92,6 +110,14 @@ void CGameManager::SetMaps() {
             CObstacle* o = mapObstacles[i][j];
             map[i].SetObstacle(o->GetWidth(), o->GetHeight(),
                 o->GetSymbol(), o->GetPosX(), o->GetPosY());
+        }
+    }
+
+    // Placing the NPC's symbol
+    for (int i = 0; i < MAX_MAPS; i++) {
+        for (int j = 0; j < mapNPCs[i].size(); j++) {
+            NPC* n = mapNPCs[i][j];
+            map[i].SetNPC(n->getSymbol(), n->GetPosX(), n->GetPosY());
         }
     }
 

@@ -17,14 +17,16 @@ class CGameManager
 	bool IsGameRunning;
 	inventorySystem inventory;
 	CcaseFileSystem caseFileSystem;
-	NPC NPCs;
+	NPC* NPCs;
 	vector<vector<int>> Connect;
 	vector<vector<CObstacle*>> mapObstacles;
+	vector<vector<NPC*>> mapNPCs;
 	CObstacle* Obstacle[MAX_OBSTACLE];
 	int item = 1;
 public:
 	int SelectDestination(vector<int>& options);
 	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);
+	NPC* AddNPC(int mapIndex, NPC::People type, int x, int y);
 	void displayDialogue(string c, string t);
 	void TestDialogue();
 	void SetMaps();

@@ -113,6 +113,9 @@ void CMap::RenderMap() {
             case 'a':
                 cout << " a";
                 break;
+            case 'S':
+                cout << " S";
+                break;
             default:
                 cout << "  ";
                 break;

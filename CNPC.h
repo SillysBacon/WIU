@@ -7,20 +7,39 @@ using namespace std;
 class NPC :
 	public CGameObject
 {
-	int const static MAX_NPC = 5;
-	string name[MAX_NPC] = {"Emily Smith", "Michael Turner", "Sarah Collins", "Trisha Lopez", "Angelo Batista"};
-	char symbol[MAX_NPC] = {'E', 'N', 'S', 'T', 'A'};
-	int age[MAX_NPC] = {1, 2, 3, 4, 5};
-	string occupation[MAX_NPC] = {"", "", "", "", ""};
-	bool isNPCKiller[MAX_NPC] = {false, true, false, false, false};
-	int currentNPC;
+	string name;
+	char symbol;
+	int age;
+	string occupation;
+	bool killerStatus;
+	string dialogue;
+
 public:
-	string getName(int num);
-	char getSymbol(int num);
-	int getAge(int num);
-	string getOccupation(int num);
-	bool getKillerStatus(int num);
+	enum People
+	{
+		Sarah_Collins,
+		Emily_Smith,
+		Michael_Turner,
+		Trisha_Lopez,
+		Angelo_Batista,
+		Harvey_Denn,
+		Forensics,
+		Jonathan_Smith,
+		Silias_Reeds
+	};
+
+	void setPerson(People p);
+	string getName();
+	char getSymbol();
+	int getAge();
+	string getOccupation();
+	bool getKillerStatus();
+	string getDialogue();
+	string setDialogue(string text);
 
 	NPC();
+
+private:
+	People person;
 };
 
