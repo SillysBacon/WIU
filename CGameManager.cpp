@@ -42,6 +42,17 @@ CObstacle* CGameManager::FindObstacle(int mapIndex, int x, int y) {
     return nullptr;
 }
 
+NPC* CGameManager::FindNPC(int mapIndex, int x, int y) {
+    for (int i = 0; i < (int)(mapNPCs[mapIndex].size()); i++) {
+        NPC* npc = mapNPCs[mapIndex][i];
+
+        if (npc->GetPosX() == x && npc->GetPosY() == y) {
+            return npc;
+        }
+    }
+    return nullptr;
+}
+
 
 void CGameManager::SetMaps() {
 
@@ -67,7 +78,27 @@ void CGameManager::SetMaps() {
     mapNPCs.resize(MAX_MAPS);
 
     
-        AddNPC(0, NPC::Sarah_Collins, 3, 3);
+    NPC* sarah = AddNPC(0, NPC::Sarah_Collins, 3, 3);
+
+    int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
+    int n1 = sarah->AddDialougeNode("I was home alone, no alibi I'm afraid.");
+    int n2 = sarah->AddDialougeNode("We went to school together, years ago.");
+    int n3 = sarah->AddDialougeNode("No... no one.");
+
+    sarah->AddNodeOption(n0, 0, n1, "Where were you last night?");
+    sarah->AddNodeOption(n0, 0, n2, "Did you know the victim?");
+    sarah->AddNodeOption(n0, 0, -1, "Never mind.");
+
+    sarah->AddNodeOption(n1, 0, n3,"Anyone who can confirm that?");  // eventFlag = 1
+    sarah->AddNodeOption(n1, 0, n0, "Back");
+
+    sarah->AddNodeOption(n2, 0, n0, "Back");
+
+    sarah->AddNodeOption(n3,0, -1, "...");
+
+
+
+
     
 
 
@@ -229,47 +260,30 @@ void CGameManager::changeMaps(char input)
     /*Interaction Code*/
     else if (input == 'e') {
 
-        //string object;
-        ////object = map[0].GetItem(map[currentMap].GetPlayer()->GetPosX(), map[currentMap].GetPlayer()->GetPosY());
-        //object = "item" + to_string(item);
-        //inventory.addToInventory(object);
-        //item++;
-
         CPlayer* player = map[currentMap].GetPlayer();
         int tx = player->GetPosX();
         int ty = player->GetPosY();
 
         switch (player->GetlastInput()) {
-        case 'w':
-            ty--;
-            break;
-        case 'a':
-            tx--;
-            break;
-        case 's':
-            ty++;
-            break;
-        case 'd':
-            tx++;
-            break;
+        case 'w': ty--; break;
+        case 'a': tx--; break;
+        case 's': ty++; break;
+        case 'd': tx++; break;
         }
-        
+
+        NPC* NPCInteract = FindNPC(currentMap, tx, ty);
         CObstacle* ObstacleInteract = FindObstacle(currentMap, tx, ty);
 
-        if (ObstacleInteract != nullptr) {
+        if (NPCInteract != nullptr) {
+            NPCInteract->dialougesystem(&map[currentMap]);
+            map[currentMap].RenderMap();
+        }
+        else if (ObstacleInteract != nullptr) {
             displayDialogue("game", ObstacleInteract->GetNextDialouge());
         }
         else {
             displayDialogue("Silas", "theres nothing there... might be losing it pal");
         }
-
-
-
-
-
-
-
-
     }
 
 
@@ -300,7 +314,7 @@ void CGameManager::TestDialogue() {
 
 void CGameManager::RunGame() {
     map[currentMap].RenderMap();
-    TestDialogue();
+    //TestDialogue();
     while (IsGameRunning) {
         char input = _getch();
 

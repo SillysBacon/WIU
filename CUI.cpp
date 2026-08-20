@@ -100,6 +100,17 @@ void CUI::RenderDialougeBox(const string character, const string text) {
     } while (skip != 13 && skip != 32);
 }
 
+void CUI::RenderDialougeBoxNPC(const string character, const string text) {
+    string fullLine = "\033[32m" + character + "\033[0m" + ": " + text;
+    int boxWidth = (int)fullLine.length() - 9 + 6;
+
+    cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
+    cout << "|  ";
+    typeText(fullLine);
+    cout << "  |\n";
+    cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
+}
+
 void CUI::NextDialouge() {
     cout << "\n[ Continue... ]";
     while (true) {
