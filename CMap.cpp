@@ -66,7 +66,7 @@ void CMap::removePosition(int y, int x) {
 
 void CMap::RenderMap() {
     int width = 2 * MAP_SIZE_X + 2;
-    system("cls");
+    UI.Clear();
 
     for (int j = 0; j < width; j++) {
         cout << "~";

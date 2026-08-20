@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "CUI.h";
 using namespace std;
 class CcaseFileSystem
 {
+	CUI UI;
 	enum CFSView {
 		DOCUMENT,
 		EVIDENCE,

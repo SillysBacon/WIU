@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include "CPlayer.h"
+#include "CUI.h"
 using namespace std;
 class CMap
 {
@@ -14,6 +15,7 @@ class CMap
 	char MAP[MAX_SIZE][MAX_SIZE];
 	CPlayer* player;
 	std::string name;
+	CUI UI;
 
 public:
 	char GetItem(int x, int y);

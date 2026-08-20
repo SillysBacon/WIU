@@ -1,6 +1,8 @@
+#define _HAS_STD_BYTE 0
 #include "CUI.h"
 #include <conio.h>
 #include <stdlib.h>
+#include <windows.h>
 
 void CUI::delayMs(int ms) {
     clock_t start = std::clock();
@@ -40,7 +42,7 @@ void CUI::typeText(const string text) {
 
 
 void CUI::RenderSettings() {
-    system("cls");
+    Clear();
     cout << "       [SETTINGS]\n";
     cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
     for (int i = 0; i < MaxSetting; i++) {
@@ -126,7 +128,7 @@ void CUI::SetTextSpeed(int speed) {
 }
 
 void CUI::DisplayTextSpeedSettings() {
-    system("cls");
+    Clear();
     cout << "       [Text Speed]\n";
     cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
     cout << "          < " << textSpeed << " >\n";
@@ -241,7 +243,7 @@ void CUI::HandleEnter() {
 }
 
 void CUI::RenderStartMenu() {
-    system("cls");
+    Clear();
     string title = "A Liar's Paradox";
     int boxWidth = (int)title.length() + 6;
     cout << "+" << std::string(boxWidth - 2, '~') << "+\n";
@@ -279,7 +281,7 @@ bool CUI::GetGameStart() {
 
 
 void CUI::RenderPauseMenu() {
-    system("cls");
+    Clear();
     cout << "       [PAUSED]\n";
     cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
     for (int i = 0; i < MaxPauseOptions; i++) {
@@ -347,6 +349,19 @@ void CUI::Run() {
     }
 }
 
+void  CUI::Clear() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hConsole, &csbi);
+
+    DWORD cellCount = csbi.dwSize.X * csbi.dwSize.Y;
+    COORD homeCoords = { 0, 0 };
+    DWORD count;
+
+    FillConsoleOutputCharacter(hConsole, ' ', cellCount, homeCoords, &count);
+    FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cellCount, homeCoords, &count);
+    SetConsoleCursorPosition(hConsole, homeCoords);
+}
 
 
 CUI::CUI() {

@@ -180,7 +180,7 @@ int CGameManager::SelectDestination(vector<int>& options) {
     int destination = -1;
 
     while (selecting) {
-        system("cls");
+        UI.Clear();
         cout << "\n      [Where do you want to go now, Mr Black?]\n";
         cout << "+====Current Location: " << map[currentMap].GetName() << "====+" << endl << endl;
 
