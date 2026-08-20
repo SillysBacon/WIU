@@ -27,6 +27,7 @@ public:
 	int SelectDestination(vector<int>& options);
 	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);
 	NPC* AddNPC(int mapIndex, NPC::People type, int x, int y);
+	NPC* FindNPC(int mapIndex, int x, int y);
 	void displayDialogue(string c, string t);
 	void TestDialogue();
 	void SetMaps();

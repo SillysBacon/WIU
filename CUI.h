@@ -47,6 +47,7 @@ public:
 	void typeText(const string text);
 	void NextDialouge();
 	void RenderDialougeBox(const string character, const string text);
+	void RenderDialougeBoxNPC(const string character, const string text);
 	void RenderSettings();
 	void DisplayTextSpeedSettings();
 	void ChangeSpeed(char input);

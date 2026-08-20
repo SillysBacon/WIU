@@ -1,18 +1,36 @@
 #pragma once
 #include "CGameObject.h"
+#include "CUI.h"
+#include "CMAP.h"
 #include <iostream>
 #include <string>
+#include <conio.h>
+#include <vector>
 using namespace std;
 
 class NPC :
 	public CGameObject
 {
+	CUI UI;
 	string name;
 	char symbol;
 	int age;
 	string occupation;
 	bool killerStatus;
 	string dialogue;
+	struct DialogueOption {
+		string text;
+		int nextNode;
+		int Eventflag = 0;
+	};
+	struct DialogueNode {
+		string npcLine;
+		vector<DialogueOption> options;
+	};
+	vector<DialogueNode> DialougeTree;
+	int currentNode = 0;
+	int selectedOption = 0;
+	int Eventstate;
 
 public:
 	enum People
@@ -37,9 +55,17 @@ public:
 	string getDialogue();
 	string setDialogue(string text);
 
+	void ResetDialogueTree();
+	void RenderDialougeSystem(bool typetext, CMap* map);
+	void dialougesystem(CMap* map);
+	int AddDialougeNode(string npcDialouge);
+	void AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, string text);
+
 	NPC();
 
 private:
+
 	People person;
+
 };
 
