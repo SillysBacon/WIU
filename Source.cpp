@@ -1,5 +1,6 @@
 #include "CGameManager.h"
 int main() {
-	CGameManager game;
+	CGameManager* game = new CGameManager();
+	delete game;
 	return 0;
 }

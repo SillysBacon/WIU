@@ -15,7 +15,6 @@ class CMap
 	char MAP[MAX_SIZE][MAX_SIZE];
 	CPlayer* player;
 	std::string name;
-	CUI UI;
 
 public:
 	char GetItem(int x, int y);

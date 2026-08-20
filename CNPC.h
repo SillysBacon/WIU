@@ -11,7 +11,6 @@ using namespace std;
 class NPC :
 	public CGameObject
 {
-	CUI UI;
 	string name;
 	char symbol;
 	int age;

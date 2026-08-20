@@ -180,7 +180,7 @@ int CGameManager::SelectDestination(vector<int>& options) {
     int destination = -1;
 
     while (selecting) {
-        UI.Clear();
+        CUI::GetInstance().Clear();
         cout << "\n      [Where do you want to go now, Mr Black?]\n";
         cout << "+====Current Location: " << map[currentMap].GetName() << "====+" << endl << endl;
 
@@ -249,7 +249,7 @@ void CGameManager::changeMaps(char input)
                 map[currentMap].RenderMap();
             }
 
-            UI.typeText("You are now at "); UI.typeText(map[currentMap].GetName()); UI.typeText(".\n");
+            CUI::GetInstance().typeText("You are now at "); CUI::GetInstance().typeText(map[currentMap].GetName()); CUI::GetInstance().typeText(".\n");
         }
         else {
             map[currentMap].RenderMap();
@@ -306,7 +306,7 @@ void CGameManager::changeMaps(char input)
 }
 
 void CGameManager::displayDialogue(string c, string t) {
-    UI.RenderDialougeBox(c, t);
+    CUI::GetInstance().RenderDialougeBox(c, t);
     map[currentMap].RenderMap();
 }
 
@@ -327,7 +327,7 @@ void CGameManager::RunGame() {
         char input = _getch();
 
         if (input == 27) {
-            bool keepPlaying = UI.PauseMenu();
+            bool keepPlaying = CUI::GetInstance().PauseMenu();
             if (!keepPlaying) {
                 IsGameRunning = false;
             }
@@ -373,8 +373,8 @@ CGameManager::CGameManager() {
     currentMap = 0;
     currentUI = 0;
     SetMaps();
-    UI.Run();
-    if (UI.GetGameStart()){
+    CUI::GetInstance().Run();
+    if (CUI::GetInstance().GetGameStart()){
         IsGameRunning = true;
     }
     else {
@@ -385,5 +385,18 @@ CGameManager::CGameManager() {
     }
     else {
         return;
+    }
+}
+
+CGameManager::~CGameManager() {
+    for (auto& obstacleList : mapObstacles) {
+        for (CObstacle* Obstacles : obstacleList) {
+            delete Obstacles;
+        }
+    }
+    for (auto& npcList : mapNPCs) {
+        for (NPC* npcs : npcList) {
+            delete npcs;
+        }
     }
 }

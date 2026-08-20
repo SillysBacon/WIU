@@ -11,7 +11,6 @@ class CGameManager
 	int static const MAX_MAPS = 11;
 	static const int MAX_OBSTACLE = 100;
 	CMap map[MAX_MAPS];
-	CUI UI;
 	int currentMap;
 	int currentUI;
 	bool IsGameRunning;
@@ -36,5 +35,6 @@ public:
 	CObstacle* FindObstacle(int mapIndex, int x, int y);
 
 	CGameManager();
+	~CGameManager();
 
 };

@@ -5,7 +5,6 @@
 using namespace std;
 class CcaseFileSystem
 {
-	CUI UI;
 	enum CFSView {
 		DOCUMENT,
 		EVIDENCE,
