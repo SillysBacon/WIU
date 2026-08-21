@@ -6,6 +6,7 @@
 #include <stdlib.h>
 using namespace std;
 #include "CGameObject.h"
+#include "CEvidence.h"
 class CObstacle :
     public CGameObject
 {
@@ -35,6 +36,8 @@ public:
     Furniture GetType();
     string GetNextDialouge();
     void SetDialogue(int index, const string text);
+    string runDialogue(CEvidence::Evidence, int num);
+    string GetEvidenceName(CEvidence::Evidence e);
     CObstacle();
 
 private:
@@ -43,6 +46,8 @@ private:
     char symbol;
     string IDialouge[3];
     int dialougeidx;
+    CEvidence EvidenceIdx;
+    int EvidenceDialogueIdx;
 
 
     //Placeholders for later;
