@@ -34,6 +34,10 @@ void CcaseFileSystem::changeFiles(int input) {
 			currentFiles--;
 		}
 		break;
+	case 'n':
+		if (currentView == CFSView::SUSPECT) {
+			addNotes();
+		}
 	}
 
 	
@@ -79,6 +83,7 @@ void CcaseFileSystem::renderSuspectFiles()
 	cout << "#=============================#" << endl;
 	cout << suspectFiles[currentSuspectFiles] << endl << endl << "Description:" << endl;
 	cout << suspectDescription[currentSuspectFiles] << endl;
+	cout << "Notes:" << endl << notes[currentSuspectFiles][currentNotes[currentSuspectFiles] - 1] << endl;
 	cout << "#=============================#";
 }
 
@@ -93,4 +98,19 @@ void CcaseFileSystem::showFiles(char input) {
 
 bool CcaseFileSystem::getCFSState() {
 	return isCFSOpen;
+}
+
+void CcaseFileSystem::addNotes() {
+	CUI::GetInstance().Clear();
+	string notesText;
+	cout << "What's on your mind, Mr Black?: ";
+	getline(cin, notesText);
+	notes[currentSuspectFiles][currentNotes[currentSuspectFiles]] = notesText;
+	currentNotes[currentSuspectFiles]++;
+	renderSuspectFiles();
+	
+}
+
+void CcaseFileSystem::renderNotes() {
+
 }
