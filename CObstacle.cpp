@@ -19,9 +19,9 @@ void CObstacle::SetType(Furniture f)
 		break;
 	case Small_Shelf:
 		width = 3; height = 1; symbol = '=';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "A small shelf, there are items on it.";
+		IDialouge[1] = "You swabbed your hands on the shelf, kinda dusty.";
+		IDialouge[2] = "you stared at the shelf, it stares back at you.";
 		break;
 	case Long_Shelf:
 		width = 4; height = 1; symbol = '=';
@@ -37,9 +37,13 @@ void CObstacle::SetType(Furniture f)
 		break;
 	case Chair:
 		width = 1; height = 1; symbol = 'L';
+		IDialouge[0] = "A Chair, You took a sit and stand back up";
 		break;
 	case Door:
 		width = 1; height = 1; symbol = '/';
+		IDialouge[0] = "Door";
+		IDialouge[1] = "Press M to switch location, The Door dont work, Blame the programmer (us basically) ";
+		IDialouge[2] = "Press M to switch location bro, dont make me repeat. >:( ";
 		break;
 	case Window:
 		width = 1; height = 1; symbol = '+';
@@ -49,39 +53,39 @@ void CObstacle::SetType(Furniture f)
 		break;
 	case Flower:
 		width = 1; height = 1; symbol = '*';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "Did you know, young sunflowers slowly turn to follow the Sun.";
+		IDialouge[1] = "Did you know, Flowers can communicate by releasing scents and chemicals to each other.";
+		IDialouge[2] = "Did you know, Some flowers can imitate insects, like the Orchids.";
 		break;
 	case Tree:
 		width = 1; height = 1; symbol = '@';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "A Strong tall tree";
+		IDialouge[1] = "You can see a Squirrel at the side of the tree. It is throwing nuts at you.";
+		IDialouge[2] = "You climbed up the tree and smacked the Squirrel. They shall fear the name Rowan Black.";
 		break;
 	case Bed:
 		width = 2; height = 3; symbol = 'X';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "A Bed";
+		IDialouge[1] = "You started to feel tired, the bed is tempting you";
+		IDialouge[2] = "*Snore* *Snore* Hu-Huh? Dang i fell asleep";
 		break;
 	case ToiletBowl:
 		width = 1; height = 1; symbol = 'O';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "A Toilet Bowl";
+		IDialouge[1] = "You unbuckled your pants and took a piss";
+		IDialouge[2] = "You unbuckled your pants and took a s***";
 		break;
 	case BathTub:
 		width = 2; height = 1; symbol = 'H';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "A BathTub";
+		IDialouge[1] = "You turn on the faucet, it burns your hand";
+		IDialouge[2] = "Disgusting, they didnt even clear the drain hole, there is a bunch of hair";
 		break;
 	case Sink:
 		width = 1; height = 1; symbol = 'a';
-		IDialouge[0] = "";
-		IDialouge[1] = "";
-		IDialouge[2] = "";
+		IDialouge[0] = "A Sink";
+		IDialouge[1] = "You washed your hand";
+		IDialouge[2] = "The Sink briefly malfunctioned and sprays at you, you punched it";
 		break;
 	}
 
@@ -99,19 +103,6 @@ void CObstacle::SetDialogue(int index, const string text) {
 	if (index >= 0 && index <= 2) {
 		IDialouge[index] = text;
 	}
-}
-
-string CObstacle::runDialogue(CEvidence::Evidence e, int num) {
-	EvidenceIdx.SetEvidence(e);
-	string text = EvidenceIdx.GetDialogue(num);
-
-	return text;
-}
-
-string CObstacle::GetEvidenceName(CEvidence::Evidence e){
-	EvidenceIdx.SetEvidence(e);
-	string name = EvidenceIdx.GetName();
-	return name;
 }
 
 void CObstacle::Rotate() 

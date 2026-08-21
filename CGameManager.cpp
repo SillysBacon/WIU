@@ -261,6 +261,9 @@ void CGameManager::SetMaps() {
        {
            AddObstacle(7, CObstacle::Table, 15, y, 1);
        }
+       AddObstacle(7, CObstacle::Sink, 15, 7, 0);
+       AddObstacle(7, CObstacle::Sink, 15, 8, 0);
+
        for (int y = 0; y < 9; y += 2)// top shelf
        {
            AddObstacle(7, CObstacle::Small_Shelf, 16, y, 1);
@@ -302,12 +305,48 @@ void CGameManager::SetMaps() {
 
    }
 
+   /*The Neighbour hse kitchen rm ROOM 9*/
+   {
+       map[9].SetRoom(10, 10, 0, 2);//Neighbour hse Kitchen
+       map[9].SetName("The Collins' Kitchen");
+       AddObstacle(9, CObstacle::Long_Shelf, 9, 6, 1)->SetDialogue(0, "A bunch of kitchen stuff");
+       AddObstacle(9, CObstacle::Long_Shelf, 5, 9, 0)->SetDialogue(0, "A bunch of kitchen stuff");
+       AddObstacle(9, CObstacle::Table, 6, 8, 0)->SetDialogue(0, "A Bread, wrapped in plastic, multiple baking tools on the table");
+       AddObstacle(9, CObstacle::Table, 8, 7, 1)->SetDialogue(0, "A Bread, wrapped in plastic, multiple baking tools on the table");
+       AddObstacle(9, CObstacle::Desk, 8, 6, 1)->SetDialogue(0, "A cutting board");
+       AddObstacle(9, CObstacle::Sink, 5, 8, 1);
 
-   map[9].SetRoom(10, 10, 0, 2);//Neighbour hse Kitchen
-   map[9].SetName("The Collins' Kitchen");
+       AddObstacle(9, CObstacle::Table, 3, 3, 1);
+       AddObstacle(9, CObstacle::Table, 4, 3, 1);
+       AddObstacle(9, CObstacle::Chair, 3, 2, 1);
+       AddObstacle(9, CObstacle::Chair, 2, 4, 1);
+       AddObstacle(9, CObstacle::Chair, 4, 5, 1);
 
-   map[10].SetRoom(15, 10, 2, 0);//Prosecutor office
-   map[10].SetName("The Prosecutors' Office");
+       AddObstacle(9, CObstacle::Flower, 9, 2, 1);
+       AddObstacle(9, CObstacle::Door, 0, 3, 1);
+   }
+
+
+   /*The Prosecutor office rm ROOM 10*/
+   {
+       map[10].SetRoom(15, 10, 2, 0);//Prosecutor office
+       map[10].SetName("The Prosecutors' Office");
+       AddObstacle(10, CObstacle::Door, 3, 0, 0);;
+       AddObstacle(10, CObstacle::Sofa, 4, 3, 0);
+       AddObstacle(10, CObstacle::Sofa, 4, 7, 0);
+       AddObstacle(10, CObstacle::Chair, 7, 5, 0);
+       AddObstacle(10, CObstacle::Table, 4, 5, 0);
+       AddObstacle(10, CObstacle::Table, 11, 4, 1);
+       AddObstacle(10, CObstacle::Chair, 13, 4, 1);
+       AddObstacle(10, CObstacle::Long_Shelf, 11, 0, 0);
+       AddObstacle(10, CObstacle::Long_Shelf, 11, 9, 0);
+       AddObstacle(10, CObstacle::Long_Shelf, 0, 5, 1);
+       AddObstacle(10, CObstacle::Flower, 5, 9, 0);
+       AddObstacle(10, CObstacle::Window, 5, 0, 0);
+       AddObstacle(10, CObstacle::Window, 6, 0, 0);
+   }
+
+
 
 
    /*To place The Objects with height and symbol*/
@@ -505,12 +544,12 @@ void CGameManager::displayDialogue(string c, string t) {
 
 void CGameManager::TestDialogue() {
     displayDialogue("Game", "It's Thursday night, 18:34. Detective Black sits in his office, smoking a cigar. A knock sounds at the door.");
-    displayDialogue("Game", "Come in.");
+    displayDialogue("Black", "Come in.");
     displayDialogue("Game", "He stubs out the cigar in the ashtray as the door opens.");
     displayDialogue("Game", "In comes a tall, leanly built man, hair side-parted, a visible eye bag under each eye.");
     displayDialogue("Game", "It's Silas Reed, Black's partner and assistant.");
-    displayDialogue("Game", "We just got a call, Silas says.");
-    displayDialogue("Game", "Sounds like a murder down in Willow's Creek. We're up.");
+    displayDialogue("Silas", "We just got a call");
+    displayDialogue("Silas", "Sounds like a murder down in Willow's Creek. We're up.");
 }
 
 void CGameManager::RunGame() {
