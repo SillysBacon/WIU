@@ -13,10 +13,10 @@ void CcaseFileSystem::changeFiles(int input) {
 		currentView = CFSView::SUSPECT;
 		break;
 	case 77:
-		if (currentView == CFSView::EVIDENCE && currentEvidenceFiles < 10) {
+		if (currentView == CFSView::EVIDENCE && currentEvidenceFiles < (int)discoveredEvidence.size() - 1) {
 			currentEvidenceFiles++;
 		}
-		else if (currentView == CFSView::SUSPECT && currentSuspectFiles < 4) {
+		else if (currentView == CFSView::SUSPECT && currentSuspectFiles < (int)discoveredSuspect.size() - 1) {
 			currentSuspectFiles++;
 		}
 		else if (currentFiles < 2) {
@@ -69,22 +69,59 @@ void CcaseFileSystem::renderFiles() {
 
 void CcaseFileSystem::renderEvidenceFiles() {
 	CUI::GetInstance().Clear();
-	cout << "             " << currentEvidenceFiles + 1 << " / 11" << endl;
-	cout << "#=============================#" << endl;
-	cout << evidenceFiles[currentEvidenceFiles] << endl << endl << "Description:" << endl;
-	cout << evidenceDescription[currentEvidenceFiles] << endl;
-	cout << "#=============================#";
+	if (discoveredEvidence.empty()) {
+
+		cout << "             " << currentEvidenceFiles + 1 << " / " << currentEvidenceFiles + 1 << endl;
+		cout << "#=============================#" << endl << endl;
+		cout << "No evidences collected yet" << endl << endl;
+		cout << "#=============================#";
+
+	}
+	else
+	{
+		cout << "             " << currentEvidenceFiles + 1 << " / " << currentEvidenceFiles + 1 << endl;
+		cout << "#=============================#" << endl;
+		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl << "Description:" << endl;
+		//cout << discoveredEvidence[currentEvidenceFiles].Get << endl;
+		cout << "#=============================#";
+	}
 }
 
 void CcaseFileSystem::renderSuspectFiles()
 {
 	CUI::GetInstance().Clear();
-	cout << "             " << currentSuspectFiles + 1 << " / 5" << endl;
-	cout << "#=============================#" << endl;
-	cout << suspectFiles[currentSuspectFiles] << endl << endl << "Description:" << endl;
-	cout << suspectDescription[currentSuspectFiles] << endl;
-	cout << "Notes:" << endl << notes[currentSuspectFiles][currentNotes[currentSuspectFiles] - 1] << endl;
-	cout << "#=============================#";
+	if (discoveredSuspect.empty()) {
+		cout << "             " << currentSuspectFiles + 1 << " / " << currentSuspectFiles + 1 << endl;
+		cout << "#=============================#" << endl << endl;
+		cout << "No suspect yet" << endl << endl;
+		cout << "#=============================#";
+	}
+	else
+	{
+		cout << "             " << currentSuspectFiles + 1 << " / " << currentSuspectFiles + 1 << endl;
+		cout << "#=============================#" << endl;
+		cout << discoveredSuspect[currentSuspectFiles].getName() << endl;
+		cout << "Age: " << discoveredSuspect[currentSuspectFiles].getAge() << endl;
+		cout << "Occupation: " << discoveredSuspect[currentSuspectFiles].getOccupation() << endl;
+		//cout << "Description: " << endl;
+		cout << "#=============================#";
+	}
+}
+
+void CcaseFileSystem::addEvidence(CEvidence::Evidence type)
+{
+	CEvidence e;
+	e.SetEvidence(type);
+	e.SetFound(true);
+	discoveredEvidence.push_back(e);
+
+}
+
+void CcaseFileSystem::addSuspect(NPC::People name)
+{
+	NPC p;
+	p.setPerson(name);
+	discoveredSuspect.push_back(p);
 }
 
 void CcaseFileSystem::showFiles(char input) {
