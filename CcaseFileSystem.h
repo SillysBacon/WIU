@@ -8,7 +8,8 @@ class CcaseFileSystem
 	enum CFSView {
 		DOCUMENT,
 		EVIDENCE,
-		SUSPECT
+		SUSPECT,
+		NOTES
 	};
 
 	CFSView currentView = CFSView::DOCUMENT;
@@ -26,12 +27,19 @@ class CcaseFileSystem
 	int currentEvidenceFiles = 0;
 	int currentSuspectFiles = 0;
 	bool isCFSOpen = false;
+	string notes[5][100] = {{"No notes currently...", ""}, {"No notes currently...", ""}, {"No notes currently...", ""}, {"No notes currently...", ""}, 
+	{ "No notes currently...", "" } };
+	int currentNotes[5] = {1, 1, 1, 1, 1};
+
 public:
 	void changeFiles(int input);
 	void renderEvidenceFiles();
 	void renderSuspectFiles();
 	void renderFiles();
+	void renderNotes();
 	void showFiles(char input);
 	bool getCFSState();
+	void addNotes();
+
 };
 
