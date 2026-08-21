@@ -6,7 +6,7 @@ void CEvidence::SetEvidence(Evidence E){
 	switch (E) {
 	case Brass_Candlestick:
 		name = "Brass Candlestick";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -14,14 +14,15 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Broken_Whiskey_Bottle:
 		name = "Broken Whiskey Bottle";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
 		length = 4;
+		break;
 	case Gunpowder_Ziploc:
 		name = "Gunpowder Ziploc";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -29,7 +30,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Suspicious_Glove:
 		name = "Suspicious Glove";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -37,7 +38,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case BrokenWhiskey_Bottle_Report:
 		name = "BrokenWhiskey Bottle Report";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -45,7 +46,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Brass_Candlestick_Report:
 		name = "Brass Candlestick Report";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -53,7 +54,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Suspicious_Glove_Report:
 		name = "Suspicious Glove Report";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -61,7 +62,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Picture_of_Muddy_shoeprint:
 		name = "Picture of Muddy shoeprint";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -69,7 +70,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Shoebox_of_property_Photos:
 		name = "Shoebox of Property Photos";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -77,7 +78,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Bank_Statement:
 		name = "Bank Statement";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
@@ -85,7 +86,7 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Divorce_Papers:
 		name = "Divorce Papers";
-		Dialogue[0] = "Hmm, what's this? Looks like blood,î black mutters";
+		Dialogue[0] = "Hmm, what's this? Looks like blood,‚Äù black mutters";
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
