@@ -5,6 +5,7 @@
 #include "CNPC.h"
 #include "CUI.h"
 #include "CObstacle.h"
+#include "CItem.h"
 #include <vector>
 class CGameManager
 {
@@ -22,6 +23,9 @@ class CGameManager
 	vector<vector<NPC*>> mapNPCs;
 	CObstacle* Obstacle[MAX_OBSTACLE];
 	int item = 1;
+	CItem Items;
+	vector<CItem*> allItems;
+	CItem* addItems(CObstacle* obstacle, CItem::Items type);
 public:
 	int SelectDestination(vector<int>& options);
 	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);

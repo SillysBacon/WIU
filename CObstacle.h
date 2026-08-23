@@ -7,6 +7,8 @@
 using namespace std;
 #include "CGameObject.h"
 #include "CEvidence.h"
+
+class CItem;
 class CObstacle :
     public CGameObject
 {
@@ -38,6 +40,8 @@ public:
     void SetDialogue(int index, const string text);
     string runDialogue(CEvidence::Evidence, int num);
     string GetEvidenceName(CEvidence::Evidence e);
+    void SetItemPtr(CItem* i);
+    CItem* GetItemPtr();
     CObstacle();
 
 private:
@@ -48,12 +52,13 @@ private:
     int dialougeidx;
     CEvidence EvidenceIdx;
     int EvidenceDialogueIdx;
+    CItem* item = nullptr;
+    
 
 
     //Placeholders for later;
     bool isKeyObject = false;
     void SetKeyObject(bool val);
     bool IsKeyObject();
-
 };
 

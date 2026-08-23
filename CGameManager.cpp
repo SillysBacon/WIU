@@ -52,6 +52,13 @@ NPC* CGameManager::FindNPC(int mapIndex, int x, int y) {
     }
     return nullptr;
 }
+CItem* CGameManager::addItems(CObstacle* obstacle, CItem::Items type) {
+    CItem* newItem = new CItem();
+    newItem->SetItem(obstacle, type); // sets type, dialogue, and position
+    obstacle->SetItemPtr(newItem);
+    allItems.push_back(newItem);
+    return newItem;
+}
 
 
 void CGameManager::SetMaps() {
@@ -67,22 +74,26 @@ void CGameManager::SetMaps() {
 
     
     NPC* sarah = AddNPC(0, NPC::Sarah_Collins, 3, 3);
+    sarah->Addeventflag();
 
     int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
     int n1 = sarah->AddDialougeNode("I was home alone, no alibi I'm afraid.");
     int n2 = sarah->AddDialougeNode("We went to school together, years ago.");
     int n3 = sarah->AddDialougeNode("No... no one.");
 
-    sarah->AddNodeOption(n0, 0, n1, "Where were you last night?");
+    int nE1 = sarah->AddDialougeNode("works");
+    sarah->AddNodeOption(nE1, 1, -1, "still works");
+
+    sarah->AddNodeOption(n0, 1, n1, "Where were you last night?");
     sarah->AddNodeOption(n0, 0, n2, "Did you know the victim?");
-    sarah->AddNodeOption(n0, 0, -1, "Never mind.");
+    sarah->AddNodeOption(n0, 1, -1, "Never mind.");
 
-    sarah->AddNodeOption(n1, 0, n3,"Anyone who can confirm that?");  // eventFlag = 1
-    sarah->AddNodeOption(n1, 0, n0, "Back");
+    sarah->AddNodeOption(n1, 1, n3,"Anyone who can confirm that?");
+    sarah->AddNodeOption(n1, 1, n0, "Back");
 
-    sarah->AddNodeOption(n2, 0, n0, "Back");
+    sarah->AddNodeOption(n2, 1, n0, "Back");
 
-    sarah->AddNodeOption(n3,0, -1, "...");
+    sarah->AddNodeOption(n3,1, -1, "...");
 
 
 
@@ -104,7 +115,8 @@ void CGameManager::SetMaps() {
        AddObstacle(0, CObstacle::Sofa, 2, 5, 0)->SetDialogue(0, "its messy from all the times you slept here like your homeless... oh wait you are");
        AddObstacle(0, CObstacle::Desk, 5, 2, 0)->SetDialogue(0, "Your desk. Cigarette burns and coffee rings... really trying to sell the depressed detective trope");
        AddObstacle(0, CObstacle::Window, 5, 0, 0)->SetDialogue(0, "a beautiful Scenery Of... the neighbouring buildings red wall... truely to die for");
-       AddObstacle(0, CObstacle::Door, 5, 5, 0);
+       CObstacle* bum = AddObstacle(0, CObstacle::Door, 5, 5, 0);
+       addItems(bum, CItem::NOTEBOOK);
    }
 
    /*The Mansion's Living room ROOM 1*/
@@ -519,7 +531,15 @@ void CGameManager::changeMaps(char input)
             map[currentMap].RenderMap();
         }
         else if (ObstacleInteract != nullptr) {
-            displayDialogue("game", ObstacleInteract->GetNextDialouge());
+            CItem* foundItem = ObstacleInteract->GetItemPtr();
+            if (foundItem != nullptr) {
+                inventory.addToInventory(foundItem->GetItemName(), foundItem->GetId());
+                displayDialogue("game", ObstacleInteract->GetNextDialouge());
+                ObstacleInteract->SetItemPtr(nullptr); // so it can't be picked up twice
+            }
+            else {
+                displayDialogue("game", ObstacleInteract->GetNextDialouge());
+            }
         }
         else {
             displayDialogue("Silas", "theres nothing there... might be losing it pal");
@@ -631,4 +651,5 @@ CGameManager::~CGameManager() {
             delete npcs;
         }
     }
+
 }
