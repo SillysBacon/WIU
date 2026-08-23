@@ -4,7 +4,7 @@ void inventorySystem::renderInventory() {
 	CUI::GetInstance().Clear();
 	cout << "       [Inventory]\n";
 	cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
-	for (int i = 0; i < maxItem; i++) {
+	for (int i = 0; i < ItemCount; i++) {
 		if (i == itemPosition) {
 			cout << "~> " << inventorySpace[i] << endl;
 		}
@@ -24,9 +24,10 @@ void inventorySystem::showInventory(char input) {
 	}
 }
 
-void inventorySystem::addToInventory(string item) {
-	inventorySpace[maxItem] = item;
-	maxItem++;
+void inventorySystem::addToInventory(string item, int id) {
+	inventorySpace[ItemCount] = item;
+	InventoryIDS[ItemCount] = id;
+	ItemCount++;
 }
 
 void inventorySystem::switchItem(int input) {
@@ -36,7 +37,7 @@ void inventorySystem::switchItem(int input) {
 		}
 	}
 	else if (input == 80) {
-		if (itemPosition < maxItem - 1) {
+		if (itemPosition < ItemCount - 1) {
 			itemPosition += 1;
 		}
 	}

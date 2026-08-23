@@ -1,8 +1,11 @@
 #pragma once
 #include "CObject.h"
+#include "CObstacle.h"
+#include "CInventory.h"
 class CItem :
     public CObject
 {
+public:
 	enum Items
 	{
 		NOTEBOOK,
@@ -13,5 +16,17 @@ class CItem :
 		CAMERA,
 		CIGARS
 	};
+private:
+	Items Item;
+	string ItemDialouge;
+	string ItemName;
+	int Id;
+public:
+	CItem* SetItem(CObstacle* Obstacle, Items I);
+	void AddToInventory();
+	void SetType(Items I);
+	CItem();
+	string GetItemName();
+	int GetId();
 };
 

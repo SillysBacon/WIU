@@ -128,6 +128,12 @@ CObstacle::Furniture CObstacle::GetType()
 {
 	return type; 
 }
+void CObstacle::SetItemPtr(CItem* i) {
+	item = i; 
+}
+CItem* CObstacle::GetItemPtr() {
+	return item; 
+}
 
 CObstacle::CObstacle() 
 {
