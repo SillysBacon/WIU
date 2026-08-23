@@ -71,6 +71,16 @@ void NPC::setPerson(People p) {
 	}
 }
 
+vector<int> NPC::GetVisibleOptions(const DialogueNode& node) {
+	vector<int> visible;
+	for (int i = 0; i < (int)node.options.size(); i++) {
+		if (node.options[i].Eventflag == Eventstate) {
+			visible.push_back(i);
+		}
+	}
+	return visible;
+}
+
 void NPC::ResetDialogueTree() {
 	DialougeTree.clear();
 	currentNode = 0;
@@ -133,24 +143,27 @@ void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
 	}
 	cout << "  |\n";
 	cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
-	for (int i = 0; i < (int)node.options.size(); i++) {
+	vector<int> visible = GetVisibleOptions(node);
+	for (int i = 0; i < (int)visible.size(); i++) {
+		int optIdx = visible[i];
 		if (i == selectedOption)
-			cout << "   ~> " << node.options[i].text << endl;
+			cout << "   ~> " << node.options[optIdx].text << endl;
 		else
-			cout << "      " << node.options[i].text << endl;
+			cout << "      " << node.options[optIdx].text << endl;
 	}
 }
 
 void NPC::dialougesystem(CMap* map) {
 	currentNode = 0;
 	selectedOption = 0;
-	int lastnode=-1;
+	int lastnode = -1;
 	bool talking = true;
 	while (talking) {
 		bool typetext = (currentNode != lastnode);
 		RenderDialougeSystem(typetext, map);
 		lastnode = currentNode;
 		const DialogueNode& node = DialougeTree[currentNode];
+		vector<int> visible = GetVisibleOptions(node);
 
 		int input = _getch();
 
@@ -159,12 +172,14 @@ void NPC::dialougesystem(CMap* map) {
 			if (input == 72 && selectedOption > 0) {
 				selectedOption--;
 			}
-			else if (input == 80 && selectedOption < (int)node.options.size() - 1) {
+			else if (input == 80 && selectedOption < (int)visible.size() - 1) {
 				selectedOption++;
 			}
 		}
 		else if (input == 13) {
-			int next = node.options[selectedOption].nextNode;
+			if (visible.empty()) continue;
+			int actualOptIdx = visible[selectedOption];
+			int next = node.options[actualOptIdx].nextNode;
 			if (next == -1) {
 				talking = false;
 			}
@@ -178,10 +193,14 @@ void NPC::dialougesystem(CMap* map) {
 		}
 	}
 }
+void NPC::Addeventflag() {
+	Eventstate++;
+}
 
 
 NPC::NPC() {
 	ResetDialogueTree();
+	int Eventstate = 0;
 	person = Sarah_Collins;
 	name = "";
 	symbol = '\0';

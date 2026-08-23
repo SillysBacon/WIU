@@ -59,6 +59,8 @@ public:
 	void dialougesystem(CMap* map);
 	int AddDialougeNode(string npcDialouge);
 	void AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, string text);
+	void Addeventflag();
+	vector<int> GetVisibleOptions(const DialogueNode& node);
 
 	NPC();
 
