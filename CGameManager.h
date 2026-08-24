@@ -14,8 +14,16 @@ class CGameManager
 		int node;
 		string itemName;
 		CItem::Items itemType;
-	}; //for getting Items from NPC
-	int static const MAX_MAPS = 11;
+	};
+	struct NodeFlags {
+		NPC* npc;
+		int node;
+		bool* flag;
+	};
+	vector<NodeFlags> nodeFlags;
+	void checkNodeFlags(NPC* npc);
+
+	int static const MAX_MAPS = 13;
 	static const int MAX_OBSTACLE = 100;
 	CMap map[MAX_MAPS];
 	int currentMap;
@@ -34,6 +42,13 @@ class CGameManager
 	CItem* addItems(CObstacle* obstacle, CItem::Items type);
 	vector<NodeItems> nodeItems;
 	void checkNodeItems(NPC* npc);
+	bool IsBedroomkeyPresent = false;
+	bool IsMansionAvailable = false;
+	bool IsCollinAvailable = false;
+	bool IsProsecutorAvailable = false;
+	bool CanTravel = false;
+	vector<bool> mapVisited;
+	vector<vector<pair<string, string>>> mapIntroDialogue;
 public:
 	int SelectDestination(vector<int>& options);
 	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);
@@ -45,6 +60,9 @@ public:
 	void changeMaps(char input);
 	void RunGame();
 	CObstacle* FindObstacle(int mapIndex, int x, int y);
+	bool IsMapUnlocked(int mapIndex);
+	void PlayIntroDialogue(int mapIndex);
+
 
 	CGameManager();
 	~CGameManager();
