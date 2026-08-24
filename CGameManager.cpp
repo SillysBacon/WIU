@@ -78,9 +78,7 @@ void CGameManager::SetMaps() {
         ///* Mrs Emily Smith */
     ///* Event 1 (First Interaction) */
     NPC* emily = AddNPC(1, NPC::Emily_Smith, 7, 4);
-
-
-
+    
     int nE1_1 = emily->AddDialougeNode("...Yes?"); //nE1_1: n = "node", E = Emily, 1 = EventState, _1 = node number.
     int nE1_2 = emily->AddDialougeNode("Yes, I was in my room reading. My Maid, Trisha, ran in to told me about it. I-I couldn't believe it.");
     int nE1_3 = emily->AddDialougeNode("* Sobs *");
@@ -572,6 +570,10 @@ void CGameManager::changeMaps(char input)
         CObstacle* ObstacleInteract = FindObstacle(currentMap, tx, ty);
 
         if (NPCInteract != nullptr) {
+            if (NPCInteract->NPC::isSuspect()) {
+                caseFileSystem.addSuspect(NPCInteract->getPerson());
+            }
+           
             NPCInteract->dialougesystem(&map[currentMap],inventory);
             map[currentMap].RenderMap();
         }
