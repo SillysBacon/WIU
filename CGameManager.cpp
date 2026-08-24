@@ -60,10 +60,43 @@ CItem* CGameManager::addItems(CObstacle* obstacle, CItem::Items type) {
     return newItem;
 }
 
+bool CGameManager::IsMapUnlocked(int mapIndex) {
+    switch (mapIndex) {
+    case 3: // Master Bedroom
+        return IsBedroomkeyPresent;
+
+    case 12:
+        return IsCollinAvailable;
+
+    case 11: //mansion
+        return IsMansionAvailable;
+    case 10: // Prosecutor's Office
+        return IsProsecutorAvailable;
+
+
+    default:
+        return true;
+    }
+}
+void CGameManager::checkNodeFlags(NPC* npc) {
+    for (int i = 0; i < (int)nodeFlags.size(); i++) {
+        NodeFlags r = nodeFlags[i];
+        if (r.npc == npc && npc->getCurrentNode() == r.node) {
+            *r.flag = true;
+        }
+    }
+}
+void CGameManager::PlayIntroDialogue(int mapIndex) {
+    for (auto& line : mapIntroDialogue[mapIndex]) {
+        displayDialogue(line.first, line.second);
+    }
+}
 
 void CGameManager::SetMaps() {
 
-
+    mapVisited.resize(MAX_MAPS, false);
+    mapIntroDialogue.resize(MAX_MAPS);
+    mapVisited[0] = true;
     mapObstacles.resize(MAX_MAPS);
 
 
@@ -81,19 +114,19 @@ void CGameManager::SetMaps() {
 
 
 
-    //int nE1_1 = emily->AddDialougeNode("...Yes?"); //nE1_1: n = "node", E = Emily, 1 = EventState, _1 = node number.
-    //int nE1_2 = emily->AddDialougeNode("Yes, I was in my room reading. My Maid, Trisha, ran in to told me about it. I-I couldn't believe it.");
-    //int nE1_3 = emily->AddDialougeNode("* Sobs *");
-    //int nN1_4 = emily->AddDialougeNode("Emily sat back down on the couch", narrator->getName());
+    int nE1_1 = emily->AddDialougeNode("...Yes?"); //nE1_1: n = "node", E = Emily, 1 = EventState, _1 = node number.
+    int nE1_2 = emily->AddDialougeNode("Yes, I was in my room reading. My Maid, Trisha, ran in to told me about it. I-I couldn't believe it.");
+    int nE1_3 = emily->AddDialougeNode("* Sobs *");
+    int nN1_4 = emily->AddDialougeNode("Emily sat back down on the couch", narrator->getName());
 
-    //emily->AddNodeOption(nE1_1, 0, nE1_2, "It says here, you were upstair reading during the time of murder correct?");
-    //emily->AddNodeOption(nE1_1, 0, -1, "Never mind.");
+    emily->AddNodeOption(nE1_1, 0, nE1_2, "It says here, you were upstair reading during the time of murder correct?");
+    emily->AddNodeOption(nE1_1, 0, -1, "Never mind.");
 
-    //emily->AddNodeOption(nE1_2, 0, nE1_3, "I See, Thanks for confirming");  // eventFlag = 1
+    emily->AddNodeOption(nE1_2, 0, nE1_3, "I See, Thanks for confirming");  // eventFlag = 1
 
-    //emily->AddNodeOption(nE1_3, 0, nN1_4, "...?");
+    emily->AddNodeOption(nE1_3, 0, nN1_4, "...?");
 
-    //emily->AddNodeOption(nN1_4, 0, -1, "...");
+    emily->AddNodeOption(nN1_4, 0, -1, "...");
 
 
 
@@ -140,7 +173,7 @@ void CGameManager::SetMaps() {
      sarah->AddNodeOption(n0, 0, n2, "Did you know the victim?");
      sarah->AddNodeOption(n0, 0, -1, "Never mind.");
 
-     sarah->AddNodeOption(n1, 0, n3, "Anyone who can confirm that?");  // eventFlag = 1
+     sarah->AddNodeOption(n1, 0, n3, "Anyone who can confirm that?");
      sarah->AddNodeOption(n1, 0, n0, "Back");
 
      sarah->AddNodeOption(n2, 0, n0, "Back");
@@ -174,6 +207,27 @@ void CGameManager::SetMaps() {
         addItems(notebook, CItem::NOTEBOOK);
         addItems(jacket, CItem::JACKET);
         addItems(carKey, CItem::CAR_KEY);
+        //SIlas Reed NPC LINES
+        NPC* Silas = AddNPC(0, NPC::Silias_Reeds, 5, 3);
+        //nSR1_0: n = "node", SR = SILAS REED, 0 = EventState, _1 = node number.
+        int nSR0_1 = Silas->AddDialougeNode("The call's from your friend, Detective Barista.. you know the annoying one");
+        int nSR0_2 = Silas->AddDialougeNode("yeah your friend from back in the academy, hes proabbly bald by now");
+        int nSR0_3 = Silas->AddDialougeNode("i got no cash to bet rowan.. flat broke, we really need more cases. this isnt a freebie remember");
+        int nSR0_4 = Silas->AddDialougeNode("Some rich guy. probbaly some guy after his money");
+        int nSR0_5 = Silas->AddDialougeNode("um Barista said it was further from the city some mansion. far. ill drive.");
+        int nSR0_6 = Silas->AddDialougeNode("Right lets go (You unlocked The Movement to the Mansion)");
+        Silas->AddNodeOption(nSR0_1, 0, nSR0_2, "Barista huh?");
+        Silas->AddNodeOption(nSR0_3, 0, nSR0_1, "Right right");
+        Silas->AddNodeOption(nSR0_1, 0, nSR0_4, "who is it?");
+        Silas->AddNodeOption(nSR0_4, 0, nSR0_1, "...");
+        Silas->AddNodeOption(nSR0_2, 0, nSR0_1, "...");
+        Silas->AddNodeOption(nSR0_1, 0, nSR0_5, "where is it?");
+        Silas->AddNodeOption(nSR0_2, 0, nSR0_3, "wanna bet?");
+        Silas->AddNodeOption(nSR0_1, 0, nSR0_6, "Lets go");
+        Silas->AddNodeOption(nSR0_1, 0, -1, "Nevermind");
+        nodeFlags.push_back({ Silas, nSR0_6, &IsMansionAvailable });
+        nodeFlags.push_back({ Silas, nSR0_6, &CanTravel });
+
    }
 
    /*The Mansion's Living room ROOM 1*/
@@ -416,6 +470,18 @@ void CGameManager::SetMaps() {
        AddObstacle(10, CObstacle::Window, 6, 0, 0);
    }
 
+   {
+       map[11].SetRoom(15, 10, 0, 2);//mansion Porshe
+       map[11].SetName("Mansion Porch");
+
+   }
+
+   {
+       map[12].SetRoom(15, 10, 2, 0);//collin Porshe
+       map[12].SetName("Collin Porch");
+
+   }
+
 
 
 
@@ -463,9 +529,9 @@ void CGameManager::SetMaps() {
 
 
 
-    Connect.resize(11);
-    Connect[0] = { 1, 8, 10 };
-    Connect[1] = { 0, 2, 3, 4, 5, 6, 7, 8, 10 };
+    Connect.resize(13);
+    Connect[0] = { 10, 12 ,11};
+    Connect[1] = { 2, 3, 4, 5, 6, 7, 8, 10, 11 };
     Connect[2] = { 1 };
     Connect[3] = { 1, 2, 4, 6 };
     Connect[4] = { 1, 2, 3, 6 };
@@ -475,6 +541,13 @@ void CGameManager::SetMaps() {
     Connect[8] = { 0, 1, 9, 10 };
     Connect[9] = { 8 };
     Connect[10] = { 0, 1 };
+    Connect[11] = { 0, 1 };
+    Connect[12] = { 0, 8 };
+
+    mapIntroDialogue[11] = {
+    {"Game", "The mansion's living room stretches out before you, untouched by the chaos elsewhere in the house."},
+    {"Silas", "Rich people, huh. Bet the maid dusts more than we make in a month."}
+    };
 }
 int CGameManager::SelectDestination(vector<int>& options) {
     int pos = 0;
@@ -521,9 +594,17 @@ int CGameManager::SelectDestination(vector<int>& options) {
 void CGameManager::changeMaps(char input)
 {
     if (input == 'm') {
-
-        vector<int>& option = Connect[currentMap];
-        int destination = SelectDestination(option);
+        if (!CanTravel) {
+            displayDialogue("Silas", "We're not going anywhere till we know what we're dealing with.");
+            return;
+        }
+        vector<int> available;
+        for (int m : Connect[currentMap]) {
+            if (IsMapUnlocked(m)) {
+                available.push_back(m);
+            }
+        }
+        int destination = SelectDestination(available);
 
         if (destination != -1) {
             map[currentMap].removePosition(
@@ -549,6 +630,11 @@ void CGameManager::changeMaps(char input)
                 map[currentMap].GetPlayer()->SetPosY(0);
                 map[currentMap].SetPosition();
                 map[currentMap].RenderMap();
+            }
+
+            if (!mapVisited[currentMap]) {
+                PlayIntroDialogue(currentMap);
+                mapVisited[currentMap] = true;
             }
 
             CUI::GetInstance().typeText("You are now at "); CUI::GetInstance().typeText(map[currentMap].GetName()); CUI::GetInstance().typeText(".\n");
@@ -587,7 +673,12 @@ void CGameManager::changeMaps(char input)
         if (NPCInteract != nullptr) {
             NPCInteract->dialougesystem(&map[currentMap],inventory);
             checkNodeItems(NPCInteract);
+            checkNodeFlags(NPCInteract);
             map[currentMap].RenderMap();
+
+
+
+
         }
         else if (ObstacleInteract != nullptr) {
             CItem* foundItem = ObstacleInteract->GetItemPtr();
@@ -595,6 +686,9 @@ void CGameManager::changeMaps(char input)
                 inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId());
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
                 ObstacleInteract->SetItemPtr(nullptr);
+
+
+
             }
             else {
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
@@ -621,6 +715,9 @@ void CGameManager::checkNodeItems(NPC* npc) {
         NodeItems r = nodeItems[i];
         if (r.npc == npc && npc->getCurrentNode() == r.node) {
             inventory->addToInventory(r.itemName, r.itemType);
+            if (r.itemType == CItem::MASTER_BEDROOM_KEY) {
+                IsBedroomkeyPresent = true;
+            }
         }
     }
 }
