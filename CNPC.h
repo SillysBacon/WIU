@@ -23,6 +23,7 @@ class NPC :
 		int Eventflag = 0;
 	};
 	struct DialogueNode {
+		string speaker; //added speaker 
 		string npcLine;
 		vector<DialogueOption> options;
 	};
@@ -42,7 +43,8 @@ public:
 		Harvey_Denn,
 		Forensics,
 		Jonathan_Smith,
-		Silias_Reeds
+		Silias_Reeds,
+		Narrator //added narrator
 	};
 
 	void setPerson(People p);
@@ -57,7 +59,7 @@ public:
 	void ResetDialogueTree();
 	void RenderDialougeSystem(bool typetext, CMap* map);
 	void dialougesystem(CMap* map);
-	int AddDialougeNode(string npcDialouge);
+	int AddDialougeNode(string npcDialouge, string ovrdSpeaker = ""); //ovrdSpeaker = overide speaker for Narrator
 	void AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, string text);
 	void Addeventflag();
 	vector<int> GetVisibleOptions(const DialogueNode& node);
