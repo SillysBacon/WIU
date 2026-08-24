@@ -9,8 +9,8 @@ class inventorySystem
 {
 	int static const MAX_ITEMS = 15;
 	int InventoryIDS[MAX_ITEMS];
-	string inventorySpace[MAX_ITEMS];
-	int ItemCount = 0;
+	string inventorySpace[MAX_ITEMS] = {"it worrks"};
+	int ItemCount = 1;
 	int itemPosition = 0;
 	bool isInventoryOpen = false;
 public:
@@ -19,4 +19,7 @@ public:
 	void addToInventory(string item, int id);
 	void switchItem(int input);
 	bool getInventoryState();
+	int GetItemCount();
+	string GetInventory(int index);
+	int GetInventoryID(int index);
 };
