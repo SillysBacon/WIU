@@ -69,34 +69,73 @@ void CGameManager::SetMaps() {
 
 
     // Adding NPCs to the map
+    NPC* narrator = new NPC();
+    narrator->setPerson(NPC::Narrator); //Narrator for dialogue
 
     mapNPCs.resize(MAX_MAPS);
 
     
-    NPC* sarah = AddNPC(0, NPC::Sarah_Collins, 3, 3);
-    sarah->Addeventflag();
-
-    int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
-    int n1 = sarah->AddDialougeNode("I was home alone, no alibi I'm afraid.");
-    int n2 = sarah->AddDialougeNode("We went to school together, years ago.");
-    int n3 = sarah->AddDialougeNode("No... no one.");
-
-    int nE1 = sarah->AddDialougeNode("works");
-    sarah->AddNodeOption(nE1, 1, -1, "still works");
-
-    sarah->AddNodeOption(n0, 1, n1, "Where were you last night?");
-    sarah->AddNodeOption(n0, 0, n2, "Did you know the victim?");
-    sarah->AddNodeOption(n0, 1, -1, "Never mind.");
-
-    sarah->AddNodeOption(n1, 1, n3,"Anyone who can confirm that?");
-    sarah->AddNodeOption(n1, 1, n0, "Back");
-
-    sarah->AddNodeOption(n2, 1, n0, "Back");
-
-    sarah->AddNodeOption(n3,1, -1, "...");
+        ///* Mrs Emily Smith */
+    ///* Event 1 (First Interaction) */
+    NPC* emily = AddNPC(1, NPC::Emily_Smith, 7, 4);
 
 
 
+    int nE1_1 = emily->AddDialougeNode("...Yes?"); //nE1_1: n = "node", E = Emily, 1 = EventState, _1 = node number.
+    int nE1_2 = emily->AddDialougeNode("Yes, I was in my room reading. My Maid, Trisha, ran in to told me about it. I-I couldn't believe it.");
+    int nE1_3 = emily->AddDialougeNode("* Sobs *");
+    int nN1_4 = emily->AddDialougeNode("Emily sat back down on the couch", narrator->getName());
+
+    emily->AddNodeOption(nE1_1, 0, nE1_2, "It says here, you were upstair reading during the time of murder correct?");
+    emily->AddNodeOption(nE1_1, 0, -1, "Never mind.");
+
+    emily->AddNodeOption(nE1_2, 0, nE1_3, "I See, Thanks for confirming");  // eventFlag = 1
+
+    emily->AddNodeOption(nE1_3, 0, nN1_4, "...?");
+
+    emily->AddNodeOption(nN1_4, 0, -1, "...");
+
+
+    
+
+
+    /* Event 2 (Need Masterbedroom key) */
+    int nE2_1 = emily->AddDialougeNode("...Yes?");
+    int nE2_2 = emily->AddDialougeNode("Why? It has nothing to do with what happened in the study.");
+    int nE2_3 = emily->AddDialougeNode("...Rule me out?");
+    int nE2_4 = emily->AddDialougeNode("...Fine. I don't need this looking worse than it already does.?");
+    int nE2_5 = emily->AddDialougeNode("Excuse me?");
+    int nE2_6 = emily->AddDialougeNode("My husband is dead! And you're already accusing me in my own home?");
+
+    emily->AddNodeOption(nE2_1, 1, nE2_2, "Mrs. Smith, we need access to the master bedroom,");
+    emily->AddNodeOption(nE2_1, 1, -1, "Never mind.");
+
+    emily->AddNodeOption(nE2_2, 1, nE2_3, "We're not here to invade your life. We're here to rule you out");
+    emily->AddNodeOption(nE2_2, 1, nE2_4, "If there's nothing in there, this takes two minutes. If you keep stalling, it doesn't look good.");
+    emily->AddNodeOption(nE2_2, 1, nE2_5, "What are you hiding in there, Mrs. Smith?");
+
+    emily->AddNodeOption(nE2_5, 1, nE2_6, "...");
+    emily->AddNodeOption(nE2_6, 1, -1, "...");
+    emily->AddNodeOption(nE2_3, 1, -1, "...");
+
+    
+     NPC* sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
+    
+     int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
+     int n1 = sarah->AddDialougeNode("I was home alone, no alibi I'm afraid.");
+     int n2 = sarah->AddDialougeNode("We went to school together, years ago.");
+     int n3 = sarah->AddDialougeNode("No... no one.");
+    
+     sarah->AddNodeOption(n0, 0, n1, "Where were you last night?");
+     sarah->AddNodeOption(n0, 0, n2, "Did you know the victim?");
+     sarah->AddNodeOption(n0, 0, -1, "Never mind.");
+    
+     sarah->AddNodeOption(n1, 0, n3,"Anyone who can confirm that?");  // eventFlag = 1
+     sarah->AddNodeOption(n1, 0, n0, "Back");
+    
+     sarah->AddNodeOption(n2, 0, n0, "Back");
+    
+     sarah->AddNodeOption(n3,0, -1, "...");
 
     
 
