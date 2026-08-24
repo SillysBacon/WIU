@@ -105,6 +105,21 @@ void CObstacle::SetDialogue(int index, const string text) {
 	}
 }
 
+string CObstacle::runDialogue(CEvidence::Evidence e, int num) {
+	EvidenceIdx.SetEvidence(e);
+	string text = EvidenceIdx.GetDialogue(num);
+
+	return text;
+}
+
+string CObstacle::GetEvidenceName(CEvidence::Evidence e) {
+	EvidenceIdx.SetEvidence(e);
+	string name = EvidenceIdx.GetName();
+	return name;
+}
+
+
+
 void CObstacle::Rotate() 
 {
 	int temp = width;
