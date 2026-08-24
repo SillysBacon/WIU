@@ -65,7 +65,6 @@ public:
 	bool getKillerStatus();
 	string getDialogue();
 	string setDialogue(string text);
-	int getCurrentNode();//for items
 
 	void ResetDialogueTree();
 	void RenderDialougeSystem(bool typetext, CMap* map);
