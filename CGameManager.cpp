@@ -208,7 +208,7 @@ void CGameManager::SetMaps() {
         addItems(jacket, CItem::JACKET);
         addItems(carKey, CItem::CAR_KEY);
         //SIlas Reed NPC LINES
-        NPC* Silas = AddNPC(0, NPC::Silias_Reeds, 5, 3);
+        Silas = AddNPC(0, NPC::Silias_Reeds, 5, 3);
         //nSR1_0: n = "node", SR = SILAS REED, 0 = EventState, _1 = node number.
         int nSR0_1 = Silas->AddDialougeNode("The call's from your friend, Detective Barista.. you know the annoying one");
         int nSR0_2 = Silas->AddDialougeNode("yeah your friend from back in the academy, hes proabbly bald by now");
@@ -223,7 +223,7 @@ void CGameManager::SetMaps() {
         Silas->AddNodeOption(nSR0_2, 0, nSR0_1, "...");
         Silas->AddNodeOption(nSR0_1, 0, nSR0_5, "where is it?");
         Silas->AddNodeOption(nSR0_2, 0, nSR0_3, "wanna bet?");
-        Silas->AddNodeOption(nSR0_1, 0, nSR0_6, "Lets go");
+        Silas->AddNodeOption(nSR0_1, 3, nSR0_6, "Lets go");
         Silas->AddNodeOption(nSR0_1, 0, -1, "Nevermind");
         nodeFlags.push_back({ Silas, nSR0_6, &IsMansionAvailable });
         nodeFlags.push_back({ Silas, nSR0_6, &CanTravel });
@@ -699,7 +699,11 @@ void CGameManager::changeMaps(char input)
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
                 ObstacleInteract->SetItemPtr(nullptr);
 
-
+                if (foundItem->GetId() == 1001 ||
+                    foundItem->GetId() == 1002 ||
+                    foundItem->GetId() == 1003) {
+                    Silas->Addeventflag();
+                }
 
             }
             else {
