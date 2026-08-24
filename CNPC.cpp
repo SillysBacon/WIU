@@ -95,7 +95,7 @@ void NPC::ResetDialogueTree() {
 	Eventstate = 0;
 }
 
-int NPC::AddDialougeNode(string npcDialouge) {
+int NPC::AddDialougeNode(string npcDialouge, string ovrdSpeaker) {
 	DialogueNode node;
 	node.npcLine = npcDialouge;
 	if (ovrdSpeaker.empty()) {
