@@ -15,7 +15,7 @@ class CGameManager
 	int currentMap;
 	int currentUI;
 	bool IsGameRunning;
-	inventorySystem inventory;
+	inventorySystem* inventory = new inventorySystem;
 	CcaseFileSystem caseFileSystem;
 	NPC* NPCs;
 	vector<vector<int>> Connect;

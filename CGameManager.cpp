@@ -136,7 +136,13 @@ void CGameManager::SetMaps() {
      sarah->AddNodeOption(n2, 0, n0, "Back");
     
      sarah->AddNodeOption(n3,0, -1, "...");
+     int nE1_correct = sarah->AddDialougeNode("...Oh god, that's Colin's watch. I- I don't know how you got that.");
+     int nE1_wrong = sarah->AddDialougeNode("That has nothing to do with anything.");
 
+     sarah->AddNodeOption(n0, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
+     sarah->SetEvidenceRequest(n0, 1001, nE1_correct, nE1_wrong);
+     sarah->AddNodeOption(nE1_correct, 0, -1, "...");
+     sarah->AddNodeOption(nE1_wrong, 0, -1, "...");
     
 
 
@@ -566,15 +572,15 @@ void CGameManager::changeMaps(char input)
         CObstacle* ObstacleInteract = FindObstacle(currentMap, tx, ty);
 
         if (NPCInteract != nullptr) {
-            NPCInteract->dialougesystem(&map[currentMap]);
+            NPCInteract->dialougesystem(&map[currentMap],inventory);
             map[currentMap].RenderMap();
         }
         else if (ObstacleInteract != nullptr) {
             CItem* foundItem = ObstacleInteract->GetItemPtr();
             if (foundItem != nullptr) {
-                inventory.addToInventory(foundItem->GetItemName(), foundItem->GetId());
+                inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId());
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
-                ObstacleInteract->SetItemPtr(nullptr); // so it can't be picked up twice
+                ObstacleInteract->SetItemPtr(nullptr);
             }
             else {
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
@@ -629,14 +635,14 @@ void CGameManager::RunGame() {
         }
 
         else if (input == 'i' && caseFileSystem.getCFSState() == false) {
-            inventory.showInventory(input);
-            if (!inventory.getInventoryState()) {
+            inventory->showInventory(input);
+            if (!inventory->getInventoryState()) {
                 map[currentMap].RenderMap();
             }
             continue;
         }
 
-        else if (input == 'c' && inventory.getInventoryState() == false) {
+        else if (input == 'c' && inventory->getInventoryState() == false) {
             caseFileSystem.showFiles(input);
             if (!caseFileSystem.getCFSState()) {
                 map[currentMap].RenderMap();
@@ -644,7 +650,7 @@ void CGameManager::RunGame() {
             continue;
         }
 
-        else if (inventory.getInventoryState() == false) {
+        else if (inventory->getInventoryState() == false) {
             if (caseFileSystem.getCFSState() == false) {
                 changeMaps(input);
             }
@@ -654,8 +660,8 @@ void CGameManager::RunGame() {
             }
         }
         else {
-            inventory.switchItem(input);
-            inventory.renderInventory();
+            inventory->switchItem(input);
+            inventory->renderInventory();
         }
     }
 }

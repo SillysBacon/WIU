@@ -1,5 +1,6 @@
 #include "Cinventory.h"
 
+
 void inventorySystem::renderInventory() {
 	CUI::GetInstance().Clear();
 	cout << "       [Inventory]\n";
@@ -41,6 +42,17 @@ void inventorySystem::switchItem(int input) {
 			itemPosition += 1;
 		}
 	}
+}
+
+
+int inventorySystem::GetItemCount() {
+	return ItemCount;
+}
+string inventorySystem::GetInventory(int index) {
+	return inventorySpace[index];
+}
+int inventorySystem::GetInventoryID(int index) {
+	return InventoryIDS[index];
 }
 
 bool inventorySystem::getInventoryState() {

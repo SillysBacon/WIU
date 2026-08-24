@@ -99,10 +99,10 @@ int NPC::AddDialougeNode(string npcDialouge, string ovrdSpeaker) {
 	DialogueNode node;
 	node.npcLine = npcDialouge;
 	if (ovrdSpeaker.empty()) {
-		node.speaker = name;        // use current speaker
+		node.speaker = name;
 	}
 	else {
-		node.speaker = ovrdSpeaker; // override current speaker with other speaker like Narrator, or sum other person
+		node.speaker = ovrdSpeaker;
 	}
 	DialougeTree.push_back(node);
 	return (int)DialougeTree.size() - 1;
@@ -165,12 +165,12 @@ void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
 			cout << "      " << node.options[optIdx].text << endl;
 	}
 }
-
-void NPC::dialougesystem(CMap* map) {
+void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 	currentNode = 0;
 	selectedOption = 0;
 	int lastnode = -1;
 	bool talking = true;
+
 	while (talking) {
 		bool typetext = (currentNode != lastnode);
 		RenderDialougeSystem(typetext, map);
@@ -182,6 +182,7 @@ void NPC::dialougesystem(CMap* map) {
 
 		if (input == 0 || input == 224) {
 			input = _getch();
+
 			if (input == 72 && selectedOption > 0) {
 				selectedOption--;
 			}
@@ -190,10 +191,49 @@ void NPC::dialougesystem(CMap* map) {
 			}
 		}
 		else if (input == 13) {
-			if (visible.empty()) continue;
+			if (visible.empty()) {
+				continue;
+			}
+
 			int actualOptIdx = visible[selectedOption];
 			int next = node.options[actualOptIdx].nextNode;
-			if (next == -1) {
+
+			if (next == PRESENT_EVIDENCE) {
+				auto it = evidenceRequests.find(currentNode);
+				int expectedID = -1;
+				if (it != evidenceRequests.end()) {
+					expectedID = it->second.ExpectedID;
+				}
+
+				isPresentEvidenceOpen = true;
+				PresentPosition = 0;
+
+				while (isPresentEvidenceOpen) {
+					RenderPresentEvidence(inventory);
+					int evInput = _getch();
+
+					if (evInput == 0 || evInput == 224) {
+						evInput = _getch();
+						SwitchEvidence((char)evInput, inventory);
+					}
+					else {
+						presentEvidence(inventory, expectedID, (char)evInput);
+					}
+				}
+
+				if (it != evidenceRequests.end()) {
+					if (evidenceCorrect) {
+						currentNode = it->second.CorrectNode;
+					}
+					else {
+						currentNode = it->second.incorrectNode;
+					}
+				}
+
+				selectedOption = 0;
+				map->RenderMap();
+			}
+			else if (next == -1) {
 				talking = false;
 			}
 			else {
@@ -210,6 +250,71 @@ void NPC::Addeventflag() {
 	Eventstate++;
 }
 
+void NPC::SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode) {
+	IsEvidenceCorrect check;
+	check.ExpectedID = expectedItemID;
+	check.CorrectNode = correctNode;
+	check.incorrectNode = incorrectNode;
+	evidenceRequests[nodeIndex] = check;
+}
+
+void NPC::RenderPresentEvidence(inventorySystem* Inventory) {
+	CUI::GetInstance().Clear();
+	cout << "       [Present Evidence]\n";
+	cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+	for (int i = 0; i < Inventory->GetItemCount(); i++) {
+		if (i == PresentPosition) {
+			cout << "~> " << Inventory->GetInventory(i) << endl;
+		}
+		else {
+			cout << "   " << Inventory->GetInventory(i) << endl;
+		}
+	}
+	cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+}
+
+void NPC::SwitchEvidence(char input, inventorySystem* inventory) {
+	if (input == 72) {
+		if (PresentPosition > 0) {
+			PresentPosition -= 1;
+		}
+	}
+	else if (input == 80) {
+		if (PresentPosition < inventory->GetItemCount() - 1) {
+			PresentPosition += 1;
+		}
+	}
+}
+
+void NPC::presentEvidence(inventorySystem* Inventory, int id, char input) {
+	if (input == 0 || input == (char)224) {
+		SwitchEvidence(input, Inventory);
+	}
+	else if (input == 13) {
+		if (Inventory->GetItemCount() > 0) {
+			int chosenID = Inventory->GetInventoryID(PresentPosition);
+			evidenceCorrect = (chosenID == id);
+		}
+		else {
+			evidenceCorrect = false;
+		}
+		isPresentEvidenceOpen = false;
+	}
+	else if (input == 27) {
+		evidenceCorrect = false;
+		isPresentEvidenceOpen = false;
+	}
+}
+
+void NPC::showPresentEvidence(inventorySystem* inventory) {
+	if (isPresentEvidenceOpen) {
+		RenderPresentEvidence(inventory);
+	}
+}
+
+bool NPC::GetisPresentOpen() {
+	return isPresentEvidenceOpen;
+}
 
 NPC::NPC() {
 	ResetDialogueTree();

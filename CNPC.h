@@ -2,10 +2,12 @@
 #include "CGameObject.h"
 #include "CUI.h"
 #include "CMAP.h"
+#include "CInventory.h"
 #include <iostream>
 #include <string>
 #include <conio.h>
 #include <vector>
+#include <unordered_map>
 using namespace std;
 
 class NPC :
@@ -31,7 +33,15 @@ class NPC :
 	int currentNode = 0;
 	int selectedOption = 0;
 	int Eventstate;
-
+	int PresentPosition = 0;
+	bool isPresentEvidenceOpen = false;
+	bool evidenceCorrect = false;
+	struct IsEvidenceCorrect {
+		int ExpectedID;
+		int CorrectNode;
+		int incorrectNode;
+	};
+	unordered_map<int, IsEvidenceCorrect> evidenceRequests;
 public:
 	enum People
 	{
@@ -58,14 +68,26 @@ public:
 
 	void ResetDialogueTree();
 	void RenderDialougeSystem(bool typetext, CMap* map);
-	void dialougesystem(CMap* map);
+	void dialougesystem(CMap* map, inventorySystem* inventory);
 	int AddDialougeNode(string npcDialouge, string ovrdSpeaker = ""); //ovrdSpeaker = overide speaker for Narrator
 	void AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, string text);
 	void Addeventflag();
 	vector<int> GetVisibleOptions(const DialogueNode& node);
+	void presentEvidence(inventorySystem* Inventory, int id, char input);
+	void RenderPresentEvidence(inventorySystem* Inventory);
+	void SwitchEvidence(char input, inventorySystem* inventory);
+	void showPresentEvidence(inventorySystem* inventory);
+	bool GetisPresentOpen();
+	static const int PRESENT_EVIDENCE = -2;
 
+	void SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode);
 	NPC();
 
+	struct EvidenceCheck {
+		int expectedItemID;
+		int correctNode;
+		int incorrectNode;
+	};
 private:
 
 	People person;
