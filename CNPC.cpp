@@ -78,11 +78,6 @@ void NPC::setPerson(People p) {
 	}
 }
 
-NPC::People NPC::getPerson()
-{
-	return person;
-}
-
 vector<int> NPC::GetVisibleOptions(const DialogueNode& node) {
 	vector<int> visible;
 	for (int i = 0; i < (int)node.options.size(); i++) {
@@ -138,19 +133,6 @@ string NPC::getOccupation() {
 
 bool NPC::getKillerStatus() {
 	return killerStatus;
-}
-
-bool NPC::isSuspect()
-{
-	switch (person) {
-	case Emily_Smith:
-	case Michael_Turner:
-	case Trisha_Lopez:
-	case Sarah_Collins:
-		return true;
-	default:
-		return false;
-	}
 }
 
 string NPC::getDialogue() {
@@ -266,6 +248,10 @@ void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 }
 void NPC::Addeventflag() {
 	Eventstate++;
+}
+
+int NPC::getCurrentNode() {
+	return currentNode;
 }
 
 void NPC::SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode) {

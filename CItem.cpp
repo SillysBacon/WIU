@@ -4,17 +4,17 @@ void CItem::SetType(Items I) {
 	switch (I) {
 	case NOTEBOOK:
 		ItemName = "Notebook";
-		ItemDialouge = "You find a old rustic notebook";
+		ItemDialouge = "You found Detective Black's Notebook";
 		Id = 1001;
 		break;
 	case CAR_KEY:
-		ItemName = "";
-		ItemDialouge = "";
+		ItemName = "Car Keys";
+		ItemDialouge = "You found Detective Black's Car Keys";
 		Id = 1002;
 		break;
 	case JACKET:
-		ItemName = "";
-		ItemDialouge = "";
+		ItemName = "Jacket";
+		ItemDialouge = "You found Detective Black's Jacket";
 		Id = 1003;
 		break;
 	case SAFE_KEY:
@@ -23,18 +23,18 @@ void CItem::SetType(Items I) {
 		Id = 1004;
 		break;
 	case MASTER_BEDROOM_KEY:
-		ItemName = "";
+		ItemName = "Master Bedroom Key";
 		ItemDialouge = "";
 		Id = 1005;
 		break;
-	case CAMERA:
-		ItemName = "";
+	case NEIGHBOUR_HOUSE_KEY:
+		ItemName = "Neighbour House Key";
 		ItemDialouge = "";
 		Id = 1006;
 		break;
 	case CIGARS:
-		ItemName = "";
-		ItemDialouge = "";
+		ItemName = "Cigar";
+		ItemDialouge = "You found a box of cigars, you sneakily took one out and put it in your pocket";
 		Id = 1007;
 		break;
 	}

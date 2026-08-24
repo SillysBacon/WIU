@@ -13,7 +13,7 @@ public:
 		JACKET,
 		SAFE_KEY,
 		MASTER_BEDROOM_KEY,
-		CAMERA,
+		NEIGHBOUR_HOUSE_KEY,
 		CIGARS
 	};
 private:

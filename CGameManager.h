@@ -9,6 +9,12 @@
 #include <vector>
 class CGameManager
 {
+	struct NodeItems {
+		NPC* npc;
+		int node;
+		string itemName;
+		CItem::Items itemType;
+	}; //for getting Items from NPC
 	int static const MAX_MAPS = 11;
 	static const int MAX_OBSTACLE = 100;
 	CMap map[MAX_MAPS];
@@ -26,6 +32,8 @@ class CGameManager
 	CItem Items;
 	vector<CItem*> allItems;
 	CItem* addItems(CObstacle* obstacle, CItem::Items type);
+	vector<NodeItems> nodeItems;
+	void checkNodeItems(NPC* npc);
 public:
 	int SelectDestination(vector<int>& options);
 	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);

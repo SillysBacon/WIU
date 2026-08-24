@@ -110,19 +110,13 @@ void CcaseFileSystem::renderSuspectFiles()
 		cout << discoveredSuspect[currentSuspectFiles].getName() << endl;
 		cout << "Age: " << discoveredSuspect[currentSuspectFiles].getAge() << endl;
 		cout << "Occupation: " << discoveredSuspect[currentSuspectFiles].getOccupation() << endl;
-		//cout << "Description: " <<  endl;
+		//cout << "Description: " << endl;
 		cout << "#=============================#";
 	}
 }
 
 void CcaseFileSystem::addEvidence(CEvidence::Evidence type)
 {
-	for (CEvidence& e : discoveredEvidence) {
-		if (e.getEvidence() == type) {
-			return;
-		}
-	}
-
 	CEvidence e;
 	e.SetEvidence(type);
 	e.SetFound(true);
@@ -132,11 +126,6 @@ void CcaseFileSystem::addEvidence(CEvidence::Evidence type)
 
 void CcaseFileSystem::addSuspect(NPC::People name)
 {
-	for (NPC& p : discoveredSuspect) {
-		if (p.getPerson() == name) {
-			return;
-		}
-	}
 	NPC p;
 	p.setPerson(name);
 	discoveredSuspect.push_back(p);
