@@ -47,6 +47,7 @@ class CGameManager
 	bool IsCollinAvailable = false;
 	bool IsProsecutorAvailable = false;
 	bool CanTravel = false;
+	NPC* Silas = new NPC;
 	vector<bool> mapVisited;
 	vector<vector<pair<string, string>>> mapIntroDialogue;
 public:
