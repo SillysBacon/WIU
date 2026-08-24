@@ -92,6 +92,42 @@ void CGameManager::PlayIntroDialogue(int mapIndex) {
     }
 }
 
+int CGameManager::GetDialogue_Length(CEvidence::Evidence e) {
+    //Evidence.SetEvidence(e);
+    int length = Evidence.GetLength();
+    return length;
+}
+
+//string CGameManager::runDialogue(CEvidence::Evidence e, int num) {
+//    Evidence.SetEvidence(e);
+//    string text = Evidence.GetDialogue(num);
+//
+//    return text;
+//}
+
+void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e)
+{
+    if (oPtr == ptr) {
+        Evidence.SetEvidence(e);
+        for (int i = 0; i < GetDialogue_Length(e); i++) {
+            displayDialogue("game", oPtr->runDialogue(e, i));
+        }
+        inventory->addToInventory(oPtr->GetEvidenceName(e), 9);
+        Evidence.SetFound(true);
+    }
+}
+
+CGameManager* CGameManager::GetEvidencePtr()
+{
+    return evidence;
+}
+
+//CEvidence* CGameManager::GetEvidencePtr()
+//{
+//    return evidence;
+//}
+
+
 void CGameManager::SetMaps() {
 
     mapVisited.resize(MAX_MAPS, false);
@@ -197,7 +233,7 @@ void CGameManager::SetMaps() {
         map[0].SetName("Detective Black's Office");
         AddObstacle(0, CObstacle::Long_Shelf, 0, 0, 0)->SetDialogue(0, "a picture of you and Silas at the play ground..... why? well why not");
         CObstacle* carKey = AddObstacle(0, CObstacle::Long_Shelf, 7, 0, 0);
-        AddObstacle(0, CObstacle::Table, 8, 2, 1);
+        EvidencePtr1 = AddObstacle(0, CObstacle::Table, 8, 2, 1);
         AddObstacle(0, CObstacle::Table, 2, 2, 1)->SetDialogue(0, "you find a twenty that Silas left on the table as you look around before pocketing it");
         CObstacle* jacket = AddObstacle(0, CObstacle::Sofa, 7, 5, 0);
         AddObstacle(0, CObstacle::Sofa, 2, 5, 0)->SetDialogue(0, "its messy from all the times you slept here like your homeless... oh wait you are");
@@ -705,6 +741,19 @@ void CGameManager::changeMaps(char input)
                     Silas->Addeventflag();
                 }
 
+            }
+            if (Evidence.GetFound() == false) {
+                checkForEvidence(ObstacleInteract, EvidencePtr1, CEvidence::Brass_Candlestick);
+                checkForEvidence(ObstacleInteract, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
+                checkForEvidence(ObstacleInteract, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
+                checkForEvidence(ObstacleInteract, EvidencePtr4, CEvidence::Suspicious_Glove);
+                checkForEvidence(ObstacleInteract, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
+                checkForEvidence(ObstacleInteract, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
+                checkForEvidence(ObstacleInteract, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
+                checkForEvidence(ObstacleInteract, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
+                checkForEvidence(ObstacleInteract, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
+                checkForEvidence(ObstacleInteract, EvidencePtr10, CEvidence::Bank_Statement);
+                checkForEvidence(ObstacleInteract, EvidencePtr11, CEvidence::Divorce_Papers);
             }
             else {
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
