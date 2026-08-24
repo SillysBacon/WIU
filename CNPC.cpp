@@ -68,6 +68,13 @@ void NPC::setPerson(People p) {
 		occupation = "";
 		killerStatus = false;
 		break;
+	case Narrator: //added narrator
+		name = "Narrator";
+		symbol = 'n';
+		age = 10;
+		occupation = "";
+		killerStatus = false;
+		break;
 	}
 }
 
@@ -91,6 +98,12 @@ void NPC::ResetDialogueTree() {
 int NPC::AddDialougeNode(string npcDialouge) {
 	DialogueNode node;
 	node.npcLine = npcDialouge;
+	if (ovrdSpeaker.empty()) {
+		node.speaker = name;        // use current speaker
+	}
+	else {
+		node.speaker = ovrdSpeaker; // override current speaker with other speaker like Narrator, or sum other person
+	}
 	DialougeTree.push_back(node);
 	return (int)DialougeTree.size() - 1;
 }
@@ -130,7 +143,7 @@ void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
 	map->RenderMap();
 	bool dialougePrintoutFinished = false;
 	const DialogueNode& node = DialougeTree[currentNode]; 
-	string fullLine = "\033[32m" + name + "\033[0m" + ": " + node.npcLine;
+	string fullLine = "\033[32m" + node.speaker + "\033[0m" + ": " + node.npcLine; //change name to node.speaker
 	int boxWidth = (int)fullLine.length() - 9 + 6;
 
 	cout << "+" << std::string(boxWidth - 2, '-') << "+\n";
