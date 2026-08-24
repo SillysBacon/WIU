@@ -474,6 +474,23 @@ void CGameManager::SetMaps() {
        map[11].SetRoom(15, 10, 0, 2);//mansion Porshe
        map[11].SetName("Mansion Porch");
 
+       mapIntroDialogue[11] = {
+            {"Narrator", "Black and reed arrive at the crime screne"},
+            {"Narrator", "They can see multiple officers cordoning off the area."},
+            {"Silas", "Rich people, huh. Bet the maid dusts more than we make in a month."},
+            {"Silas", "Maybe we can sneak a bit of loot out"},
+            {"Black", "We are detectives Silas not theives.... tho if they do have smt they wont notice or care losing maybe"},
+            {"Narrator", "Black and reed walk up the the officers as the officer stops them"},
+            {"Officer", "Sorry, We cant allow entry unless you are permitted"},
+            {"???", "Its Ok their with me!"},
+            {"Narrator", "A big bald man walks towards them with a fedora, a well maintained mustache and goatee, floral shirt, cargo shorts, grinning"},
+            {"Black", "Detective Batista! After all these years, can't believe this is how we reunite!"},
+            {"Barista", "Ay Cabron Ha Ha Ha"},
+            {"Narrator", "Detective Batista laughed as he went in for an embrace with Detective Black."},
+            {"Silas", "Damn it. that was all of it"},
+            {"Narrator", "Silas Hands over his last 20 bucks"},
+       };
+
    }
 
    {
@@ -543,11 +560,6 @@ void CGameManager::SetMaps() {
     Connect[10] = { 0, 1 };
     Connect[11] = { 0, 1 };
     Connect[12] = { 0, 8 };
-
-    mapIntroDialogue[11] = {
-    {"Game", "The mansion's living room stretches out before you, untouched by the chaos elsewhere in the house."},
-    {"Silas", "Rich people, huh. Bet the maid dusts more than we make in a month."}
-    };
 }
 int CGameManager::SelectDestination(vector<int>& options) {
     int pos = 0;
