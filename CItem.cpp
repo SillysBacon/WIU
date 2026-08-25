@@ -50,6 +50,7 @@ string CItem::GetItemName() {
 int CItem::GetId() {
 	return Id; 
 }
+//CItem Items CItem::Get
 
 CItem::CItem() {
 

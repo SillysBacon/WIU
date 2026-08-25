@@ -113,26 +113,14 @@ void CMap::RenderMap() {
             case 'a':
                 cout << " a";
                 break;
-            case '|':
-                cout << " |";
-                break;
-            case 'P':
-                cout << " P";
-                break;
             case 'S':
                 cout << " S";
                 break;
             case 'E':
                 cout << " E";
                 break;
-            case 'M':
-                cout << " M";
-                break;
-            case 'B':
-                cout << " B";
-                break;
-            case '$':
-                cout << " $";
+            case 's':
+                cout << " s";
                 break;
             default:
                 cout << "  ";
@@ -161,7 +149,6 @@ void CMap::SetRoom(int map_size_x, int map_size_y, int playerSpawnX, int playerS
     SetPlayerPOS(playerSpawnX, playerSpawnY);
 	SetPosition();
 }
-
 void CMap::DeleteRoom() {
     for (int i = 0; i < MAP_SIZE_X; i++) {
         for (int j = 0; j < MAP_SIZE_Y; j++) {

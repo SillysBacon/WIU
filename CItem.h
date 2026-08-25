@@ -25,6 +25,7 @@ public:
 	CItem* SetItem(CObstacle* Obstacle, Items I);
 	void AddToInventory();
 	void SetType(Items I);
+	//Items GetType();
 	CItem();
 	string GetItemName();
 	int GetId();

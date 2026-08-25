@@ -7,6 +7,7 @@
 #include "CObstacle.h"
 #include "CItem.h"
 #include <vector>
+#include <algorithm>
 class CGameManager
 {
 	struct NodeItems {
@@ -23,8 +24,8 @@ class CGameManager
 	vector<NodeFlags> nodeFlags;
 	void checkNodeFlags(NPC* npc);
 
-	int static const MAX_MAPS = 15;
-	static const int MAX_OBSTACLE = 200;
+	int static const MAX_MAPS = 13;
+	static const int MAX_OBSTACLE = 100;
 	CMap map[MAX_MAPS];
 	int currentMap;
 	int currentUI;
@@ -46,13 +47,7 @@ class CGameManager
 	bool IsMansionAvailable = false;
 	bool IsCollinAvailable = false;
 	bool IsProsecutorAvailable = false;
-	bool IsMainPorchAvailable = false;
-	bool IsMainStudyAvailable = false;
 	bool CanTravel = false;
-	bool hasTalkToSilas = false;
-	bool NotebookisFound = false;
-	bool CarKeysisFound = false;
-	bool jacketisFound = false;
 	NPC* Silas = new NPC;
 	vector<bool> mapVisited;
 	vector<vector<pair<string, string>>> mapIntroDialogue;
@@ -64,13 +59,13 @@ public:
 	NPC* FindNPC(int mapIndex, int x, int y);
 	void displayDialogue(string c, string t);
 	void TestDialogue();
+	void RemoveRoom(int mapIndex);
 	void SetMaps();
 	void changeMaps(char input);
 	void RunGame();
 	CObstacle* FindObstacle(int mapIndex, int x, int y);
 	bool IsMapUnlocked(int mapIndex);
 	void PlayIntroDialogue(int mapIndex);
-	void RemoveRoom(int mapIndex);
 
 
 	CGameManager();

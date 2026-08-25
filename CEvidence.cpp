@@ -96,11 +96,6 @@ void CEvidence::SetEvidence(Evidence E){
 	}
 }
 
-CEvidence::Evidence CEvidence::getEvidence()
-{
-	return type;
-}
-
 string CEvidence::GetDialogue(int num)
 {
 	return string(Dialogue[num]);

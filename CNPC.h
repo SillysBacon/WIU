@@ -54,18 +54,15 @@ public:
 		Forensics,
 		Jonathan_Smith,
 		Silias_Reeds,
-		Police,
 		Narrator //added narrator
 	};
 
 	void setPerson(People p);
-	People getPerson();
 	string getName();
 	char getSymbol();
 	int getAge();
 	string getOccupation();
 	bool getKillerStatus();
-	bool isSuspect();
 	string getDialogue();
 	string setDialogue(string text);
 	int getCurrentNode();//for items
