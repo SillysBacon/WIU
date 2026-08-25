@@ -131,7 +131,7 @@ void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence:
     if (oPtr != nullptr && oPtr == ptr) {
         Evidence.SetEvidence(e);
         for (int i = 0; i < GetDialogue_Length(e); i++) {
-            displayDialogue("game", oPtr->runDialogue(e, i));
+            displayDialogue("Narrator", oPtr->runDialogue(e, i)); //change to Narrator, added this
         }
         inventory->addToInventory(oPtr->GetEvidenceName(e), 9);
         caseFileSystem.addEvidence(e);
@@ -223,9 +223,6 @@ void CGameManager::SetMaps() {
     emily->AddNodeOption(nN1_4, 0, -1, "...");
 
 
-
-
-
     /* Event 2 (Need Masterbedroom key) */
 
 
@@ -239,19 +236,19 @@ void CGameManager::SetMaps() {
     int nE2_5 = emily->AddDialougeNode("Excuse me?");
     int nE2_6 = emily->AddDialougeNode("My husband is dead! And you're already accusing me in my own home?");
 
-    emily->AddNodeOption(nE2_1, 0, nE2_2, "Mrs. Smith, we need access to the master bedroom,");
-    emily->AddNodeOption(nE2_1, 0, -1, "Never mind.");
+    emily->AddNodeOption(nE2_1, 1, nE2_2, "Mrs. Smith, we need access to the master bedroom,");
+    emily->AddNodeOption(nE2_1, 1, -1, "Never mind.");
 
-    emily->AddNodeOption(nE2_2, 0, nE2_3, "We're not here to invade your life. We're here to rule you out");
+    emily->AddNodeOption(nE2_2, 1, nE2_3, "We're not here to invade your life. We're here to rule you out");
 
-    emily->AddNodeOption(nE2_2, 0, nE2_4, "If there's nothing in there, this takes two minutes. If you keep stalling, it doesn't look good.");
+    emily->AddNodeOption(nE2_2, 1, nE2_4, "If there's nothing in there, this takes two minutes. If you keep stalling, it doesn't look good.");
 
-    emily->AddNodeOption(nE2_2, 0, nE2_5, "What are you hiding in there, Mrs. Smith?");
+    emily->AddNodeOption(nE2_2, 1, nE2_5, "What are you hiding in there, Mrs. Smith?");
 
-    emily->AddNodeOption(nE2_3, 0, -1, "...");
-    emily->AddNodeOption(nE2_4, 0, -1, "...");
-    emily->AddNodeOption(nE2_5, 0, nE2_6, "...");
-    emily->AddNodeOption(nE2_6, 0, -1, "...");
+    emily->AddNodeOption(nE2_3, 1, -1, "...");
+    emily->AddNodeOption(nE2_4, 1, -1, "...");
+    emily->AddNodeOption(nE2_5, 1, nE2_6, "...");
+    emily->AddNodeOption(nE2_6, 1, -1, "...");
 
 
 
@@ -304,36 +301,67 @@ void CGameManager::SetMaps() {
 
      /*---- Detective Batista ----*/
 
-    NPC* batista1 = AddNPC(11, NPC::Angelo_Batista, 6, 7);
-    int nB1_1 = batista1->AddDialougeNode("It's a closed-room murder, domestic. The owner of this mansion, Mr. Jonathan Smith...");
-    int nB1_2 = batista1->AddDialougeNode("...was found dead, El Pobre has a deep wound to the back of the neck");
-    int nB1_3 = batista1->AddDialougeNode("Vamanos Viejo, The body is in the study room");
-    batista1->AddNodeOption(nB1_1, 0, nB1_2, "...");
-    batista1->AddNodeOption(nB1_2, 0, nB1_3, "...");
-    batista1->AddNodeOption(nB1_3, 0, -1, "...");
-
-    NPC* batista2 = AddNPC(6, NPC::Angelo_Batista, 3, 1);
-    int nB2_1 = batista2->AddDialougeNode("Take a look around see if you find anything...");
-    batista2->AddNodeOption(nB2_1, 0, -1, "Got it...");
-
-    int nB3_1 = batista2->AddDialougeNode("Done?");
-    int nB3_2 = batista2->AddDialougeNode("From what I've gathered, four people had contact with Mr. Smith around the time of death...");
-    int nB3_3 = batista2->AddDialougeNode("...His wife, Emily Smith; his business partner, Michael Turner; his maid, Trisha Lopez; and the neighbour, Sarah Collins");
-    int nB3_4 = batista2->AddDialougeNode("They should be downstairs, OH and here is the Case files on the suspects and victim");
-    int nB3_5 = batista2->AddDialougeNode("Mr Batista hands you a Case Folder (Case Folder Unlocked Press 'C' then 2) ", narrator->getName());
-    batista2->AddNodeOption(nB2_1, 1, nB3_2, "Yes, by the way, Who was present at the time of the crime?");
-    batista2->AddNodeOption(nB3_2, 1, nB3_3, "...");
-    batista2->AddNodeOption(nB3_3, 1, nB3_4, "...");
-    batista2->AddNodeOption(nB3_4, 1, nB3_5, "Thanks");
-    batista2->AddNodeOption(nB3_4, 1, -1, "...");
+     NPC* batista1 = AddNPC(11, NPC::Angelo_Batista, 6, 7);
+     int nB1_1 = batista1->AddDialougeNode("It's a closed-room murder, domestic. The owner of this mansion, Mr. Jonathan Smith...");
+     int nB1_2 = batista1->AddDialougeNode("...was found dead, El Pobre has a deep wound to the back of the neck");
+     int nB1_3 = batista1->AddDialougeNode("Vamanos Viejo, The body is in the study room");
+     batista1->AddNodeOption(nB1_1, 0, nB1_2, "...");
+     batista1->AddNodeOption(nB1_2, 0, nB1_3, "...");
+     batista1->AddNodeOption(nB1_3, 0, -1, "...");
 
 
+     /* --Event 2 (in study room) */
+
+     batista2 = AddNPC(6, NPC::Angelo_Batista, 3, 1);
+     int nB2_1 = batista2->AddDialougeNode("Take a look around see if you find anything...");
+     batista2->AddNodeOption(nB2_1, 0, -1, "Got it...");
+
+     /* --Event 3 (in study room after collecting evidence) */
+     int nB3_1 = batista2->AddDialougeNode("Done?");
+     int nB3_2 = batista2->AddDialougeNode("From what I've gathered, four people had contact with Mr. Smith around the time of death...");
+     int nB3_3 = batista2->AddDialougeNode("...His wife, Emily Smith; his business partner, Michael Turner; his maid, Trisha Lopez; and the neighbour, Sarah Collins");
+     int nB3_4 = batista2->AddDialougeNode("They should be downstairs, OH and here is the Case files on the suspects and victim");
+     int nB3_5 = batista2->AddDialougeNode("Mr Batista hands you a Case Folder (Case Folder Unlocked Press 'C' then 2), i'm gonna be in the kitchen if you need me. ", narrator->getName());
+     batista2->AddNodeOption(nB2_1, 1, nB3_2, "Im done, by the way, Who was present at the time of the crime?");
+     batista2->AddNodeOption(nB3_2, 1, nB3_3, "...");
+     batista2->AddNodeOption(nB3_3, 1, nB3_4, "...");
+     batista2->AddNodeOption(nB3_4, 1, nB3_5, "Thanks");
+     batista2->AddNodeOption(nB3_5, 1, -1, "...");
+     nodeFlags.push_back({ batista2, nB3_5, &hasTalkToBatista }); //added this
+
+     /* --Event 4 (in Kitchen) */
+     NPC* batista3 = AddNPC(7, NPC::Angelo_Batista, 12, 4);
+     int nB4_1 = batista3->AddDialougeNode("Anything I'll be here...");
+     batista3->AddNodeOption(nB4_1, 0, -1, "Ok Cabron...");
+
+     /* --Event 5 (in Kitchen if there is report) */ //add if there is report condition
+     int nB5_1 = batista3->AddDialougeNode("Oh hey, the reports from the forensics came back, here you go");
+     int nB5_2 = batista3->AddDialougeNode("(You took the report, it is in your evidence)");
+     batista3->AddNodeOption(nB5_1, 1, nB5_2, "Thanks");
+     batista3->AddNodeOption(nB5_2, 1, -1, "...");
+
+     /*Forensics*/
+     NPC* forensics1 = AddNPC(6, NPC::Forensics, 2, 6);
+     int nF1 = forensics1->AddDialougeNode("Sorry, a little busy now, come back later...");
+     forensics1->AddNodeOption(nF1, 0, -1, "...");
+
+     NPC* forensics2 = AddNPC(14, NPC::Forensics, 2, 6);
+     int nF2_1 = forensics2->AddDialougeNode("Hi, What do you need me for?");
+     int nF2_2 = forensics2->AddDialougeNode("Sure thing, just pass it to me");
+     forensics2->AddNodeOption(nF2_1, 0, -1, "Hi, Can you help me run a few test on these stuff?...");
+     forensics2->AddNodeOption(nF2_1, 0, -1, "Never Mind");
+
+     forensics2->AddNodeOption(nF2_2, 0, NPC::PRESENT_EVIDENCE, "[Give Evidence]");
+     forensics2->AddNodeOption(nF2_1, 0, nF2_1, "Back");
 
 
 
+     forensics2->SetEvidenceRequest(n0, 1001, nE1_correct, nE1_wrong);
+     forensics2->AddNodeOption(nE1_correct, 0, -1, "...");
+     forensics2->AddNodeOption(nE1_wrong, 0, -1, "...");
 
 
-    
+    /* Policia*/
      NPC* police = AddNPC(11, NPC::Police, 3, 3);
      int nP1 = police->AddDialougeNode("Keep it moving...");
      police->AddNodeOption(nP1, 0, -1, "...");
@@ -368,6 +396,11 @@ void CGameManager::SetMaps() {
      police8->AddNodeOption(nP8, 0, -1, "...");
 
 
+     /* Johnathan the victim*/
+     NPC* johnathan = AddNPC(6, NPC::Jonathan_Smith, 4, 5);
+     int nJ1 = johnathan->AddDialougeNode("A deep wound can be seen at the back of his head, blunt force trauma.");
+     johnathan->AddNodeOption(nJ1, 0, -1, "...");
+
 
 
        /*ROOMS AND MAPS*/
@@ -379,7 +412,7 @@ void CGameManager::SetMaps() {
         AddObstacle(0, CObstacle::Long_Shelf, 0, 0, 0)->SetDialogue(0, "a picture of you and Silas at the play ground..... why? well why not");
         CObstacle* carKey = AddObstacle(0, CObstacle::Long_Shelf, 7, 0, 0);
         /*HERE IS BRANDON EVIDENCE V*/
-        Evidenceptr[CEvidence::Brass_Candlestick_Report] = AddObstacle(0, CObstacle::Table, 8, 2, 1);
+        AddObstacle(0, CObstacle::Table, 8, 2, 1);
         AddObstacle(0, CObstacle::Table, 2, 2, 1)->SetDialogue(0, "you find a twenty that Silas left on the table as you look around before pocketing it");
         CObstacle* jacket = AddObstacle(0, CObstacle::Sofa, 7, 5, 0);
         AddObstacle(0, CObstacle::Sofa, 2, 5, 0)->SetDialogue(0, "its messy from all the times you slept here like your homeless... oh wait you are");
@@ -432,12 +465,12 @@ void CGameManager::SetMaps() {
    {
        map[3].SetRoom(10, 10, 0, 2);//Mansion master bedroom
        map[3].SetName("The Mansion's Master bedroom");
-       AddObstacle(3, CObstacle::Table, 5, 0, 0)->SetDialogue(0, "A Study table, with a stunning view to the Collin's house wall");
+       Evidenceptr[CEvidence::Bank_Statement] = AddObstacle(3, CObstacle::Table, 5, 0, 0);
        AddObstacle(3, CObstacle::Long_Shelf, 9, 6, 1)->SetDialogue(0, "Just a shelf with personal belongings and picture");
        AddObstacle(3, CObstacle::Long_Shelf, 0, 6, 1)->SetDialogue(0, "Just a shelf with personal belongings and picture");
        AddObstacle(3, CObstacle::Bed, 4, 7, 0)->SetDialogue(0, "A Queen-size Bed, Floral Blanket seems disturbed, seems like someone was lying down here before");
-       AddObstacle(3, CObstacle::Desk, 6, 9, 0)->SetDialogue(0, "A 50 shades of grey book on the desk, kinky");
-       AddObstacle(3, CObstacle::Desk, 3, 9, 0);
+       Evidenceptr[CEvidence::Divorce_Papers] = AddObstacle(3, CObstacle::Desk, 6, 9, 0);
+       AddObstacle(3, CObstacle::Desk, 3, 9, 0)->SetDialogue(0, "A 50 shades of grey book on the desk, kinky");
        AddObstacle(3, CObstacle::Flower, 7, 0, 0)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(3, CObstacle::Flower, 4, 0, 0)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(3, CObstacle::Door, 0, 3, 0);
@@ -517,10 +550,10 @@ void CGameManager::SetMaps() {
        map[6].SetRoom(6, 7, 2, 0);//Mansion study room STORY
        map[6].SetName("The Mansion's Study room");
        AddObstacle(6, CObstacle::Door, 3, 0, 0);
-       AddObstacle(6, CObstacle::Chair, 5, 5, 0);
-       AddObstacle(6, CObstacle::Table, 3, 4, 1);
+       Evidenceptr[CEvidence::Gunpowder_Ziploc] = AddObstacle(6, CObstacle::Chair, 5, 5, 0);
+       Evidenceptr[CEvidence::Broken_Whiskey_Glass] = AddObstacle(6, CObstacle::Table, 3, 4, 1);
        AddObstacle(6, CObstacle::Long_Shelf, 0, 3, 1);
-       AddObstacle(6, CObstacle::Small_Shelf, 0, 0, 0);
+       Evidenceptr[CEvidence::Brass_Candlestick] = AddObstacle(6, CObstacle::Small_Shelf, 0, 0, 0);
    }
 
    /*The Mansion kitchen ROOM 7*/
@@ -582,7 +615,7 @@ void CGameManager::SetMaps() {
        AddObstacle(8, CObstacle::Table , 0, 7, 1)->SetDialogue(0, "Is that a Samsung UN110S9VFXZA 4K Ultra High Definition TV, that has a 240 Hz refresh rate and 110-inch screen?");
        AddObstacle(8, CObstacle::Long_Shelf, 0, 3, 1)->SetDialogue(0, "A few Pictures of the Collins Family");
        AddObstacle(8, CObstacle::Small_Shelf, 0, 9, 1)->SetDialogue(0, "CDs of mulitple Movies: The Shining, Mean girls, Tom & Jerry...");
-       AddObstacle(8, CObstacle::Table, 2, 7, 1)->SetDialogue(0, "A Table with a Compartment below");
+       Evidenceptr[CEvidence::Shoebox_of_property_Photos] = AddObstacle(8, CObstacle::Table, 2, 7, 1);
        AddObstacle(8, CObstacle::Sofa, 4, 7, 1);
        AddObstacle(8, CObstacle::Sofa, 2, 5, 0);
        AddObstacle(8, CObstacle::Sofa, 2, 10, 0);
@@ -875,6 +908,10 @@ void CGameManager::changeMaps(char input)
             displayDialogue("Silas", "We're not going anywhere till we know what we're dealing with.");
             return;
         }
+        if (currentMap == 6 && (!CanTravel2 || !hasTalkToBatista)) { //added this for study room
+            displayDialogue("Silas", "Lets look around a little more...");
+            return;
+        }
         vector<int> available;
         for (int m : Connect[currentMap]) {
             if (IsMapUnlocked(m)) {
@@ -882,6 +919,7 @@ void CGameManager::changeMaps(char input)
             }
         }
         int destination = SelectDestination(available);
+
 
         if (destination != -1) {
             map[currentMap].removePosition(
@@ -978,14 +1016,33 @@ void CGameManager::changeMaps(char input)
         }
         else if (ObstacleInteract != nullptr) {
             bool isEvidenceTile = false;
-            for (int i = 0; i < MAX_EVIDENCE; i++) {
+            int evidenceIndex = -1;
+            for (int i = 0; i < MAX_EVIDENCE; i++) { // change this part too and added evidence index
                 if (ObstacleInteract == Evidenceptr[i]) {
-                    isEvidenceTile = true; break;
+                    isEvidenceTile = true;
+                    evidenceIndex = i;
+                    break;
                 }
             }
 
             if (isEvidenceTile) {
                 checkForAllEvidence(ObstacleInteract);
+
+                switch (ObstacleInteract->GetEvidenceId()) { // adjust if the getter name differs
+                case 3001:
+                    candlestickFound = true;
+                    break;
+                case 3002:
+                    whiskeyGlassFound = true;
+                    break;
+                case 3003:
+                    gunpowderFound = true;
+                    break;
+                }
+                if (candlestickFound && whiskeyGlassFound && gunpowderFound) {
+                    CanTravel2 = true;
+                    batista2->Addeventflag();
+                }
             }
             else {
                 CItem* foundItem = ObstacleInteract->GetItemPtr();
