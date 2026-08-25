@@ -43,6 +43,13 @@ void CcaseFileSystem::changeFiles(int input) {
 	
 }
 
+
+void CcaseFileSystem::addDescription(string words)
+{
+	evidenceDescription = words;
+}
+
+
 void CcaseFileSystem::renderFiles() {
 
 	switch (currentView) {
@@ -89,8 +96,7 @@ void CcaseFileSystem::renderEvidenceFiles() {
 	{
 		cout << "             " << currentEvidenceFiles + 1 << " / " << discoveredEvidence.size() << endl;
 		cout << "#=============================#" << endl;
-		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl << "Description:" << endl;
-		//cout << discoveredEvidence[currentEvidenceFiles].Get << endl;
+		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl << "Description:" + evidenceDescription << endl;
 		cout << "#=============================#";
 	}
 }

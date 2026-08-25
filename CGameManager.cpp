@@ -121,6 +121,52 @@ bool CGameManager::IsMapUnlocked(int mapIndex) {
         return true;
     }
 }
+int CGameManager::GetDialogue_Length(CEvidence::Evidence e) {
+    //Evidence.SetEvidence(e);
+    int length = Evidence.GetLength();
+    return length;
+}
+
+//string CGameManager::runDialogue(CEvidence::Evidence e, int num) {
+//    Evidence.SetEvidence(e);
+//    string text = Evidence.GetDialogue(num);
+//
+//    return text;
+//}
+
+void CGameManager::checkForAllEvidence()
+{
+    checkForEvidence(ObstacleInteract, EvidencePtr1, CEvidence::Brass_Candlestick);
+    checkForEvidence(ObstacleInteract, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
+    checkForEvidence(ObstacleInteract, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
+    checkForEvidence(ObstacleInteract, EvidencePtr4, CEvidence::Suspicious_Glove);
+    checkForEvidence(ObstacleInteract, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
+    checkForEvidence(ObstacleInteract, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
+    checkForEvidence(ObstacleInteract, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
+    checkForEvidence(ObstacleInteract, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
+    checkForEvidence(ObstacleInteract, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
+    checkForEvidence(ObstacleInteract, EvidencePtr10, CEvidence::Bank_Statement);
+    checkForEvidence(ObstacleInteract, EvidencePtr11, CEvidence::Divorce_Papers);
+}
+
+void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e)
+{
+    if (oPtr == ptr) {
+        Evidence.SetEvidence(e);
+        for (int i = 0; i < GetDialogue_Length(e); i++) {
+            displayDialogue("game", oPtr->runDialogue(e, i));
+        }
+        inventory->addToInventory(oPtr->GetEvidenceName(e), 9);
+        caseFileSystem.addEvidence(e);
+        caseFileSystem.addDescription(Evidence.GetDescription());
+        Evidence.SetFound(true);
+    }
+}
+
+CGameManager* CGameManager::GetEvidencePtr()
+{
+    return evidence;
+}
 void CGameManager::checkNodeFlags(NPC* npc) {
     for (int i = 0; i < (int)nodeFlags.size(); i++) {
         NodeFlags r = nodeFlags[i];
@@ -354,7 +400,8 @@ void CGameManager::SetMaps() {
         map[0].SetName("Detective Black's Office");
         AddObstacle(0, CObstacle::Long_Shelf, 0, 0, 0)->SetDialogue(0, "a picture of you and Silas at the play ground..... why? well why not");
         CObstacle* carKey = AddObstacle(0, CObstacle::Long_Shelf, 7, 0, 0);
-        AddObstacle(0, CObstacle::Table, 8, 2, 1);
+        /*HERE IS BRANDON EVIDENCE V*/
+        EvidencePtr6 = AddObstacle(0, CObstacle::Table, 8, 2, 1);
         AddObstacle(0, CObstacle::Table, 2, 2, 1)->SetDialogue(0, "you find a twenty that Silas left on the table as you look around before pocketing it");
         CObstacle* jacket = AddObstacle(0, CObstacle::Sofa, 7, 5, 0);
         AddObstacle(0, CObstacle::Sofa, 2, 5, 0)->SetDialogue(0, "its messy from all the times you slept here like your homeless... oh wait you are");
@@ -383,7 +430,7 @@ void CGameManager::SetMaps() {
        AddObstacle(1, CObstacle::Table, 0, 7, 1);
        AddObstacle(1, CObstacle::Flower, 0, 3, 1)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(1, CObstacle::Flower, 7, 0, 1)->SetDialogue(0, "Did you know? Tulips were once more valuable than gold");
-       AddObstacle(1, CObstacle::Door, 0, 0, 0);
+       EvidencePtr8 = AddObstacle(1, CObstacle::Door, 0, 0, 0);
        AddObstacle(1, CObstacle::Door, 4, 9, 0)->SetDialogue(0, "Door to the garden");
        AddObstacle(1, CObstacle::Window, 6, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
        AddObstacle(1, CObstacle::Window, 7, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
@@ -972,7 +1019,29 @@ void CGameManager::changeMaps(char input)
                 if (NotebookisFound && CarKeysisFound && jacketisFound) {
                     Silas->Addeventflag();
                 }
+                if (ObstacleInteract == EvidencePtr1 || ObstacleInteract == EvidencePtr2 ||
+                    ObstacleInteract == EvidencePtr3 || ObstacleInteract == EvidencePtr4 ||
+                    ObstacleInteract == EvidencePtr5 || ObstacleInteract == EvidencePtr6 ||
+                    ObstacleInteract == EvidencePtr7 || ObstacleInteract == EvidencePtr8 ||
+                    ObstacleInteract == EvidencePtr9 || ObstacleInteract == EvidencePtr10 ||
+                    ObstacleInteract == EvidencePtr11) {
+                    if (Evidence.GetFound() == false) {
+                        //checkForAllEvidence();
 
+                        checkForEvidence(ObstacleInteract, EvidencePtr1, CEvidence::Brass_Candlestick);
+                        checkForEvidence(ObstacleInteract, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
+                        checkForEvidence(ObstacleInteract, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
+                        checkForEvidence(ObstacleInteract, EvidencePtr4, CEvidence::Suspicious_Glove);
+                        checkForEvidence(ObstacleInteract, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
+                        checkForEvidence(ObstacleInteract, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
+                        checkForEvidence(ObstacleInteract, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
+                        checkForEvidence(ObstacleInteract, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
+                        checkForEvidence(ObstacleInteract, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
+                        checkForEvidence(ObstacleInteract, EvidencePtr10, CEvidence::Bank_Statement);
+                        checkForEvidence(ObstacleInteract, EvidencePtr11, CEvidence::Divorce_Papers);
+
+                    }
+                }
             }
             else {
                 displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
@@ -981,6 +1050,7 @@ void CGameManager::changeMaps(char input)
         else {
             displayDialogue("Silas", "theres nothing there... might be losing it pal");
         }
+
     }
 
 

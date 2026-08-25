@@ -1,7 +1,7 @@
 #include "CEvidence.h"
 
 void CEvidence::SetEvidence(Evidence E){
-	type = E;
+	//type = E;
 
 	switch (E) {
 	case Brass_Candlestick:
@@ -10,7 +10,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3001;
+		found = false;
 		break;
 	case Broken_Whiskey_Bottle:
 		name = "Broken Whiskey Bottle";
@@ -18,7 +21,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3002;
+		found = false;
 		break;
 	case Gunpowder_Ziploc:
 		name = "Gunpowder Ziploc";
@@ -26,7 +32,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3003;
+		found = false;
 		break;
 	case Suspicious_Glove:
 		name = "Suspicious Glove";
@@ -34,7 +43,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3004;
+		found = false;
 		break;
 	case BrokenWhiskey_Bottle_Report:
 		name = "BrokenWhiskey Bottle Report";
@@ -42,7 +54,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3005;
+		found = false;
 		break;
 	case Brass_Candlestick_Report:
 		name = "Brass Candlestick Report";
@@ -50,7 +65,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3006;
+		found = false;
 		break;
 	case Suspicious_Glove_Report:
 		name = "Suspicious Glove Report";
@@ -58,7 +76,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3007;
+		found = false;
 		break;
 	case Picture_of_Muddy_shoeprint:
 		name = "Picture of Muddy shoeprint";
@@ -66,7 +87,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3008;
+		found = false;
 		break;
 	case Shoebox_of_property_Photos:
 		name = "Shoebox of Property Photos";
@@ -74,7 +98,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3009;
+		found = false;
 		break;
 	case Bank_Statement:
 		name = "Bank Statement";
@@ -82,7 +109,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3010;
+		found = false;
 		break;
 	case Divorce_Papers:
 		name = "Divorce Papers";
@@ -90,7 +120,10 @@ void CEvidence::SetEvidence(Evidence E){
 		Dialogue[1] = "At the base of a brass candlestick, a blood smudge can be seen.";
 		Dialogue[2] = "Seems like it was wiped carelessly, as if in a rush";
 		Dialogue[3] = "Detective Black places the candlestick into a Ziploc bag";
+		description = "yay";
 		length = 4;
+		id = 3011;
+		found = false;
 		break;
 
 	}
@@ -112,7 +145,7 @@ void CEvidence::placeEvidence(int x, int y){
 }
 
 bool CEvidence::GetFound(){
-	return true;
+	return found;
 }
 
 void CEvidence::SetFound(bool find){
@@ -125,9 +158,6 @@ void CEvidence::SetName(string namegive){
 
 string CEvidence::GetName(){
 	return string(name);
-}
-
-void CEvidence::createEvidence(){
 }
 
 int CEvidence::GetDialogueLength()
@@ -146,6 +176,17 @@ CEvidence::CEvidence(string Name){
 	found = false;
 	type = Brass_Candlestick;
 }
+
+int CEvidence::GetId()
+{
+	return id;
+}
+
+string CEvidence::GetDescription()
+{
+	return string(description);
+}
+
 
 CEvidence::CEvidence()
 {

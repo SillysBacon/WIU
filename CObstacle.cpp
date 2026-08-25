@@ -95,7 +95,6 @@ void CObstacle::SetType(Furniture f)
 		break;
 	}
 
-
 }
 string CObstacle::GetNextDialouge() {
 	if (dialougeidx < 0) dialougeidx = 0;
@@ -112,43 +111,56 @@ void CObstacle::SetDialogue(int index, const string text) {
 	}
 }
 
-void CObstacle::Rotate() 
+string CObstacle::runDialogue(CEvidence::Evidence e, int num) {
+	EvidenceIdx.SetEvidence(e);
+	string text = EvidenceIdx.GetDialogue(num);
+
+	return text;
+}
+
+string CObstacle::GetEvidenceName(CEvidence::Evidence e) {
+	EvidenceIdx.SetEvidence(e);
+	string name = EvidenceIdx.GetName();
+	return name;
+}
+
+void CObstacle::Rotate()
 {
 	int temp = width;
 	width = height;
 	height = temp;
 }
 
-int CObstacle::GetWidth() 
-{ 
-	return width; 
-}
-int CObstacle::GetHeight() 
-{ 
-	return height; 
-}
-char CObstacle::GetSymbol() 
-{ 
-	return symbol; 
-}
-CObstacle::Furniture CObstacle::GetType() 
+int CObstacle::GetWidth()
 {
-	return type; 
+	return width;
+}
+int CObstacle::GetHeight()
+{
+	return height;
+}
+char CObstacle::GetSymbol()
+{
+	return symbol;
+}
+CObstacle::Furniture CObstacle::GetType()
+{
+	return type;
 }
 void CObstacle::SetItemPtr(CItem* i) {
-	item = i; 
+	item = i;
 }
 CItem* CObstacle::GetItemPtr() {
-	return item; 
+	return item;
 }
 
-CObstacle::CObstacle() 
+CObstacle::CObstacle()
 {
 	dialougeidx = 0;
 	type = Table;
 	width = 0;
 	height = 0;
-	symbol = '\0'; //nullptr placeholder
+	symbol = '\0';
 	SetPosX(0);
 	SetPosY(0);
 }
