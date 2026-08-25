@@ -19,6 +19,7 @@ public:
         Divorce_Papers,
     };
     void SetEvidence(Evidence E);
+    Evidence getEvidence();
     string GetDialogue(int num);
     void placeEvidence(int x, int y);
     bool GetFound();
