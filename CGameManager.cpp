@@ -616,7 +616,7 @@ void CGameManager::SetMaps() {
 
     /*The Mansion Porch STORY ROOM 11*/
    {
-       map[11].SetRoom(15, 10, 0, 2);//mansion Porch STORY
+       map[11].SetRoom(20, 15, 0, 2);//mansion Porch STORY
        map[11].SetName("Mansion Porch");
         for (int y = 0; y < 14; y += 3)//  tree col
          {
