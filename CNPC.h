@@ -54,6 +54,7 @@ public:
 		Forensics,
 		Jonathan_Smith,
 		Silias_Reeds,
+		Police,
 		Narrator //added narrator
 	};
 
