@@ -87,6 +87,12 @@ void CObstacle::SetType(Furniture f)
 		IDialouge[1] = "You washed your hand";
 		IDialouge[2] = "The Sink briefly malfunctioned and sprays at you, you punched it";
 		break;
+	case Tape:
+		width = 1; height = 1; symbol = '|';
+		IDialouge[0] = "A Police Tape";
+		IDialouge[1] = "You tried to push your way through, the police shouted at you, you backed off";
+		IDialouge[2] = "You tried to push your way through again, you got entangled in the tape.";
+		break;
 	}
 
 }
