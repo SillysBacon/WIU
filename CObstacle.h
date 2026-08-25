@@ -35,6 +35,7 @@ public:
     void Rotate();
     int GetWidth();
     int GetHeight();
+    int GetEvidenceId(); //added this
     char GetSymbol();
     Furniture GetType();
     string GetNextDialouge();

@@ -128,6 +128,12 @@ void CMap::RenderMap() {
             case 'M':
                 cout << " M";
                 break;
+            case 'J':
+                cout << " J"; //added johnathan
+                break;
+            case 'F':
+                cout << " F"; //added Forensics
+                break;
             case 'B':
                 cout << " B";
                 break;

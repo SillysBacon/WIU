@@ -7,10 +7,10 @@ class CEvidence :
 public:
     enum Evidence {
         Brass_Candlestick,
-        Broken_Whiskey_Bottle,
+        Broken_Whiskey_Glass,
         Gunpowder_Ziploc,
         Suspicious_Glove,
-        BrokenWhiskey_Bottle_Report,
+        BrokenWhiskey_Glass_Report,
         Brass_Candlestick_Report,
         Suspicious_Glove_Report,
         Picture_of_Muddy_shoeprint,
@@ -38,7 +38,7 @@ private:
     string description;
     int id;
     int length;
-    string Dialogue[5];
+    string Dialogue[10];
     Evidence type;
     string name;
     bool found;

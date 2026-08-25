@@ -124,6 +124,10 @@ string CObstacle::GetEvidenceName(CEvidence::Evidence e) {
 	return name;
 }
 
+int CObstacle::GetEvidenceId() {
+	return EvidenceIdx.GetId();
+}
+
 void CObstacle::Rotate()
 {
 	int temp = width;
