@@ -36,6 +36,20 @@ class CGameManager
 	vector<vector<CObstacle*>> mapObstacles;
 	vector<vector<NPC*>> mapNPCs;
 	CObstacle* Obstacle[MAX_OBSTACLE];
+	CObstacle* EvidencePtr1;
+	CObstacle* EvidencePtr2;
+	CObstacle* EvidencePtr3;
+	CObstacle* EvidencePtr4;
+	CObstacle* EvidencePtr5;
+	CObstacle* EvidencePtr6;
+	CObstacle* EvidencePtr7;
+	CObstacle* EvidencePtr8;
+	CObstacle* EvidencePtr9;
+	CObstacle* EvidencePtr10;
+	CObstacle* EvidencePtr11;
+	CObstacle* ObstacleInteract;
+	CEvidence Evidence;
+	CGameManager* evidence = nullptr;
 	int item = 1;
 	CItem Items;
 	vector<CItem*> allItems;
@@ -71,6 +85,11 @@ public:
 	bool IsMapUnlocked(int mapIndex);
 	void PlayIntroDialogue(int mapIndex);
 	void RemoveRoom(int mapIndex);
+	int GetDialogue_Length(CEvidence::Evidence e);
+	//string runDialogue(CEvidence::Evidence e, int num);
+	void checkForAllEvidence();
+	void checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e);
+	CGameManager* GetEvidencePtr();
 
 
 	CGameManager();

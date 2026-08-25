@@ -29,6 +29,8 @@ class CcaseFileSystem
 	bool isCFSOpen = false;
 	string notes[5][100] = {{"No notes currently...", ""}, {"No notes currently...", ""}, {"No notes currently...", ""}, {"No notes currently...", ""}, 
 	{ "No notes currently...", "" } };
+	string documentDescription;
+	string evidenceDescription;
 	int currentNotes[5] = {1, 1, 1, 1, 1};
 
 public:
@@ -43,6 +45,7 @@ public:
 	void showFiles(char input);
 	bool getCFSState();
 	void addNotes();
+	void addDescription(string words);
 
 };
 

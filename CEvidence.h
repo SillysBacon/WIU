@@ -26,14 +26,17 @@ public:
     void SetFound(bool find);
     void SetName(string namegive);
     string GetName();
-    void createEvidence();
     int GetDialogueLength();
     int GetLength();
+    int GetId();
+    string GetDescription();
     CEvidence(string Name);
     CEvidence();
 
 private:
-    
+
+    string description;
+    int id;
     int length;
     string Dialogue[5];
     Evidence type;
@@ -41,4 +44,3 @@ private:
     bool found;
 
 };
-
