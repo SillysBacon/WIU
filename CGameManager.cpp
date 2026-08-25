@@ -120,17 +120,9 @@ int CGameManager::GetDialogue_Length(CEvidence::Evidence e) {
 
 void CGameManager::checkForAllEvidence(CObstacle* oPtr)
 {
-    checkForEvidence(oPtr, EvidencePtr1, CEvidence::Brass_Candlestick);
-    checkForEvidence(oPtr, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
-    checkForEvidence(oPtr, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
-    checkForEvidence(oPtr, EvidencePtr4, CEvidence::Suspicious_Glove);
-    checkForEvidence(oPtr, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
-    checkForEvidence(oPtr, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
-    checkForEvidence(oPtr, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
-    checkForEvidence(oPtr, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
-    checkForEvidence(oPtr, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
-    checkForEvidence(oPtr, EvidencePtr10, CEvidence::Bank_Statement);
-    checkForEvidence(oPtr, EvidencePtr11, CEvidence::Divorce_Papers);
+    for (int i = 0; i < MAX_EVIDENCE; i++) {
+        checkForEvidence(oPtr, Evidenceptr[i], static_cast<CEvidence::Evidence>(i));
+    }
 }
 
 // CGameManager.cpp
@@ -387,7 +379,7 @@ void CGameManager::SetMaps() {
         AddObstacle(0, CObstacle::Long_Shelf, 0, 0, 0)->SetDialogue(0, "a picture of you and Silas at the play ground..... why? well why not");
         CObstacle* carKey = AddObstacle(0, CObstacle::Long_Shelf, 7, 0, 0);
         /*HERE IS BRANDON EVIDENCE V*/
-        EvidencePtr6 = AddObstacle(0, CObstacle::Table, 8, 2, 1);
+        Evidenceptr[CEvidence::Brass_Candlestick_Report] = AddObstacle(0, CObstacle::Table, 8, 2, 1);
         AddObstacle(0, CObstacle::Table, 2, 2, 1)->SetDialogue(0, "you find a twenty that Silas left on the table as you look around before pocketing it");
         CObstacle* jacket = AddObstacle(0, CObstacle::Sofa, 7, 5, 0);
         AddObstacle(0, CObstacle::Sofa, 2, 5, 0)->SetDialogue(0, "its messy from all the times you slept here like your homeless... oh wait you are");
@@ -416,7 +408,7 @@ void CGameManager::SetMaps() {
        AddObstacle(1, CObstacle::Table, 0, 7, 1);
        AddObstacle(1, CObstacle::Flower, 0, 3, 1)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(1, CObstacle::Flower, 7, 0, 1)->SetDialogue(0, "Did you know? Tulips were once more valuable than gold");
-       EvidencePtr8 = AddObstacle(1, CObstacle::Door, 0, 0, 0);
+       Evidenceptr[CEvidence::Picture_of_Muddy_shoeprint] = AddObstacle(1, CObstacle::Door, 0, 0, 0);
        AddObstacle(1, CObstacle::Door, 4, 9, 0)->SetDialogue(0, "Door to the garden");
        AddObstacle(1, CObstacle::Window, 6, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
        AddObstacle(1, CObstacle::Window, 7, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
@@ -985,12 +977,12 @@ void CGameManager::changeMaps(char input)
 
         }
         else if (ObstacleInteract != nullptr) {
-            bool isEvidenceTile = (ObstacleInteract == EvidencePtr1 || ObstacleInteract == EvidencePtr2 ||
-                ObstacleInteract == EvidencePtr3 || ObstacleInteract == EvidencePtr4 ||
-                ObstacleInteract == EvidencePtr5 || ObstacleInteract == EvidencePtr6 ||
-                ObstacleInteract == EvidencePtr7 || ObstacleInteract == EvidencePtr8 ||
-                ObstacleInteract == EvidencePtr9 || ObstacleInteract == EvidencePtr10 ||
-                ObstacleInteract == EvidencePtr11);
+            bool isEvidenceTile = false;
+            for (int i = 0; i < MAX_EVIDENCE; i++) {
+                if (ObstacleInteract == Evidenceptr[i]) {
+                    isEvidenceTile = true; break;
+                }
+            }
 
             if (isEvidenceTile) {
                 checkForAllEvidence(ObstacleInteract);
