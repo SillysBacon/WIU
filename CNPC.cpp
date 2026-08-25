@@ -93,7 +93,7 @@ NPC::People NPC::getPerson()
 vector<int> NPC::GetVisibleOptions(const DialogueNode& node) {
 	vector<int> visible;
 	for (int i = 0; i < (int)node.options.size(); i++) {
-		if (node.options[i].Eventflag == Eventstate) {
+		if (node.options[i].Eventflag <= Eventstate) {
 			visible.push_back(i);
 		}
 	}
