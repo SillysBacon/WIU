@@ -66,6 +66,7 @@ class CGameManager
 	NPC* Silas = new NPC;
 	vector<bool> mapVisited;
 	vector<vector<pair<string, string>>> mapIntroDialogue;
+	vector<bool> mapRemoved;
 public:
 	int SelectDestination(vector<int>& options);
 	CObstacle* AddObstacle(int mapIndex, CObstacle::Furniture type, int x, int y, bool rotation);
