@@ -54,7 +54,7 @@ NPC* CGameManager::FindNPC(int mapIndex, int x, int y) {
 }
 CItem* CGameManager::addItems(CObstacle* obstacle, CItem::Items type) {
     CItem* newItem = new CItem();
-    newItem->SetItem(obstacle, type); // sets type, dialogue, and position
+    newItem->SetItem(obstacle, type);
     obstacle->SetItemPtr(newItem);
     allItems.push_back(newItem);
     return newItem;
@@ -62,15 +62,11 @@ CItem* CGameManager::addItems(CObstacle* obstacle, CItem::Items type) {
 
 void CGameManager::RemoveRoom(int mapIndex) {
     if (mapIndex < 0 || mapIndex >= MAX_MAPS) return;
-    if (mapRemoved[mapIndex]) return; // already removed, avoid double-free
-
-    // Free obstacles that belonged to this room
+    if (mapRemoved[mapIndex]) return;
     for (CObstacle* o : mapObstacles[mapIndex]) {
         delete o;
     }
     mapObstacles[mapIndex].clear();
-
-    // Free NPCs that belonged to this room, and scrub dangling references
     for (NPC* n : mapNPCs[mapIndex]) {
         nodeItems.erase(
             std::remove_if(nodeItems.begin(), nodeItems.end(),
@@ -82,16 +78,11 @@ void CGameManager::RemoveRoom(int mapIndex) {
                 [n](const NodeFlags& r) { return r.npc == n; }),
             nodeFlags.end());
 
-        if (n == Silas) Silas = nullptr; // Silas is tracked separately too
-
+        if (n == Silas) Silas = nullptr;
         delete n;
     }
     mapNPCs[mapIndex].clear();
-
-    // Wipe the room's grid/name/player pos, but keep the CMap object/index alive
     map[mapIndex].DeleteRoom();
-
-    // Block travel to it from now on
     mapRemoved[mapIndex] = true;
 }
 
@@ -122,36 +113,30 @@ bool CGameManager::IsMapUnlocked(int mapIndex) {
     }
 }
 int CGameManager::GetDialogue_Length(CEvidence::Evidence e) {
-    //Evidence.SetEvidence(e);
+    Evidence.SetEvidence(e);
     int length = Evidence.GetLength();
     return length;
 }
 
-//string CGameManager::runDialogue(CEvidence::Evidence e, int num) {
-//    Evidence.SetEvidence(e);
-//    string text = Evidence.GetDialogue(num);
-//
-//    return text;
-//}
-
-void CGameManager::checkForAllEvidence()
+void CGameManager::checkForAllEvidence(CObstacle* oPtr)
 {
-    checkForEvidence(ObstacleInteract, EvidencePtr1, CEvidence::Brass_Candlestick);
-    checkForEvidence(ObstacleInteract, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
-    checkForEvidence(ObstacleInteract, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
-    checkForEvidence(ObstacleInteract, EvidencePtr4, CEvidence::Suspicious_Glove);
-    checkForEvidence(ObstacleInteract, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
-    checkForEvidence(ObstacleInteract, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
-    checkForEvidence(ObstacleInteract, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
-    checkForEvidence(ObstacleInteract, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
-    checkForEvidence(ObstacleInteract, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
-    checkForEvidence(ObstacleInteract, EvidencePtr10, CEvidence::Bank_Statement);
-    checkForEvidence(ObstacleInteract, EvidencePtr11, CEvidence::Divorce_Papers);
+    checkForEvidence(oPtr, EvidencePtr1, CEvidence::Brass_Candlestick);
+    checkForEvidence(oPtr, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
+    checkForEvidence(oPtr, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
+    checkForEvidence(oPtr, EvidencePtr4, CEvidence::Suspicious_Glove);
+    checkForEvidence(oPtr, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
+    checkForEvidence(oPtr, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
+    checkForEvidence(oPtr, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
+    checkForEvidence(oPtr, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
+    checkForEvidence(oPtr, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
+    checkForEvidence(oPtr, EvidencePtr10, CEvidence::Bank_Statement);
+    checkForEvidence(oPtr, EvidencePtr11, CEvidence::Divorce_Papers);
 }
 
-void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e)
+// CGameManager.cpp
+void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence::Evidence e)
 {
-    if (oPtr == ptr) {
+    if (oPtr != nullptr && oPtr == ptr) {
         Evidence.SetEvidence(e);
         for (int i = 0; i < GetDialogue_Length(e); i++) {
             displayDialogue("game", oPtr->runDialogue(e, i));
@@ -160,6 +145,7 @@ void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::
         caseFileSystem.addEvidence(e);
         caseFileSystem.addDescription(Evidence.GetDescription());
         Evidence.SetFound(true);
+        ptr = nullptr; // consume it so it can't be picked up twice
     }
 }
 
@@ -999,54 +985,42 @@ void CGameManager::changeMaps(char input)
 
         }
         else if (ObstacleInteract != nullptr) {
-            CItem* foundItem = ObstacleInteract->GetItemPtr();
-            if (foundItem != nullptr) {
-                inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId());
-                displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
-                ObstacleInteract->SetItemPtr(nullptr);
+            bool isEvidenceTile = (ObstacleInteract == EvidencePtr1 || ObstacleInteract == EvidencePtr2 ||
+                ObstacleInteract == EvidencePtr3 || ObstacleInteract == EvidencePtr4 ||
+                ObstacleInteract == EvidencePtr5 || ObstacleInteract == EvidencePtr6 ||
+                ObstacleInteract == EvidencePtr7 || ObstacleInteract == EvidencePtr8 ||
+                ObstacleInteract == EvidencePtr9 || ObstacleInteract == EvidencePtr10 ||
+                ObstacleInteract == EvidencePtr11);
 
-                switch (foundItem->GetId()) {
-                case 1001:
-                    NotebookisFound = true;
-                    break;
-                case 1002:
-                    CarKeysisFound = true;
-                    break;
-                case 1003:
-                    jacketisFound = true;
-                    break;
-                }
-                if (NotebookisFound && CarKeysisFound && jacketisFound) {
-                    Silas->Addeventflag();
-                }
-                if (ObstacleInteract == EvidencePtr1 || ObstacleInteract == EvidencePtr2 ||
-                    ObstacleInteract == EvidencePtr3 || ObstacleInteract == EvidencePtr4 ||
-                    ObstacleInteract == EvidencePtr5 || ObstacleInteract == EvidencePtr6 ||
-                    ObstacleInteract == EvidencePtr7 || ObstacleInteract == EvidencePtr8 ||
-                    ObstacleInteract == EvidencePtr9 || ObstacleInteract == EvidencePtr10 ||
-                    ObstacleInteract == EvidencePtr11) {
-                    if (Evidence.GetFound() == false) {
-                        //checkForAllEvidence();
-
-                        checkForEvidence(ObstacleInteract, EvidencePtr1, CEvidence::Brass_Candlestick);
-                        checkForEvidence(ObstacleInteract, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
-                        checkForEvidence(ObstacleInteract, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
-                        checkForEvidence(ObstacleInteract, EvidencePtr4, CEvidence::Suspicious_Glove);
-                        checkForEvidence(ObstacleInteract, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
-                        checkForEvidence(ObstacleInteract, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
-                        checkForEvidence(ObstacleInteract, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
-                        checkForEvidence(ObstacleInteract, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
-                        checkForEvidence(ObstacleInteract, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
-                        checkForEvidence(ObstacleInteract, EvidencePtr10, CEvidence::Bank_Statement);
-                        checkForEvidence(ObstacleInteract, EvidencePtr11, CEvidence::Divorce_Papers);
-
-                    }
-                }
+            if (isEvidenceTile) {
+                checkForAllEvidence(ObstacleInteract);
             }
             else {
-                displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
+                CItem* foundItem = ObstacleInteract->GetItemPtr();
+                if (foundItem != nullptr) {
+                    inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId());
+                    displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
+                    ObstacleInteract->SetItemPtr(nullptr);
+                    switch (foundItem->GetId()) {
+                    case 1001:
+                        NotebookisFound = true;
+                        break;
+                    case 1002:
+                        CarKeysisFound = true;
+                        break;
+                    case 1003:
+                        jacketisFound = true;
+                        break;
+                    }
+                    if (NotebookisFound && CarKeysisFound && jacketisFound) {
+                        Silas->Addeventflag();
+                    }
+                }
+                else {
+                    displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
+                }
             }
-        }
+            }
         else {
             displayDialogue("Silas", "theres nothing there... might be losing it pal");
         }
