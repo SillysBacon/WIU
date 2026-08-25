@@ -71,23 +71,18 @@ void NPC::setPerson(People p) {
 	case Silias_Reeds:
 		name = "Silias Reeds";
 		symbol = '$';
-		age = 9;
+		age = 10;
 		occupation = "";
 		killerStatus = false;
 		break;
 	case Narrator: //added narrator
 		name = "Narrator";
 		symbol = 'n';
-		age = 10;
+		age = 11;
 		occupation = "";
 		killerStatus = false;
 		break;
 	}
-}
-
-NPC::People NPC::getPerson()
-{
-	return person;
 }
 
 vector<int> NPC::GetVisibleOptions(const DialogueNode& node) {
@@ -145,18 +140,6 @@ string NPC::getOccupation() {
 
 bool NPC::getKillerStatus() {
 	return killerStatus;
-}
-
-bool NPC::isSuspect()
-{
-	switch(person){
-	case Emily_Smith:
-	case Sarah_Collins:
-	case Michael_Turner:
-	case Trisha_Lopez:
-		return true;
-	}
-	return false;
 }
 
 string NPC::getDialogue() {

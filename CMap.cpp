@@ -161,6 +161,7 @@ void CMap::SetRoom(int map_size_x, int map_size_y, int playerSpawnX, int playerS
     SetPlayerPOS(playerSpawnX, playerSpawnY);
 	SetPosition();
 }
+
 void CMap::DeleteRoom() {
     for (int i = 0; i < MAP_SIZE_X; i++) {
         for (int j = 0; j < MAP_SIZE_Y; j++) {
