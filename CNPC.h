@@ -59,13 +59,11 @@ public:
 	};
 
 	void setPerson(People p);
-	People getPerson();
 	string getName();
 	char getSymbol();
 	int getAge();
 	string getOccupation();
 	bool getKillerStatus();
-	bool isSuspect();
 	string getDialogue();
 	string setDialogue(string text);
 	int getCurrentNode();//for items

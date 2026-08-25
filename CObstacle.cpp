@@ -95,6 +95,7 @@ void CObstacle::SetType(Furniture f)
 		break;
 	}
 
+
 }
 string CObstacle::GetNextDialouge() {
 	if (dialougeidx < 0) dialougeidx = 0;
@@ -110,21 +111,6 @@ void CObstacle::SetDialogue(int index, const string text) {
 		IDialouge[index] = text;
 	}
 }
-
-string CObstacle::runDialogue(CEvidence::Evidence e, int num) {
-	EvidenceIdx.SetEvidence(e);
-	string text = EvidenceIdx.GetDialogue(num);
-
-	return text;
-}
-
-string CObstacle::GetEvidenceName(CEvidence::Evidence e) {
-	EvidenceIdx.SetEvidence(e);
-	string name = EvidenceIdx.GetName();
-	return name;
-}
-
-
 
 void CObstacle::Rotate() 
 {

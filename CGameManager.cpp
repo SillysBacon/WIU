@@ -96,6 +96,7 @@ void CGameManager::RemoveRoom(int mapIndex) {
 }
 
 bool CGameManager::IsMapUnlocked(int mapIndex) {
+    if (mapRemoved[mapIndex]) return false;
     switch (mapIndex) {
     case 3: // Master Bedroom
         return IsBedroomkeyPresent;
@@ -134,44 +135,9 @@ void CGameManager::PlayIntroDialogue(int mapIndex) {
     }
 }
 
-int CGameManager::GetDialogue_Length(CEvidence::Evidence e) {
-    //Evidence.SetEvidence(e);
-    int length = Evidence.GetLength();
-    return length;
-}
-
-//string CGameManager::runDialogue(CEvidence::Evidence e, int num) {
-//    Evidence.SetEvidence(e);
-//    string text = Evidence.GetDialogue(num);
-//
-//    return text;
-//}
-
-void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e)
-{
-    if (oPtr == ptr) {
-        Evidence.SetEvidence(e);
-        for (int i = 0; i < GetDialogue_Length(e); i++) {
-            displayDialogue("game", oPtr->runDialogue(e, i));
-        }
-        inventory->addToInventory(oPtr->GetEvidenceName(e), 9);
-        Evidence.SetFound(true);
-    }
-}
-
-CGameManager* CGameManager::GetEvidencePtr()
-{
-    return evidence;
-}
-
-//CEvidence* CGameManager::GetEvidencePtr()
-//{
-//    return evidence;
-//}
-
-
 void CGameManager::SetMaps() {
 
+    mapRemoved.resize(MAX_MAPS, false);
     mapVisited.resize(MAX_MAPS, false);
     mapIntroDialogue.resize(MAX_MAPS);
     mapVisited[0] = true;
@@ -184,6 +150,7 @@ void CGameManager::SetMaps() {
     narrator->setPerson(NPC::Narrator); //Narrator for dialogue
 
     mapNPCs.resize(MAX_MAPS);
+
 
 
     /*---- Mr SIlas Reed ----*/
@@ -202,16 +169,16 @@ void CGameManager::SetMaps() {
     Silas->AddNodeOption(nSR0_4, 0, nSR0_5, "I see, where is it?");
     Silas->AddNodeOption(nSR0_5, 0, nSR0_6, "Willow's Creek? Mansion? could be the Smiths? the Collins? or the Addams?");
     Silas->AddNodeOption(nSR0_6, 0, nSR0_1, "hmmm");
-    
+
     Silas->AddNodeOption(nSR0_1, 1, nSR0_7, "aight let's go, we finally getting something good hehehe.");
     Silas->AddNodeOption(nSR0_7, 1, -1, "...");
-    
+
     Silas->AddNodeOption(nSR0_1, 0, -1, "Nevermind");
     nodeFlags.push_back({ Silas, nSR0_7, &IsMansionAvailable });
     nodeFlags.push_back({ Silas, nSR0_7, &CanTravel });
 
     
-        ///* Mrs Emily Smith */
+    /*---- Mrs Emily Smith ----*/
     ///* Event 1 (First Interaction) */
     NPC* emily = AddNPC(1, NPC::Emily_Smith, 7, 4);
 
@@ -264,7 +231,7 @@ void CGameManager::SetMaps() {
 
 
 
-    /* Mrs Sarah Collins */
+    /*---- Mrs Sarah Collins ----*/
      NPC* sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
     
      int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
@@ -289,29 +256,30 @@ void CGameManager::SetMaps() {
      sarah->SetEvidenceRequest(n0, 1001, nE1_correct, nE1_wrong);
      sarah->AddNodeOption(nE1_correct, 0, -1, "...");
      sarah->AddNodeOption(nE1_wrong, 0, -1, "...");
-    
+
+
 
      /*---- Mr Michael Turner -----*/
      NPC* michael = AddNPC(5, NPC::Michael_Turner, 10, 8);
-    
+
      int nM1_1 = michael->AddDialougeNode("Hey...");
      int nM1_2 = michael->AddDialougeNode("Yes, I am. W-Well I would say i'm more of the founder and he is the Co Founder.");
      int nM1_3 = michael->AddDialougeNode("Claim? CLAIM? It's a fact, Detective. The maid saw me leave, ask her yourself.");
      int nM1_4 = michael->AddDialougeNode("Michael points to the direction of the kitchen, where the maid is.", narrator->getName());
-    
+
      michael->AddNodeOption(nM1_1, 0, nM1_2, "You are Mr Turner right? You're the business partner of Mr Smith?");
      michael->AddNodeOption(nM1_1, 0, -1, "Never mind");
-    
+
      michael->AddNodeOption(nM1_2, 0, nM1_3, "Right... It says here, you claim you left the Smith mansion at 16:15pm. Correct?");
-    
+
      michael->AddNodeOption(nM1_3, 0, nM1_4, "...");
-    
+
      michael->AddNodeOption(nM1_4, 0, -1, "... Ok, we will.");
-    
-    
-    
+
+
+
      /*---- Detective Batista ----*/
-    
+
     NPC* batista1 = AddNPC(11, NPC::Angelo_Batista, 6, 7);
     int nB1_1 = batista1->AddDialougeNode("It's a closed-room murder, domestic. The owner of this mansion, Mr. Jonathan Smith...");
     int nB1_2 = batista1->AddDialougeNode("...was found dead, El Pobre has a deep wound to the back of the neck");
@@ -319,11 +287,11 @@ void CGameManager::SetMaps() {
     batista1->AddNodeOption(nB1_1, 0, nB1_2, "...");
     batista1->AddNodeOption(nB1_2, 0, nB1_3, "...");
     batista1->AddNodeOption(nB1_3, 0, -1, "...");
-    
+
     NPC* batista2 = AddNPC(6, NPC::Angelo_Batista, 3, 1);
     int nB2_1 = batista2->AddDialougeNode("Take a look around see if you find anything...");
     batista2->AddNodeOption(nB2_1, 0, -1, "Got it...");
-    
+
     int nB3_1 = batista2->AddDialougeNode("Done?");
     int nB3_2 = batista2->AddDialougeNode("From what I've gathered, four people had contact with Mr. Smith around the time of death...");
     int nB3_3 = batista2->AddDialougeNode("...His wife, Emily Smith; his business partner, Michael Turner; his maid, Trisha Lopez; and the neighbour, Sarah Collins");
@@ -334,25 +302,49 @@ void CGameManager::SetMaps() {
     batista2->AddNodeOption(nB3_3, 1, nB3_4, "...");
     batista2->AddNodeOption(nB3_4, 1, nB3_5, "Thanks");
     batista2->AddNodeOption(nB3_4, 1, -1, "...");
-    
-    
+
+
+
+
+
+
 
     
      NPC* police = AddNPC(11, NPC::Police, 3, 3);
      int nP1 = police->AddDialougeNode("Keep it moving...");
      police->AddNodeOption(nP1, 0, -1, "...");
-    
+
      NPC* police2 = AddNPC(11, NPC::Police, 5, 7);
      int nP2 = police2->AddDialougeNode("Keep it moving man");
      police2->AddNodeOption(nP2, 0, -1, "...");
-    
+
      NPC* police3 = AddNPC(11, NPC::Police, 4, 10);
      int nP3 = police3->AddDialougeNode("Just keeping a look out");
      police3->AddNodeOption(nP3, 0, -1, "...");
-    
+
      NPC* police4 = AddNPC(11, NPC::Police, 10, 7);
      int nP4 = police4->AddDialougeNode("Just keeping a look out");
      police4->AddNodeOption(nP4, 0, -1, "...");
+
+
+     NPC* police5 = AddNPC(13, NPC::Police, 3, 3);
+     int nP5 = police5->AddDialougeNode("Keep it moving...");
+     police5->AddNodeOption(nP5, 0, -1, "...");
+
+     NPC* police6 = AddNPC(13, NPC::Police, 5, 7);
+     int nP6 = police6->AddDialougeNode("Keep it moving man");
+     police6->AddNodeOption(nP6, 0, -1, "...");
+
+     NPC* police7 = AddNPC(13, NPC::Police, 4, 10);
+     int nP7 = police7->AddDialougeNode("Just keeping a look out");
+     police7->AddNodeOption(nP7, 0, -1, "...");
+
+     NPC* police8 = AddNPC(13, NPC::Police, 10, 7);
+     int nP8 = police8->AddDialougeNode("Just keeping a look out");
+     police8->AddNodeOption(nP8, 0, -1, "...");
+
+
+
 
        /*ROOMS AND MAPS*/
 
@@ -362,7 +354,7 @@ void CGameManager::SetMaps() {
         map[0].SetName("Detective Black's Office");
         AddObstacle(0, CObstacle::Long_Shelf, 0, 0, 0)->SetDialogue(0, "a picture of you and Silas at the play ground..... why? well why not");
         CObstacle* carKey = AddObstacle(0, CObstacle::Long_Shelf, 7, 0, 0);
-        EvidencePtr1 = AddObstacle(0, CObstacle::Table, 8, 2, 1);
+        AddObstacle(0, CObstacle::Table, 8, 2, 1);
         AddObstacle(0, CObstacle::Table, 2, 2, 1)->SetDialogue(0, "you find a twenty that Silas left on the table as you look around before pocketing it");
         CObstacle* jacket = AddObstacle(0, CObstacle::Sofa, 7, 5, 0);
         AddObstacle(0, CObstacle::Sofa, 2, 5, 0)->SetDialogue(0, "its messy from all the times you slept here like your homeless... oh wait you are");
@@ -372,6 +364,8 @@ void CGameManager::SetMaps() {
         addItems(notebook, CItem::NOTEBOOK);
         addItems(jacket, CItem::JACKET);
         addItems(carKey, CItem::CAR_KEY);
+
+
    }
 
    /*The Mansion's Living room ROOM 1*/
@@ -493,9 +487,9 @@ void CGameManager::SetMaps() {
        AddObstacle(5, CObstacle::Window, 0, 3, 0)->SetDialogue(0, "A window with a stunning view to the living room sofa...");
    }
 
-   /*The Mansion study room ROOM 6*/
+   /*The Mansion study room story ROOM 6*/
    {
-       map[6].SetRoom(6, 7, 2, 0);//Mansion study room
+       map[6].SetRoom(6, 7, 2, 0);//Mansion study room STORY
        map[6].SetName("The Mansion's Study room");
        AddObstacle(6, CObstacle::Door, 3, 0, 0);
        AddObstacle(6, CObstacle::Chair, 5, 5, 0);
@@ -614,52 +608,52 @@ void CGameManager::SetMaps() {
        AddObstacle(10, CObstacle::Window, 6, 0, 0);
    }
 
-    /*The Mansion Porch STORY ROOM 11*/
+
    {
        map[11].SetRoom(20, 15, 0, 2);//mansion Porch STORY
        map[11].SetName("Mansion Porch");
-        for (int y = 0; y < 14; y += 3)//  tree col
-         {
-             AddObstacle(11, CObstacle::Tree, 5, y, 0);
-         }
-        
-         for (int y = 1; y < 3; y++)//  cordon1
-         {
-             AddObstacle(11, CObstacle::Tape, 5, y, 0);
-         }
-         for (int y = 4; y < 6; y++)//  cordon2
-         {
-             AddObstacle(11, CObstacle::Tape, 5, y, 0);
-         }
-         for (int y = 10; y < 12; y++)//  cordon3
-         {
-             AddObstacle(11, CObstacle::Tape, 5, y, 0);
-         }
-         for (int y = 13; y < 15; y++)//  cordon4
-         {
-             AddObstacle(11, CObstacle::Tape, 5, y, 0);
-         }
-        
-         for (int y = 0; y < 6; y++)// top flower bed
-         {
-             for (int x = 7; x < 19; x++)
-             {
-                 AddObstacle(11, CObstacle::Flower, x, y, 0);
-             }
-         }
-        
-         for (int y = 9; y < 15; y++)// bottom flower bed
-         {
-             for (int x = 7; x < 19; x++)
-             {
-                 AddObstacle(11, CObstacle::Flower, x, y, 0);
-             }
-         }
-        
-         AddObstacle(11, CObstacle::Door, 19, 7, 0);
+       for (int y = 0; y < 14; y += 3)//  tree col
+       {
+           AddObstacle(11, CObstacle::Tree, 5, y, 0);
+       }
+
+       for (int y = 1; y < 3; y++)//  cordon1
+       {
+           AddObstacle(11, CObstacle::Tape, 5, y, 0);
+       }
+       for (int y = 4; y < 6; y++)//  cordon2
+       {
+           AddObstacle(11, CObstacle::Tape, 5, y, 0);
+       }
+       for (int y = 10; y < 12; y++)//  cordon3
+       {
+           AddObstacle(11, CObstacle::Tape, 5, y, 0);
+       }
+       for (int y = 13; y < 15; y++)//  cordon4
+       {
+           AddObstacle(11, CObstacle::Tape, 5, y, 0);
+       }
+
+       for (int y = 0; y < 6; y++)// top flower bed
+       {
+           for (int x = 7; x < 19; x++)
+           {
+               AddObstacle(11, CObstacle::Flower, x, y, 0);
+           }
+       }
+
+       for (int y = 9; y < 15; y++)// bottom flower bed
+       {
+           for (int x = 7; x < 19; x++)
+           {
+               AddObstacle(11, CObstacle::Flower, x, y, 0);
+           }
+       }
+
+       AddObstacle(11, CObstacle::Door, 19, 7, 0);
 
        mapIntroDialogue[11] = {
-            {"Narrator", "Black and reed arrive at the crime scene"},
+            {"Narrator", "Black and reed arrive at the crime screne"},
             {"Narrator", "They can see multiple officers cordoning off the area."},
             {"Silas", "Rich people, huh. Bet the maid dusts more than we make in a month."},
             {"Silas", "Maybe we can sneak a bit of loot out"},
@@ -677,67 +671,71 @@ void CGameManager::SetMaps() {
 
    }
 
+
    /*The Collin's Porch ROOM 12*/
    {
        map[12].SetRoom(15, 10, 2, 0);//collin Porch
        map[12].SetName("Collin Porch");
+
    }
 
-     /*The Main mansion Porch ROOM 13*/
- {
-     map[13].SetRoom(20, 15, 0, 2);// Main mansion Porch
-     map[13].SetName("Mansion Porch");
-     for (int y = 0; y < 14; y += 3)//  tree col
-     {
-         AddObstacle(11, CObstacle::Tree, 5, y, 0);
-     }
 
-     for (int y = 1; y < 3; y++)//  cordon1
-     {
-         AddObstacle(11, CObstacle::Tape, 5, y, 0);
-     }
-     for (int y = 4; y < 6; y++)//  cordon2
-     {
-         AddObstacle(11, CObstacle::Tape, 5, y, 0);
-     }
-     for (int y = 10; y < 12; y++)//  cordon3
-     {
-         AddObstacle(11, CObstacle::Tape, 5, y, 0);
-     }
-     for (int y = 13; y < 15; y++)//  cordon4
-     {
-         AddObstacle(11, CObstacle::Tape, 5, y, 0);
-     }
+   /*The Main mansion Porch ROOM 13*/
+   {
+       map[13].SetRoom(20, 15, 0, 2);// Main mansion Porch
+       map[13].SetName("Mansion Porch");
+       for (int y = 0; y < 14; y += 3)//  tree col
+       {
+           AddObstacle(13, CObstacle::Tree, 5, y, 0);
+       }
 
-     for (int y = 0; y < 6; y++)// top flower bed
-     {
-         for (int x = 7; x < 19; x++)
-         {
-             AddObstacle(11, CObstacle::Flower, x, y, 0);
-         }
-     }
+       for (int y = 1; y < 3; y++)//  cordon1
+       {
+           AddObstacle(13, CObstacle::Tape, 5, y, 0);
+       }
+       for (int y = 4; y < 6; y++)//  cordon2
+       {
+           AddObstacle(13, CObstacle::Tape, 5, y, 0);
+       }
+       for (int y = 10; y < 12; y++)//  cordon3
+       {
+           AddObstacle(13, CObstacle::Tape, 5, y, 0);
+       }
+       for (int y = 13; y < 15; y++)//  cordon4
+       {
+           AddObstacle(13, CObstacle::Tape, 5, y, 0);
+       }
 
-     for (int y = 9; y < 15; y++)// bottom flower bed
-     {
-         for (int x = 7; x < 19; x++)
-         {
-             AddObstacle(11, CObstacle::Flower, x, y, 0);
-         }
-     }
+       for (int y = 0; y < 6; y++)// top flower bed
+       {
+           for (int x = 7; x < 19; x++)
+           {
+               AddObstacle(13, CObstacle::Flower, x, y, 0);
+           }
+       }
 
-     AddObstacle(11, CObstacle::Door, 19, 7, 0);
- }
+       for (int y = 9; y < 15; y++)// bottom flower bed
+       {
+           for (int x = 7; x < 19; x++)
+           {
+               AddObstacle(13, CObstacle::Flower, x, y, 0);
+           }
+       }
 
- /*The Main Mansion study room  ROOM 14*/
- {
-     map[14].SetRoom(6, 7, 2, 0);//Mansion study room 
-     map[14].SetName("The Mansion's Study room");
-     AddObstacle(6, CObstacle::Door, 3, 0, 0);
-     AddObstacle(6, CObstacle::Chair, 5, 5, 0);
-     AddObstacle(6, CObstacle::Table, 3, 4, 1);
-     AddObstacle(6, CObstacle::Long_Shelf, 0, 3, 1);
-     AddObstacle(6, CObstacle::Small_Shelf, 0, 0, 0);
- }
+       AddObstacle(13, CObstacle::Door, 19, 7, 0);
+   }
+
+   /*The Main Mansion study room  ROOM 14*/
+   {
+       map[14].SetRoom(6, 7, 2, 0);//Mansion study room 
+       map[14].SetName("The Mansion's Study room");
+       AddObstacle(14, CObstacle::Door, 3, 0, 0);
+       AddObstacle(14, CObstacle::Chair, 5, 5, 0);
+       AddObstacle(14, CObstacle::Table, 3, 4, 1);
+       AddObstacle(14, CObstacle::Long_Shelf, 0, 3, 1);
+       AddObstacle(14, CObstacle::Small_Shelf, 0, 0, 0);
+   }
+
 
 
 
@@ -801,6 +799,7 @@ void CGameManager::SetMaps() {
     Connect[12] = { 0, 8 };
     Connect[13] = { 0, 1 };
     Connect[14] = { 1, 2, 3, 4 };
+
 }
 int CGameManager::SelectDestination(vector<int>& options) {
     int pos = 0;
@@ -940,11 +939,6 @@ void CGameManager::changeMaps(char input)
         CObstacle* ObstacleInteract = FindObstacle(currentMap, tx, ty);
 
         if (NPCInteract != nullptr) {
-            if (NPCInteract->isSuspect() == true) {
-                caseFileSystem.addSuspect(NPCInteract->getPerson());
-            }
-
-            
             NPCInteract->dialougesystem(&map[currentMap],inventory);
             checkNodeItems(NPCInteract);
             checkNodeFlags(NPCInteract);
@@ -958,7 +952,7 @@ void CGameManager::changeMaps(char input)
             CItem* foundItem = ObstacleInteract->GetItemPtr();
             if (foundItem != nullptr) {
                 inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId());
-                displayDialogue("game", ObstacleInteract->GetNextDialouge());
+                displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
                 ObstacleInteract->SetItemPtr(nullptr);
 
                 switch (foundItem->GetId()) {
@@ -977,21 +971,8 @@ void CGameManager::changeMaps(char input)
                 }
 
             }
-            if (Evidence.GetFound() == false) {
-                checkForEvidence(ObstacleInteract, EvidencePtr1, CEvidence::Brass_Candlestick);
-                checkForEvidence(ObstacleInteract, EvidencePtr2, CEvidence::Broken_Whiskey_Bottle);
-                checkForEvidence(ObstacleInteract, EvidencePtr3, CEvidence::Gunpowder_Ziploc);
-                checkForEvidence(ObstacleInteract, EvidencePtr4, CEvidence::Suspicious_Glove);
-                checkForEvidence(ObstacleInteract, EvidencePtr5, CEvidence::BrokenWhiskey_Bottle_Report);
-                checkForEvidence(ObstacleInteract, EvidencePtr6, CEvidence::Brass_Candlestick_Report);
-                checkForEvidence(ObstacleInteract, EvidencePtr7, CEvidence::Suspicious_Glove_Report);
-                checkForEvidence(ObstacleInteract, EvidencePtr8, CEvidence::Picture_of_Muddy_shoeprint);
-                checkForEvidence(ObstacleInteract, EvidencePtr9, CEvidence::Shoebox_of_property_Photos);
-                checkForEvidence(ObstacleInteract, EvidencePtr10, CEvidence::Bank_Statement);
-                checkForEvidence(ObstacleInteract, EvidencePtr11, CEvidence::Divorce_Papers);
-            }
             else {
-                displayDialogue("game", ObstacleInteract->GetNextDialouge());
+                displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
             }
         }
         else {
@@ -1028,11 +1009,11 @@ void CGameManager::displayDialogue(string c, string t) {
 }
 
 void CGameManager::TestDialogue() {
-    displayDialogue("Game", "It's Thursday night, 18:34. Detective Black sits in his office, smoking a cigar. A knock sounds at the door.");
+    displayDialogue("Narrator", "It's Thursday night, 18:34. Detective Black sits in his office, smoking a cigar. A knock sounds at the door.");
     displayDialogue("Black", "Come in.");
-    displayDialogue("Game", "He stubs out the cigar in the ashtray as the door opens.");
-    displayDialogue("Game", "In comes a tall, leanly built man, hair side-parted, a visible eye bag under each eye.");
-    displayDialogue("Game", "It's Silas Reed, Black's partner and assistant.");
+    displayDialogue("Narrator", "He stubs out the cigar in the ashtray as the door opens.");
+    displayDialogue("Narrator", "In comes a tall, leanly built man, hair side-parted, a visible eye bag under each eye.");
+    displayDialogue("Narrator", "It's Silas Reed, Black's partner and assistant.");
     displayDialogue("Silas", "We just got a call");
     displayDialogue("Silas", "Sounds like a murder down in Willow's Creek. We're up.");
 }

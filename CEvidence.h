@@ -19,22 +19,20 @@ public:
         Divorce_Papers,
     };
     void SetEvidence(Evidence E);
-    Evidence getEvidence();
     string GetDialogue(int num);
     void placeEvidence(int x, int y);
     bool GetFound();
     void SetFound(bool find);
     void SetName(string namegive);
     string GetName();
+    void createEvidence();
     int GetDialogueLength();
     int GetLength();
-	int GetId();
     CEvidence(string Name);
     CEvidence();
 
 private:
     
-    int id;
     int length;
     string Dialogue[5];
     Evidence type;

@@ -24,7 +24,7 @@ class CGameManager
 	void checkNodeFlags(NPC* npc);
 
 	int static const MAX_MAPS = 15;
-	static const int MAX_OBSTACLE = 100;
+	static const int MAX_OBSTACLE = 200;
 	CMap map[MAX_MAPS];
 	int currentMap;
 	int currentUI;
@@ -36,20 +36,6 @@ class CGameManager
 	vector<vector<CObstacle*>> mapObstacles;
 	vector<vector<NPC*>> mapNPCs;
 	CObstacle* Obstacle[MAX_OBSTACLE];
-	CObstacle* EvidencePtr1;
-	CObstacle* EvidencePtr2;
-	CObstacle* EvidencePtr3;
-	CObstacle* EvidencePtr4;
-	CObstacle* EvidencePtr5;
-	CObstacle* EvidencePtr6;
-	CObstacle* EvidencePtr7;
-	CObstacle* EvidencePtr8;
-	CObstacle* EvidencePtr9;
-	CObstacle* EvidencePtr10;
-	CObstacle* EvidencePtr11;
-	CObstacle* ObstacleInteract;
-	CEvidence Evidence;
-	CGameManager* evidence = nullptr;
 	int item = 1;
 	CItem Items;
 	vector<CItem*> allItems;
@@ -84,10 +70,6 @@ public:
 	CObstacle* FindObstacle(int mapIndex, int x, int y);
 	bool IsMapUnlocked(int mapIndex);
 	void PlayIntroDialogue(int mapIndex);
-	int GetDialogue_Length(CEvidence::Evidence e);
-	//string runDialogue(CEvidence::Evidence e, int num);
-	void checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e);
-	CGameManager* GetEvidencePtr();
 	void RemoveRoom(int mapIndex);
 
 
