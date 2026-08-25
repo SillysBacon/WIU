@@ -28,7 +28,8 @@ public:
         Bed,
         ToiletBowl,
         BathTub,
-        Sink
+        Sink,
+        Tape
     };
     void SetType(Furniture f);
     void Rotate();
