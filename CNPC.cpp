@@ -35,7 +35,7 @@ void NPC::setPerson(People p) {
 		break;
 	case Angelo_Batista:
 		name = "Angelo Batista";
-		symbol = 'A';
+		symbol = 'B';
 		age = 5;
 		occupation = "";
 		killerStatus = false;
@@ -58,6 +58,13 @@ void NPC::setPerson(People p) {
 		name = "Jonathan Smith";
 		symbol = 'J';
 		age = 8;
+		occupation = "";
+		killerStatus = false;
+		break;
+	case Police:
+		name = "Police";
+		symbol = 'P';
+		age = 9;
 		occupation = "";
 		killerStatus = false;
 		break;
