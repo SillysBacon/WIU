@@ -29,6 +29,7 @@ public:
 	std::string GetName() const;
 	void Movement(char input);
 	char GetMap();
+	void DeleteRoom();
 	CPlayer* GetPlayer();
 	void SetObstacle(int width, int height, char symbol, int x, int y);
 	void SetNPC(char symbol, int x, int y);
