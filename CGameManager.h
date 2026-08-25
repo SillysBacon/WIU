@@ -60,6 +60,8 @@ class CGameManager
 	bool IsMansionAvailable = false;
 	bool IsCollinAvailable = false;
 	bool IsProsecutorAvailable = false;
+	bool IsMainPorchAvailable = false;
+	bool IsMainStudyAvailable = false;
 	bool CanTravel = false;
 	NPC* Silas = new NPC;
 	vector<bool> mapVisited;
