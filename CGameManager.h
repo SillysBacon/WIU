@@ -83,6 +83,7 @@ public:
 	//string runDialogue(CEvidence::Evidence e, int num);
 	void checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e);
 	CGameManager* GetEvidencePtr();
+	void RemoveRoom(int mapIndex);
 
 
 	CGameManager();
