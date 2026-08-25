@@ -70,7 +70,7 @@ void NPC::setPerson(People p) {
 		break;
 	case Silias_Reeds:
 		name = "Silias Reeds";
-		symbol = 's';
+		symbol = '$';
 		age = 9;
 		occupation = "";
 		killerStatus = false;
