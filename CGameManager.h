@@ -54,11 +54,24 @@ class CGameManager
 	bool IsMainPorchAvailable = false;
 	bool IsMainStudyAvailable = false;
 	bool CanTravel = false;
+	bool CanTravel2 = false; //added this
+	
+	/*Has talk to*/
 	bool hasTalkToSilas = false;
+	bool hasTalkToBatista = false;
+
+	/*Has found Evidence*/
+	bool candlestickFound = false;
+	bool whiskeyGlassFound = false;
+	bool gunpowderFound = false;
+
+	/*Has found item*/
 	bool NotebookisFound = false;
 	bool CarKeysisFound = false;
 	bool jacketisFound = false;
+
 	NPC* Silas = new NPC;
+	NPC* batista2 = nullptr; //added this
 	vector<bool> mapVisited;
 	vector<vector<pair<string, string>>> mapIntroDialogue;
 	vector<bool> mapRemoved;
