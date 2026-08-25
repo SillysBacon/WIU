@@ -25,6 +25,7 @@ public:
 	void RenderMap();
 	void SetMAP_SIZE(int size_x, int size_y);
 	void SetRoom(int map_size_x, int map_size_y, int playerSpawnX, int playerSpawnY);
+	void DeleteRoom();
 	void SetName(const std::string& n);
 	std::string GetName() const;
 	void Movement(char input);
