@@ -87,8 +87,8 @@ public:
 	void RemoveRoom(int mapIndex);
 	int GetDialogue_Length(CEvidence::Evidence e);
 	//string runDialogue(CEvidence::Evidence e, int num);
-	void checkForAllEvidence();
-	void checkForEvidence(CObstacle* oPtr, CObstacle* ptr, CEvidence::Evidence e);
+	void checkForAllEvidence(CObstacle* oPtr);
+	void checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence::Evidence e);
 	CGameManager* GetEvidencePtr();
 
 
