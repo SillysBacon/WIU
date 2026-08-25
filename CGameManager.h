@@ -23,7 +23,7 @@ class CGameManager
 	vector<NodeFlags> nodeFlags;
 	void checkNodeFlags(NPC* npc);
 
-	int static const MAX_MAPS = 13;
+	int static const MAX_MAPS = 15;
 	static const int MAX_OBSTACLE = 100;
 	CMap map[MAX_MAPS];
 	int currentMap;
