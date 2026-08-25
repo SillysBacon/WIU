@@ -961,9 +961,18 @@ void CGameManager::changeMaps(char input)
                 displayDialogue("game", ObstacleInteract->GetNextDialouge());
                 ObstacleInteract->SetItemPtr(nullptr);
 
-                if (foundItem->GetId() == 1001 ||
-                    foundItem->GetId() == 1002 ||
-                    foundItem->GetId() == 1003) {
+                switch (foundItem->GetId()) {
+                case 1001:
+                    NotebookisFound = true;
+                    break;
+                case 1002:
+                    CarKeysisFound = true;
+                    break;
+                case 1003:
+                    jacketisFound = true;
+                    break;
+                }
+                if (NotebookisFound && CarKeysisFound && jacketisFound) {
                     Silas->Addeventflag();
                 }
 
