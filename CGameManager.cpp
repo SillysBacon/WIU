@@ -939,6 +939,9 @@ void CGameManager::changeMaps(char input)
         CObstacle* ObstacleInteract = FindObstacle(currentMap, tx, ty);
 
         if (NPCInteract != nullptr) {
+            if (NPCInteract->isSuspect() == true) {
+                caseFileSystem.addSuspect(NPCInteract->getPerson());
+            }
             NPCInteract->dialougesystem(&map[currentMap],inventory);
             checkNodeItems(NPCInteract);
             checkNodeFlags(NPCInteract);
