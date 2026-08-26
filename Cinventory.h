@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include "CUI.h";
+#include "CUI.h"
 using namespace std;
 
 class inventorySystem
