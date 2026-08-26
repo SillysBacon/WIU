@@ -34,7 +34,7 @@ void CItem::SetType(Items I) {
 		break;
 	case CODE_NOTE:
 		ItemName = "Note with a Code";
-		ItemDialouge = "You found a note with the code -6767-";
+		ItemDialouge = "You found a note with the code -180905-";
 		Id = 1008;
 		break;
 	}

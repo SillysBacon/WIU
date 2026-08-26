@@ -5,6 +5,7 @@
 #include "CNPC.h"
 #include "CUI.h"
 #include "CObstacle.h"
+#include "CPuzzleSystem.h" 
 #include "CItem.h"
 #include <vector>
 class CGameManager
@@ -66,6 +67,7 @@ class CGameManager
 	bool hasTalkToSilas = false;
 	bool hasTalkToBatista = false;
 	bool hasFoundEvidenceForEmily = false;
+	bool hasShownEmilyEvi1 = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;

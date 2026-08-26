@@ -283,8 +283,9 @@ void CGameManager::SetMaps() {
 
     emily->AddNodeOption(nE1_correct, 2, nE2_correct, "Then what's this?");
     emily->AddNodeOption(nE2_correct, 2, nE3_correct, "...");
-    emily->AddNodeOption(nE3_correct, 2, nE4_correct, "...");
+    emily->AddNodeOption(nE3_correct, 2, nE4_correct, "* sigh *");
     emily->AddNodeOption(nE4_correct, 2, -1, "...");
+    nodeFlags.push_back({ emily, nE4_correct, &hasShownEmilyEvi1 });
 
     emily->AddNodeOption(nE1_avoid, 2, nE3_5, "...");
 
@@ -292,6 +293,52 @@ void CGameManager::SetMaps() {
 
 
     emily->SetEventStartNode(2, nE3_1);
+
+
+    /* Event 4 (Evidence presenting 2) */
+
+    int nE4_1 = emily->AddDialougeNode("...");
+    int nE4_2 = emily->AddDialougeNode("We can't write you off the suspect list if you lie to us again, Mrs. Smith,", Silas->getName());
+    int nE4_3 = emily->AddDialougeNode("Emily wraps her arms around herself, eyes fixed on the envelope.", narrator->getName());
+    int nE4_4 = emily->AddDialougeNode("Money...It started with money.");
+    int nE4_5 = emily->AddDialougeNode("Jonathan started pulling cash out of our accounts months ago. Large amounts.When I asked, he'd brush it off");
+    int nE4_6 = emily->AddDialougeNode("'business expenses' he'd say. Never any details...We used to talk about everything.");
+    int nE4_7 = emily->AddDialougeNode("Then suddenly I'm finding out about our own finances from bank statements he thought I wasn't looking at.");
+    int nE4_8 = emily->AddDialougeNode("No. I asked. He got angry every time I brought it up...angrier than I'd ever seen him over money before. ");
+    int nE4_9 = emily->AddDialougeNode("That's when I did the divorce paper. Not because I stopped loving him. Because I didn't know who he was anymore. ");
+    /*correfct*/
+    int nE1_correct2 = emily->AddDialougeNode("Black pulls out the statement, laying it beside the envelope.", narrator->getName());
+    int nE2_correct2 = emily->AddDialougeNode("Yes. Exactly like that. Over and over, no explanation.");
+    int nE3_correct2 = emily->AddDialougeNode("No...");
+    int nE4_correct2 = emily->AddDialougeNode("But if I had to guess... I'd start with Michael , his business partner.");
+    /*Wrong*/
+    int nE1_wrong2 = emily->AddDialougeNode("Don't think that matters in this situation...", Silas->getName());
+
+    emily->AddNodeOption(nE4_1, 3, nE4_2, "Tell me what the issue was between you and Mr. Smith,");
+    emily->AddNodeOption(nE4_1, 3, -1, "Never mind.");
+
+    emily->AddNodeOption(nE4_2, 3, nE4_3, "...");
+    emily->AddNodeOption(nE4_3, 3, nE4_4, "...");
+    emily->AddNodeOption(nE4_4, 3, nE4_5, "Go On");
+    emily->AddNodeOption(nE4_6, 3, nE4_6, "...");
+    emily->AddNodeOption(nE4_5, 3, nE4_7, "...");
+    emily->AddNodeOption(nE4_7, 3, nE4_8, "Did you ever find out where the money was going?");
+    emily->AddNodeOption(nE4_8, 3, nE4_9, "...");
+
+    emily->AddNodeOption(nE4_9, 3, NPC::PRESENT_EVIDENCE, "[Present Evidence?]");
+    emily->SetEvidenceRequest(nE4_9, 3010, nE1_correct2, nE1_wrong2);
+    emily->AddNodeOption(nE4_9, 3, -1, "I see...");
+
+
+    emily->AddNodeOption(nE1_correct2, 3, nE2_correct, "This is the kind of withdrawal you mean?");
+    emily->AddNodeOption(nE2_correct2, 3, nE3_correct, "Any idea who he might've been paying?");
+    emily->AddNodeOption(nE3_correct2, 3, nE4_correct, "...");
+    emily->AddNodeOption(nE4_correct2, 3, -1, "Thank you...");
+
+    emily->AddNodeOption(nE1_wrong2, 3, nE4_5, "Whoops");
+
+
+    emily->SetEventStartNode(3, nE4_1);
 
     /*---- Mrs Sarah Collins ----*/
      sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
@@ -524,8 +571,8 @@ void CGameManager::SetMaps() {
    {
        map[3].SetRoom(10, 10, 0, 2);//Mansion master bedroom
        map[3].SetName("The Mansion's Master bedroom");
-       Evidenceptr[CEvidence::Bank_Statement] = AddObstacle(3, CObstacle::Table, 5, 0, 0);
-       AddObstacle(3, CObstacle::Long_Shelf, 9, 6, 1)->SetDialogue(0, "Just a shelf with personal belongings and picture");
+       AddObstacle(3, CObstacle::Table, 5, 0, 0);
+       CObstacle* note = AddObstacle(3, CObstacle::Long_Shelf, 9, 6, 1);
        AddObstacle(3, CObstacle::Long_Shelf, 0, 6, 1)->SetDialogue(0, "Just a shelf with personal belongings and picture");
        AddObstacle(3, CObstacle::Bed, 4, 7, 0)->SetDialogue(0, "A Queen-size Bed, Floral Blanket seems disturbed, seems like someone was lying down here before");
        Evidenceptr[CEvidence::Divorce_Papers] = AddObstacle(3, CObstacle::Desk, 6, 9, 0);
@@ -533,6 +580,7 @@ void CGameManager::SetMaps() {
        AddObstacle(3, CObstacle::Flower, 7, 0, 0)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(3, CObstacle::Flower, 4, 0, 0)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(3, CObstacle::Door, 0, 3, 0);
+       addItems(note, CItem::CODE_NOTE);
 
    }
 
@@ -611,8 +659,8 @@ void CGameManager::SetMaps() {
        AddObstacle(6, CObstacle::Door, 3, 0, 0);
        Evidenceptr[CEvidence::Gunpowder_Ziploc] = AddObstacle(6, CObstacle::Chair, 5, 5, 0);
        Evidenceptr[CEvidence::Broken_Whiskey_Glass] = AddObstacle(6, CObstacle::Table, 3, 4, 1);
-       AddObstacle(6, CObstacle::Long_Shelf, 0, 3, 1);
-       Evidenceptr[CEvidence::Brass_Candlestick] = AddObstacle(6, CObstacle::Small_Shelf, 0, 0, 0);
+       Evidenceptr[CEvidence::Brass_Candlestick] = AddObstacle(6, CObstacle::Long_Shelf, 0, 3, 1);
+       AddObstacle(6, CObstacle::Small_Shelf, 0, 0, 0);
 
        mapIntroDialogue[6] = {
          {"Batista", "Here he is. Dead. Cold. Ay, and a waste of good whiskey too,"},
@@ -857,7 +905,7 @@ void CGameManager::SetMaps() {
        AddObstacle(14, CObstacle::Chair, 5, 5, 0);
        AddObstacle(14, CObstacle::Table, 3, 4, 1);
        AddObstacle(14, CObstacle::Long_Shelf, 0, 3, 1);
-       AddObstacle(14, CObstacle::Small_Shelf, 0, 0, 0);
+       Evidenceptr[CEvidence::Bank_Statement] = AddObstacle(14, CObstacle::Small_Shelf, 0, 0, 0);
    }
 
 
@@ -1095,6 +1143,10 @@ void CGameManager::changeMaps(char input)
             NPCInteract->dialougesystem(&map[currentMap],inventory);
             checkNodeItems(NPCInteract);
             checkNodeFlags(NPCInteract);
+            if (hasShownEmilyEvi1) {
+                emily->Addeventflag();
+                hasShownEmilyEvi1 = false; // added this to make sure it dont add again
+            }
             map[currentMap].RenderMap();
 
 
@@ -1106,7 +1158,7 @@ void CGameManager::changeMaps(char input)
             int evidenceIndex = -1;
             for (int i = 0; i < MAX_EVIDENCE; i++) { // change this part too and added evidence index
                 if (ObstacleInteract == Evidenceptr[i]) {
-                    if (i == 0) {
+                    if (i == 9) {
                         puzzleSystem.setBool(true);
                         puzzleSystem.setPuzzle("lock");
                     }
@@ -1236,10 +1288,6 @@ void CGameManager::RunGame() {
             }
             continue;
         }
-        else if (puzzleSystem.getBool() == true) {
-            puzzleSystem.inputNum(input);
-            puzzleSystem.renderPuzzles();
-        }
 
         else if (input == 'i' && caseFileSystem.getCFSState() == false) {
             inventory->showInventory(input);
@@ -1261,6 +1309,11 @@ void CGameManager::RunGame() {
                 map[currentMap].RenderMap();
             }
             continue;
+        }
+
+        else if (puzzleSystem.getBool() == true) {
+            puzzleSystem.inputNum(input);
+            puzzleSystem.renderPuzzles();
         }
 
         else if (inventory->getInventoryState() == false) {
