@@ -129,17 +129,16 @@ void CcaseFileSystem::renderFiles() {
 void CcaseFileSystem::renderEvidenceFiles() {
 	CUI::GetInstance().Clear();
 	if (discoveredEvidence.empty()) {
-
 		cout << "#=============================#" << endl << endl;
 		cout << "No evidences collected yet" << endl << endl;
 		cout << "#=============================#";
-
 	}
 	else
 	{
 		cout << "             " << currentEvidenceFiles + 1 << " / " << discoveredEvidence.size() << endl;
 		cout << "#=============================#" << endl;
-		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl << "Description:" + evidenceDescription[currentEvidenceFiles] << endl;
+		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl
+			<< "Description:" << discoveredEvidence[currentEvidenceFiles].GetDescription() << endl;
 		cout << "#=============================#";
 	}
 }
@@ -217,7 +216,7 @@ bool CcaseFileSystem::getCFSState() {
 //void CcaseFileSystem::renderNotes() {
 //
 //}
-//
-//CcaseFileSystem::CcaseFileSystem() {
-//	addDocument();
-//}
+
+CcaseFileSystem::CcaseFileSystem() {
+	addDocument();
+}
