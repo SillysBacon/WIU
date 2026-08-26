@@ -25,9 +25,10 @@ void inventorySystem::showInventory(char input) {
 	}
 }
 
-void inventorySystem::addToInventory(string item, int id) {
+void inventorySystem::addToInventory(string item, int id, string invDialogue) {
 	inventorySpace[ItemCount] = item;
 	InventoryIDS[ItemCount] = id;
+	InventoryDialogues[ItemCount] = invDialogue;
 	ItemCount++;
 }
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
-#include "CUI.h";
+#include "CUI.h"
 using namespace std;
 
 class inventorySystem
@@ -14,14 +14,17 @@ class inventorySystem
 	int ItemCount = 0; //change 1 to 0
 	int itemPosition = 0;
 	bool isInventoryOpen = false;
+	string InventoryDialogues[20];
 public:
 	void renderInventory();
 	void showInventory(char input);
-	void addToInventory(string item, int id);
+	void addToInventory(string item, int id, string invDialogue = "");
 	void removeFromInventory(int index); //added this
 	void switchItem(int input);
 	bool getInventoryState();
 	int GetItemCount();
 	string GetInventory(int index);
 	int GetInventoryID(int index);
+	string GetInventoryDialogue(int index) { return InventoryDialogues[index]; }
+	int getItemPosition() { return itemPosition; }
 };

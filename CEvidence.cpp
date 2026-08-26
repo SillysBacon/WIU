@@ -109,14 +109,14 @@ void CEvidence::SetEvidence(Evidence E){
 		break;
 	case Divorce_Papers:
 		name = "Divorce Papers";
-		Dialogue[0] = "Silas looks inside the nightstand’s drawer";
+		Dialogue[0] = "Silas looks inside the nightstand's drawer";
 		Dialogue[1] = "Eh, just a bunch of cosmetics - he mutters.";
 		Dialogue[2] = "He reaches in to feel around. His hand brushes against something foreign...";
-		Dialogue[3] = "taped to	the underside of the drawer above.  He pulls out what seems to be an Envelope.";
+		Dialogue[3] = "taped to	the underside of the drawer above. He pulls out what seems to be an Envelope.";
 		Dialogue[4] = "Found something, Black. - said Silas";
 		Dialogue[5] = "Black opens it and finds an unsigned, unfiled divorce filing with Emily listed as the petitioner.";
-		Dialogue[6] = "She was planning to leave him,” Silas says.";
-		Dialogue[7] = "Looks like it - Black replies - But why didn’t she file?";
+		Dialogue[6] = "She was planning to leave him - Silas says.";
+		Dialogue[7] = "Looks like it - Black replies - But why didn't she file?";
 		Dialogue[8] = "(Divorce Papers added to your evidence inventory.)";
 		description = "yay";
 		length = 9;

@@ -19,6 +19,7 @@ public:
 private:
 	Items Item;
 	string ItemDialouge;
+	string InventoryDialogue;
 	string ItemName;
 	int Id;
 public:
@@ -27,6 +28,8 @@ public:
 	void SetType(Items I);
 	CItem();
 	string GetItemName();
+	string GetInventoryDialogue() { return InventoryDialogue; }
+	static string GetItemDialogueByType(Items type);
 	int GetId();
 };
 

@@ -133,7 +133,7 @@ void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence:
         for (int i = 0; i < GetDialogue_Length(e); i++) {
             displayDialogue("Narrator", oPtr->runDialogue(e, i)); //change to Narrator, added this
         }
-        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId()); //change 9 to getevidenceID
+        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), ""); //change 9 to getevidenceID
         caseFileSystem.addEvidence(e);
         caseFileSystem.addDescription(Evidence.GetDescription());
         Evidence.SetFound(true);
@@ -192,7 +192,7 @@ void CGameManager::SetMaps() {
     Silas->AddNodeOption(nSR0_3, 0, nSR0_4, "Aah, just a small bet nothing harmful. Anyways, why did he call?");
     Silas->AddNodeOption(nSR0_4, 0, nSR0_5, "I see, where is it?");
     Silas->AddNodeOption(nSR0_5, 0, nSR0_6, "Willow's Creek? Mansion? could be the Smiths? the Collins? or the Addams?");
-    Silas->AddNodeOption(nSR0_6, 0, nSR0_1, "hmmm");
+    Silas->AddNodeOption(nSR0_6, 0, -1, "Hmmm");
 
     Silas->AddNodeOption(nSR0_1, 1, nSR0_7, "aight let's go, we finally getting something good hehehe.");
     Silas->AddNodeOption(nSR0_7, 1, -1, "Let me grab my stuff first...");
@@ -330,42 +330,141 @@ void CGameManager::SetMaps() {
     emily->AddNodeOption(nE4_9, 3, -1, "I see...");
 
 
-    emily->AddNodeOption(nE1_correct2, 3, nE2_correct, "This is the kind of withdrawal you mean?");
-    emily->AddNodeOption(nE2_correct2, 3, nE3_correct, "Any idea who he might've been paying?");
-    emily->AddNodeOption(nE3_correct2, 3, nE4_correct, "...");
+    emily->AddNodeOption(nE1_correct2, 3, nE2_correct2, "This is the kind of withdrawal you mean?");
+    emily->AddNodeOption(nE2_correct2, 3, nE3_correct2, "Any idea who he might've been paying?");
+    emily->AddNodeOption(nE3_correct2, 3, nE4_correct2, "...");
     emily->AddNodeOption(nE4_correct2, 3, -1, "Thank you...");
+    nodeFlags.push_back({ emily, nE4_correct2, &hasFinishEmily });
 
-    emily->AddNodeOption(nE1_wrong2, 3, nE4_5, "Whoops");
+    emily->AddNodeOption(nE1_wrong2, 3, nE4_9, "Whoops");
 
 
     emily->SetEventStartNode(3, nE4_1);
 
+    /* Event 5 (Default from now on) */
+
+    int nE5_1 = emily->AddDialougeNode("Please just...leave me be...");
+    int nE5_2 = emily->AddDialougeNode("...");
+    /*correfct*/
+    int nE1_correct3 = emily->AddDialougeNode("Whats this?...Johnathan doesn't drink Whiskey tho, he despise it's taste.");
+    /*Wrong*/
+    int nE1_wrong3 = emily->AddDialougeNode("...What's this for?");
+
+    emily->AddNodeOption(nE5_1, 4, nE5_2, "...Sorry about this");
+    emily->AddNodeOption(nE5_1, 4, NPC::PRESENT_EVIDENCE, "[Present Evidence?]");
+    emily->SetEvidenceRequest(nE5_1, 3002, nE1_correct3, nE1_wrong3);
+    emily->SetEvidenceRequest(nE5_1, 3005, nE1_correct3, nE1_wrong3);
+    emily->AddNodeOption(nE5_1, 4, -1, "Never mind.");
+
+    emily->AddNodeOption(nE1_correct3, 4, -1, "Hmmm... interesting");
+ 
+
+    emily->AddNodeOption(nE1_wrong3, 4, -1, "Sorry");
+
+
+    emily->SetEventStartNode(4, nE5_1);
+
+
+
+
     /*---- Mrs Sarah Collins ----*/
+    /* Event 1 (first convo) */
      sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
     
-     int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
-     int n1 = sarah->AddDialougeNode("I was home alone, no alibi I'm afraid.");
-     int n2 = sarah->AddDialougeNode("Other than just being neighbours, not really...");
-     int n3 = sarah->AddDialougeNode("No... no one.");
+     int nS1_1 = sarah->AddDialougeNode("Sarah Seems to be deep in thought while trembling", narrator->getName());
+     int nS1_2 = sarah->AddDialougeNode("Huh? Err, y-yes,");
+     int nS1_3 = sarah->AddDialougeNode("I-I didn't know, I didn't know he was murdered. I was just baking bread, and all of a sudden police kn-");
+     int nS1_4 = sarah->AddDialougeNode("Black, let me handle this", Silas->getName());
+     int nS1_5 = sarah->AddDialougeNode("Take your time Sarah. Nobody thinks you did anything...", Silas->getName());
+     int nS1_6 = sarah->AddDialougeNode("We just need to understand what you saw", Silas->getName());
+     int nS1_7 = sarah->AddDialougeNode("O-Okay...");
+     int nS1_8 = sarah->AddDialougeNode("[How should Detective Black Reply]", narrator->getName());
 
-     sarah->AddNodeOption(n0, 0, n1, "Where were you last night?");
-     sarah->AddNodeOption(n0, 0, n2, "Did you know the victim?");
-     sarah->AddNodeOption(n0, 0, -1, "Never mind.");
+     sarah->AddNodeOption(nS1_1, 0, nS1_2, "Sarah Collins, right?");
+     sarah->AddNodeOption(nS1_1, 0, -1, "Never mind.");
 
-     sarah->AddNodeOption(n1, 0, n3, "Anyone who can confirm that?");
-     sarah->AddNodeOption(n1, 0, n0, "Back");
+     sarah->AddNodeOption(nS1_2, 0, nS1_3, "Can you explain why you were in Mr Smith's Property around the time of his murder?");
 
-     sarah->AddNodeOption(n2, 0, n0, "Back");
+     sarah->AddNodeOption(nS1_3, 0, nS1_4, "Calm down, Sarah, you are not answering my question");
 
-     sarah->AddNodeOption(n3, 0, -1, "...");
-     int nS1_correct = sarah->AddDialougeNode("...Oh god, that's Colin's watch. I- I don't know how you got that.");
-     int nS1_wrong = sarah->AddDialougeNode("That has nothing to do with anything.");
+     sarah->AddNodeOption(nS1_4, 0, nS1_5, "...fine");
 
-     sarah->AddNodeOption(n0, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
-     sarah->SetEvidenceRequest(n0, 1001, nS1_correct, nS1_wrong);
-     sarah->AddNodeOption(nS1_correct, 0, -1, "...");
-     sarah->AddNodeOption(nS1_wrong, 0, -1, "...");
+     sarah->AddNodeOption(nS1_5, 0, nS1_6, "...");
 
+     sarah->AddNodeOption(nS1_6, 0, nS1_7, "...");
+
+     sarah->AddNodeOption(nS1_7, 0, nS1_8, "...");
+
+     /*choice but same event*/
+
+     /*failed*/
+     int nS1_8w1 = sarah->AddDialougeNode("Sarah's face crumples, panic flooding back in.", narrator->getName());
+     int nS1_8w2 = sarah->AddDialougeNode("Not what we agreed on, Rowan...", Silas->getName());
+
+     /*pass*/
+     int nS1_9 = sarah->AddDialougeNode("Sarah nods slowly, some tension leaving her shoulders.", narrator->getName());
+     int nS1_10 = sarah->AddDialougeNode("I...I ran out of sugar. I was baking bread, so as neighbours...");
+     int nS1_11 = sarah->AddDialougeNode("I-I came over to borrow sugar from them...");
+     int nS1_12 = sarah->AddDialougeNode("I was knocking on their backdoor, i notice the back sliding door was ajar, so it wasnt lock...");
+     int nS1_13 = sarah->AddDialougeNode("..b-but of course it would be rude to just enter.");
+     int nS1_14 = sarah->AddDialougeNode("That's when i here quarreling, i got scared and went back");
+
+     sarah->AddNodeOption(nS1_8, 0, nS1_8w1, "You were seen leaving later than you're admitting. Why?");
+     sarah->AddNodeOption(nS1_8w1, 0, nS1_8w2, "...damn");
+     sarah->AddNodeOption(nS1_8w2, 0, nS1_8, "my bad... [retry]");
+
+     sarah->AddNodeOption(nS1_8, 0, nS1_9, "Just start from the beginning. What made you go over there that day?");
+     sarah->AddNodeOption(nS1_9, 0, nS1_10, "...");
+     sarah->AddNodeOption(nS1_10, 0, nS1_11, "...");
+     sarah->AddNodeOption(nS1_11, 0, nS1_12, "What happened when you got there?");
+     sarah->AddNodeOption(nS1_12, 0, nS1_13, "...");
+     sarah->AddNodeOption(nS1_13, 0, nS1_14, "...");
+     sarah->AddNodeOption(nS1_14, 0, -1, "...I see");
+     nodeFlags.push_back({ sarah, nS1_14, &hasTalkToSarah1 });
+
+
+
+     /* Event 2 (present evidence or go to house)*/
+     int nS2_1 = sarah->AddDialougeNode("...y-yes?");
+     int nS2_2 = sarah->AddDialougeNode("What, why?");
+     int nS2_3 = sarah->AddDialougeNode("Sarah paused for a second", narrator->getName());
+     int nS2_4 = sarah->AddDialougeNode("O-Okay, here");
+     nodeItems.push_back({ sarah, nS2_4, "Neighbour's House Key", CItem::NEIGHBOUR_HOUSE_KEY });
+
+     /* correct */
+     int nS2_correct1 = sarah->AddDialougeNode("Silas raises a picture of a muddy footprint", narrator->getName());
+     int nS2_correct2 = sarah->AddDialougeNode("Are you sure you went back home after hearing the quarrel?", Silas->getName());
+     int nS2_correct3 = sarah->AddDialougeNode("...");
+     int nS2_correct4 = sarah->AddDialougeNode("We found this mud shoe print of a Nike shoe, INSIDE of the house...", Silas->getName());
+     int nS2_correct5 = sarah->AddDialougeNode("...by the backdoor.", Silas->getName());
+     int nS2_correct6 = sarah->AddDialougeNode("Okay...I did enter, but only a few step to check on them");
+     int nS2_correct7 = sarah->AddDialougeNode("But the noise got louder, so i took off as i got scared");
+     int nS2_correct8 = sarah->AddDialougeNode("Black looks at Silas, He seems a little suspicious of the answer but satisfied for now...", narrator->getName());
+
+     /* wrong */
+     int nS2_wrong1 = sarah->AddDialougeNode("w-what is that?");
+
+     sarah->AddNodeOption(nS2_1, 1, nS2_2, "Sorry, but is it possible for me to check your house?");
+     sarah->AddNodeOption(nS2_1, 1, NPC::PRESENT_EVIDENCE, "[Present Evidence?]");
+     sarah->SetEvidenceRequest(nE3_5, 3008, nS2_correct1, nS2_wrong1);
+     sarah->AddNodeOption(nS2_1, 0, -1, "Never mind.");
+
+     sarah->AddNodeOption(nS2_2, 1, nS2_3, "We need to confirm your claims, if you are clear, we can cross your name off");
+     sarah->AddNodeOption(nS2_3, 1, nS2_4, "...");
+     sarah->AddNodeOption(nS2_4, 1, -1, "Thank you");
+
+     sarah->AddNodeOption(nS2_correct1, 1, nS2_correct2, "...");
+     sarah->AddNodeOption(nS2_correct2, 1, nS2_correct3, "...");
+     sarah->AddNodeOption(nS2_correct3, 1, nS2_correct4, "Come clean now, Sarah. Why were you inside.");
+     sarah->AddNodeOption(nS2_correct4, 1, nS2_correct5, "...");
+     sarah->AddNodeOption(nS2_correct5, 1, nS2_correct6, "...");
+     sarah->AddNodeOption(nS2_correct6, 1, nS2_correct7, "...");
+     sarah->AddNodeOption(nS2_correct7, 1, nS2_correct8, "...");
+     sarah->AddNodeOption(nS2_correct8, 1, -1, "...");
+
+
+
+     sarah->SetEventStartNode(1, nS2_1);
 
 
      /*---- Mr Michael Turner -----*/
@@ -542,8 +641,8 @@ void CGameManager::SetMaps() {
        AddObstacle(1, CObstacle::Table, 0, 7, 1);
        AddObstacle(1, CObstacle::Flower, 0, 3, 1)->SetDialogue(0, "A Potted Plant, Nothing much");
        AddObstacle(1, CObstacle::Flower, 7, 0, 1)->SetDialogue(0, "Did you know? Tulips were once more valuable than gold");
-       Evidenceptr[CEvidence::Picture_of_Muddy_shoeprint] = AddObstacle(1, CObstacle::Door, 0, 0, 0);
-       AddObstacle(1, CObstacle::Door, 4, 9, 0)->SetDialogue(0, "Door to the garden");
+       AddObstacle(1, CObstacle::Door, 0, 0, 0)->SetDialogue(0, "Door Back to the Porch");
+       Evidenceptr[CEvidence::Picture_of_Muddy_shoeprint] = AddObstacle(1, CObstacle::Door, 4, 9, 0);
        AddObstacle(1, CObstacle::Window, 6, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
        AddObstacle(1, CObstacle::Window, 7, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
        AddObstacle(1, CObstacle::Window, 8, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
@@ -1052,7 +1151,7 @@ void CGameManager::changeMaps(char input)
             return;
         }
         if (destination == 12 && !IsCollinAvailable) {
-            displayDialogue("Silas", "This room is locked, we need something to get in first.");
+            displayDialogue("Silas", "This House is locked, we need something to get in first.");
             return;
         }
 
@@ -1147,6 +1246,14 @@ void CGameManager::changeMaps(char input)
                 emily->Addeventflag();
                 hasShownEmilyEvi1 = false; // added this to make sure it dont add again
             }
+            if (hasFinishEmily) {
+                emily->Addeventflag();
+                hasFinishEmily = false; // added this to make sure it dont add again
+            }
+            if (hasTalkToSarah1) {
+                sarah->Addeventflag();
+                hasTalkToSarah1 = false; // added this to make sure it dont add again
+            }
             map[currentMap].RenderMap();
 
 
@@ -1202,7 +1309,7 @@ void CGameManager::changeMaps(char input)
             else {
                 CItem* foundItem = ObstacleInteract->GetItemPtr();
                 if (foundItem != nullptr) {
-                    inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId());
+                    inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId(), foundItem->GetInventoryDialogue());
                     displayDialogue("Narrator", ObstacleInteract->GetNextDialouge());
                     ObstacleInteract->SetItemPtr(nullptr);
                     switch (foundItem->GetId()) {
@@ -1246,10 +1353,17 @@ void CGameManager::checkNodeItems(NPC* npc) {
     for (int i = 0; i < (int)nodeItems.size(); i++) {
         NodeItems r = nodeItems[i];
         if (r.npc == npc && npc->getCurrentNode() == r.node) {
-            if (r.itemType == CItem::MASTER_BEDROOM_KEY && IsBedroomkeyPresent) { //just to check if the bedroomkey is present so player dont get alot
-                continue;
+            for (int j = 0; j < inventory->GetItemCount(); j++) {
+                if (inventory->GetInventoryID(j) == r.itemType) {
+                    itemExists = true;
+                    break;
+                }
             }
-            inventory->addToInventory(r.itemName, r.itemType);
+            if (itemExists) {
+                continue; // check of player alr has item
+            }
+            string dialogue = CItem::GetItemDialogueByType(r.itemType);
+            inventory->addToInventory(r.itemName, r.itemType, dialogue);
             if (r.itemType == CItem::MASTER_BEDROOM_KEY) {
                 IsBedroomkeyPresent = true;
             }
@@ -1326,8 +1440,20 @@ void CGameManager::RunGame() {
             }
         }
         else {
-            inventory->switchItem(input);
-            inventory->renderInventory();
+            if (input == 13) { // Enter key
+                if (inventory->GetItemCount() > 0) {
+                    int pos = inventory->getItemPosition();
+                    string dialogue = inventory->GetInventoryDialogue(pos);
+                    if (!dialogue.empty()) {
+                        displayDialogue("Narrator", dialogue);
+                    }
+                }
+                inventory->renderInventory();
+            }
+            else {
+                inventory->switchItem(input);
+                inventory->renderInventory();
+            }
         }
     }
 }

@@ -51,6 +51,7 @@ class CGameManager
 	void checkNodeItems(NPC* npc);
 	bool CanTravel = false;
 	bool CanTravel2 = false; //added this
+	bool itemExists = false;
 
 	/* is visible/present or unlocked */
 	bool IsBedroomkeyPresent = false;
@@ -68,6 +69,8 @@ class CGameManager
 	bool hasTalkToBatista = false;
 	bool hasFoundEvidenceForEmily = false;
 	bool hasShownEmilyEvi1 = false;
+	bool hasFinishEmily = false;
+	bool hasTalkToSarah1 = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;
