@@ -31,6 +31,7 @@ class CGameManager
 	bool IsGameRunning;
 	inventorySystem* inventory = new inventorySystem;
 	CcaseFileSystem caseFileSystem;
+	PuzzleSystem puzzleSystem;
 	NPC* NPCs;
 	vector<vector<int>> Connect;
 	vector<vector<CObstacle*>> mapObstacles;
