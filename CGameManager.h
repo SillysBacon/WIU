@@ -47,23 +47,31 @@ class CGameManager
 	CItem* addItems(CObstacle* obstacle, CItem::Items type);
 	vector<NodeItems> nodeItems;
 	void checkNodeItems(NPC* npc);
+	bool CanTravel = false;
+	bool CanTravel2 = false; //added this
+
+	/* is visible/present or unlocked */
 	bool IsBedroomkeyPresent = false;
 	bool IsMansionAvailable = false;
 	bool IsCollinAvailable = false;
 	bool IsProsecutorAvailable = false;
 	bool IsMainPorchAvailable = false;
 	bool IsMainStudyAvailable = false;
-	bool CanTravel = false;
-	bool CanTravel2 = false; //added this
+	bool IsCollinPorchVisible = false;
+	bool IsCaseFileUnlocked = false;
+
 	
-	/*Has talk to*/
+	/*Has interact to*/
 	bool hasTalkToSilas = false;
 	bool hasTalkToBatista = false;
+	bool hasFoundEvidenceForEmily = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;
 	bool whiskeyGlassFound = false;
 	bool gunpowderFound = false;
+	bool bankStatementFound = false;
+	bool divorcePapersFound = false;
 
 	/*Has found item*/
 	bool NotebookisFound = false;

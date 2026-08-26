@@ -211,20 +211,19 @@ void CGameManager::SetMaps() {
     int nE1_1 = emily->AddDialougeNode("...Yes?"); //nE1_1: n = "node", E = Emily, 1 = EventState, _1 = node number.
     int nE1_2 = emily->AddDialougeNode("Yes, I was in my room reading. My Maid, Trisha, ran in to told me about it. I-I couldn't believe it.");
     int nE1_3 = emily->AddDialougeNode("* Sobs *");
-    int nN1_4 = emily->AddDialougeNode("Emily sat back down on the couch", narrator->getName());
+    int nE1_4 = emily->AddDialougeNode("Emily sat back down on the couch", narrator->getName());
 
     emily->AddNodeOption(nE1_1, 0, nE1_2, "It says here, you were upstair reading during the time of murder correct?");
     emily->AddNodeOption(nE1_1, 0, -1, "Never mind.");
 
     emily->AddNodeOption(nE1_2, 0, nE1_3, "I See, Thanks for confirming");  // eventFlag = 1
 
-    emily->AddNodeOption(nE1_3, 0, nN1_4, "...?");
+    emily->AddNodeOption(nE1_3, 0, nE1_4, "...?");
 
-    emily->AddNodeOption(nN1_4, 0, -1, "...");
+    emily->AddNodeOption(nE1_4, 0, -1, "...");
 
 
     /* Event 2 (Need Masterbedroom key) */
-
 
 
     int nE2_1 = emily->AddDialougeNode("...Yes?");
@@ -250,7 +249,49 @@ void CGameManager::SetMaps() {
     emily->AddNodeOption(nE2_5, 1, nE2_6, "...");
     emily->AddNodeOption(nE2_6, 1, -1, "...");
 
+    emily->SetEventStartNode(1, nE2_1);
 
+    /* Event 3 (Evidence presenting 1) */
+
+
+    int nE3_1 = emily->AddDialougeNode("...Yes?");
+    int nE3_2 = emily->AddDialougeNode("Emily straigtens, composing herself", narrator->getName());
+    int nE3_3 = emily->AddDialougeNode("Our marriage was fine, Detective. We had our disagreements, like any couple...");
+    int nE3_4 = emily->AddDialougeNode("But nothing serious. Nothing that would make me want him gone, if that's what you're getting at.");
+    int nE3_5 = emily->AddDialougeNode("I don't know what you think you're going to find, but there's nothing there.");
+    /*correfct*/
+    int nE1_correct = emily->AddDialougeNode("Black sets the envelope down on the table between them.", narrator->getName());
+    int nE2_correct = emily->AddDialougeNode("Emily's eyes drop to it. The color drains from her face, and for a moment she says nothing at all.", narrator->getName());
+    int nE3_correct = emily->AddDialougeNode("...Where did you find that ?");
+    int nE4_correct = emily->AddDialougeNode("Okay.It wasn't- it wasn't fine. Not really.I just... didn't want it to be true.");
+    /*Wrong*/
+    int nE1_wrong = emily->AddDialougeNode("What's that? what does that have to do with me?");
+    /*Avoid*/
+    int nE1_avoid = emily->AddDialougeNode("We will show that later...", Silas->getName());
+
+    emily->AddNodeOption(nE3_1, 2, nE3_2, "Mrs. Smith...I have to ask. How was your marriage, really?");
+    emily->AddNodeOption(nE3_1, 2, -1, "Never mind.");
+
+    emily->AddNodeOption(nE3_2, 2, nE3_3, "...");
+    emily->AddNodeOption(nE3_3, 2, nE3_4, "...");
+    emily->AddNodeOption(nE3_4, 2, nE3_5, "...");
+
+    emily->AddNodeOption(nE3_5, 2, NPC::PRESENT_EVIDENCE, "LIE DETECTED! [Present Evidence]");
+    emily->SetEvidenceRequest(nE3_5, 3011, nE1_correct, nE1_wrong);
+    emily->SetEvidenceRequest(nE3_5, 3010, nE1_avoid, nE1_wrong);
+    emily->AddNodeOption(nE3_5, 2, -1, "Never mind.");
+
+    emily->AddNodeOption(nE1_correct, 2, nE2_correct, "Then what's this?");
+    emily->AddNodeOption(nE2_correct, 2, nE3_correct, "...");
+    emily->AddNodeOption(nE3_correct, 2, nE4_correct, "...");
+    emily->AddNodeOption(nE4_correct, 2, -1, "...");
+
+    emily->AddNodeOption(nE1_avoid, 2, nE3_5, "...");
+
+    emily->AddNodeOption(nE1_wrong, 2, nE3_5, "...");
+
+
+    emily->SetEventStartNode(2, nE3_1);
 
     /*---- Mrs Sarah Collins ----*/
      sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
@@ -270,13 +311,13 @@ void CGameManager::SetMaps() {
      sarah->AddNodeOption(n2, 0, n0, "Back");
 
      sarah->AddNodeOption(n3, 0, -1, "...");
-     int nE1_correct = sarah->AddDialougeNode("...Oh god, that's Colin's watch. I- I don't know how you got that.");
-     int nE1_wrong = sarah->AddDialougeNode("That has nothing to do with anything.");
+     int nS1_correct = sarah->AddDialougeNode("...Oh god, that's Colin's watch. I- I don't know how you got that.");
+     int nS1_wrong = sarah->AddDialougeNode("That has nothing to do with anything.");
 
      sarah->AddNodeOption(n0, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
-     sarah->SetEvidenceRequest(n0, 1001, nE1_correct, nE1_wrong);
-     sarah->AddNodeOption(nE1_correct, 0, -1, "...");
-     sarah->AddNodeOption(nE1_wrong, 0, -1, "...");
+     sarah->SetEvidenceRequest(n0, 1001, nS1_correct, nS1_wrong);
+     sarah->AddNodeOption(nS1_correct, 0, -1, "...");
+     sarah->AddNodeOption(nS1_wrong, 0, -1, "...");
 
 
 
@@ -327,7 +368,10 @@ void CGameManager::SetMaps() {
      batista2->AddNodeOption(nB3_3, 1, nB3_4, "...");
      batista2->AddNodeOption(nB3_4, 1, nB3_5, "Thanks");
      batista2->AddNodeOption(nB3_5, 1, -1, "...");
-     nodeFlags.push_back({ batista2, nB3_5, &hasTalkToBatista }); //added this
+     nodeFlags.push_back({ batista2, nB3_5, &hasTalkToBatista });//added this
+     nodeFlags.push_back({ batista2, nB3_5, &IsCollinPorchVisible });//added this
+     nodeFlags.push_back({ batista2, nB3_5, &IsCaseFileUnlocked });//added this
+     nodeFlags.push_back({ batista2, nB3_5, &IsProsecutorAvailable });//added this
 
      /* --Event 4 (in Kitchen) */
      NPC* batista3 = AddNPC(7, NPC::Angelo_Batista, 12, 4);
@@ -865,7 +909,7 @@ void CGameManager::SetMaps() {
 
     Connect.resize(15);
     Connect[0] = { 10, 12 ,11, 13};
-    Connect[1] = { 2, 3, 4, 5, 6, 7, 8, 10, 13, 14 };
+    Connect[1] = { 2, 3, 4, 5, 6, 7, 10, 13, 14 };
     Connect[2] = { 1 };
     Connect[3] = { 1, 2, 4, 14 };
     Connect[4] = { 1, 2, 3, 14 };
@@ -936,8 +980,13 @@ void CGameManager::changeMaps(char input)
         }
         vector<int> available;
         for (int m : Connect[currentMap]) {
-            if (m == 3 || m == 12) {
+            if (m == 3) {
                 available.push_back(m); // added this
+            }
+            else if (m == 12) {
+                if (IsCollinPorchVisible) {
+                    available.push_back(m); // added this too
+                }
             }
             else if (IsMapUnlocked(m)) {
                 available.push_back(m);
@@ -948,7 +997,7 @@ void CGameManager::changeMaps(char input)
         if (destination == 3 && !IsBedroomkeyPresent) {
             displayDialogue("Silas", "This room is locked, we need something to get in first.");
             displayDialogue("Black", "Let's talk to Mrs Smith for this.");
-            if (emily->getCurrentNode() == 0)
+            if (emily->getCurrentEvent() == 0)
             {
                 emily->Addeventflag();
             }
@@ -1076,10 +1125,22 @@ void CGameManager::changeMaps(char input)
                 case 3003:
                     gunpowderFound = true;
                     break;
+                case 3010:
+                    bankStatementFound = true;
+                    break;
+                case 3011:
+                    divorcePapersFound = true;
+                    break;
                 }
-                if (candlestickFound && whiskeyGlassFound && gunpowderFound) {
+                if (candlestickFound && whiskeyGlassFound && gunpowderFound) 
+                {
                     CanTravel2 = true;
                     batista2->Addeventflag();
+                }
+                if (bankStatementFound && divorcePapersFound) 
+                {
+                    hasFoundEvidenceForEmily = true;
+                    emily->Addeventflag();
                 }
             }
             else {
@@ -1129,6 +1190,9 @@ void CGameManager::checkNodeItems(NPC* npc) {
     for (int i = 0; i < (int)nodeItems.size(); i++) {
         NodeItems r = nodeItems[i];
         if (r.npc == npc && npc->getCurrentNode() == r.node) {
+            if (r.itemType == CItem::MASTER_BEDROOM_KEY && IsBedroomkeyPresent) { //just to check if the bedroomkey is present so player dont get alot
+                continue;
+            }
             inventory->addToInventory(r.itemName, r.itemType);
             if (r.itemType == CItem::MASTER_BEDROOM_KEY) {
                 IsBedroomkeyPresent = true;
@@ -1178,8 +1242,14 @@ void CGameManager::RunGame() {
         }
 
         else if (input == 'c' && inventory->getInventoryState() == false) {
-            caseFileSystem.showFiles(input);
-            if (!caseFileSystem.getCFSState()) {
+            if (!IsCaseFileUnlocked)
+            {
+                displayDialogue("Game", "You have not unlock this feature yet...");
+                continue;
+            }
+            caseFileSystem.showFiles(input); //added this
+            if (!caseFileSystem.getCFSState())
+            {
                 map[currentMap].RenderMap();
             }
             continue;

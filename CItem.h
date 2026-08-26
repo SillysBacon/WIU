@@ -11,10 +11,10 @@ public:
 		NOTEBOOK,
 		CAR_KEY,
 		JACKET,
-		SAFE_KEY,
 		MASTER_BEDROOM_KEY,
 		NEIGHBOUR_HOUSE_KEY,
-		CIGARS
+		CIGARS,
+		CODE_NOTE
 	};
 private:
 	Items Item;

@@ -36,9 +36,10 @@ class NPC :
 	int PresentPosition = 0;
 	bool isPresentEvidenceOpen = false;
 	bool evidenceCorrect = false;
+	int matchedIndex = -1; // added this
 	struct IsEvidenceCorrect {
 		vector<int> ExpectedIDs; //turned this to a list
-		int CorrectNode;
+		vector<int> CorrectNode; //same for this
 		int incorrectNode;
 	};
 	unordered_map<int, IsEvidenceCorrect> evidenceRequests;
@@ -69,6 +70,7 @@ public:
 	string getDialogue();
 	string setDialogue(string text);
 	int getCurrentNode();//for items
+	int getCurrentEvent();//for items
 
 	void ResetDialogueTree();
 	void RenderDialougeSystem(bool typetext, CMap* map);
@@ -85,6 +87,7 @@ public:
 	static const int PRESENT_EVIDENCE = -2;
 
 	void SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode);
+	void SetEventStartNode(int eventState, int nodeIndex); //added this
 	NPC();
 
 	struct EvidenceCheck {
@@ -95,6 +98,7 @@ public:
 private:
 
 	People person;
+	vector<int> eventStartNodes; //for storingg the cur event starting node
 
 };
 

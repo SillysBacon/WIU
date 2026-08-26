@@ -17,11 +17,6 @@ void CItem::SetType(Items I) {
 		ItemDialouge = "You found Detective Black's Jacket";
 		Id = 1003;
 		break;
-	case SAFE_KEY:
-		ItemName = "";
-		ItemDialouge = "";
-		Id = 1004;
-		break;
 	case MASTER_BEDROOM_KEY:
 		ItemName = "Master Bedroom Key";
 		ItemDialouge = "";
@@ -36,6 +31,11 @@ void CItem::SetType(Items I) {
 		ItemName = "Cigar";
 		ItemDialouge = "You found a box of cigars, you sneakily took one out and put it in your pocket";
 		Id = 1007;
+		break;
+	case CODE_NOTE:
+		ItemName = "Note with a Code";
+		ItemDialouge = "You found a note with the code -6767-";
+		Id = 1008;
 		break;
 	}
 }

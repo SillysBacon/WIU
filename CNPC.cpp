@@ -190,7 +190,12 @@ void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
 	}
 }
 void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
-	currentNode = 0;
+	if (Eventstate >= 0 && Eventstate < (int)eventStartNodes.size() && eventStartNodes[Eventstate] != -1) {
+		currentNode = eventStartNodes[Eventstate];
+	}
+	else {
+		currentNode = 0;
+	}
 	selectedOption = 0;
 	int lastnode = -1;
 	bool talking = true;
@@ -244,12 +249,12 @@ void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 						presentEvidence(inventory, expectedIDs, (char)evInput);
 					}
 				}
-
-				if (it != evidenceRequests.end()) {
-					if (evidenceCorrect) {
-						currentNode = it->second.CorrectNode;
-						if (person == Forensics) {                          // <-- added this
-							inventory->removeFromInventory(PresentPosition); // <-- added this
+				 
+				if (it != evidenceRequests.end()) { //change and added these
+					if (evidenceCorrect && matchedIndex >= 0 && matchedIndex < (int)it->second.CorrectNode.size()) {
+						currentNode = it->second.CorrectNode[matchedIndex];
+						if (person == Forensics) {
+							inventory->removeFromInventory(PresentPosition);
 						}
 					}
 					else {
@@ -281,12 +286,14 @@ int NPC::getCurrentNode() {
 	return currentNode;
 }
 
+int NPC::getCurrentEvent() { //added this to get event
+	return Eventstate;
+}
+
 void NPC::SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode) {
-	//IsEvidenceCorrect check;
 	evidenceRequests[nodeIndex].ExpectedIDs.push_back(expectedItemID);
-	evidenceRequests[nodeIndex].CorrectNode = correctNode;
+	evidenceRequests[nodeIndex].CorrectNode.push_back(correctNode);
 	evidenceRequests[nodeIndex].incorrectNode = incorrectNode;
-	//evidenceRequests[nodeIndex] = check;
 }
 
 void NPC::RenderPresentEvidence(inventorySystem* Inventory) {
@@ -322,19 +329,17 @@ void NPC::presentEvidence(inventorySystem* Inventory, vector<int>& ids, char inp
 		SwitchEvidence(input, Inventory);
 	}
 	else if (input == 13) {
+		matchedIndex = -1;
 		if (Inventory->GetItemCount() > 0) {
 			int chosenID = Inventory->GetInventoryID(PresentPosition);
-			evidenceCorrect = false; // changed this whole function
-			for (int expected : ids) {
-				if (chosenID == expected) {
-					evidenceCorrect = true;
+			for (int i = 0; i < (int)ids.size(); i++) {
+				if (chosenID == ids[i]) {
+					matchedIndex = i;
 					break;
 				}
 			}
 		}
-		else {
-			evidenceCorrect = false;
-		}
+		evidenceCorrect = (matchedIndex != -1);
 		isPresentEvidenceOpen = false;
 	}
 	else if (input == 27) {
@@ -355,7 +360,7 @@ bool NPC::GetisPresentOpen() {
 
 NPC::NPC() {
 	ResetDialogueTree();
-	int Eventstate = 0;
+	Eventstate = 0;
 	person = Sarah_Collins;
 	name = "";
 	symbol = '\0';
@@ -364,4 +369,11 @@ NPC::NPC() {
 	killerStatus = false;
 	SetPosX(0);
 	SetPosY(0);
+	eventStartNodes.resize(10, -1); // added this, event states 0 through 9
+}
+
+void NPC::SetEventStartNode(int eventState, int nodeIndex) { //added this
+	if (eventState >= 0 && eventState < (int)eventStartNodes.size()) {
+		eventStartNodes[eventState] = nodeIndex;
+	}
 }
