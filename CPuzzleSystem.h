@@ -9,17 +9,18 @@ class PuzzleSystem
 	bool puzzleRunning;
 	CEvidence evidence;
 	string userAnswer;
-	int userAnswerInt;
 	int numberPosition;
+	string systemMsg;
 
 public:
-	void startPuzzles();
-	void renderPuzzles(string puzzle);
+	void startPuzzles(string puzzle);
+	void renderPuzzles();
 	void renderNumber(int num);
-	void changeNum(int input);
-	string getCipher();
-	string getRiddles();
-	int getLock();
+	void inputNum(int input);
+	void enterNum(int input);
+	bool getBool();
+	void setBool(bool state);
+	void setPuzzle(string puzzle);
 
 	PuzzleSystem();
 };

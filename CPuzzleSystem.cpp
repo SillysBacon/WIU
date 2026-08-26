@@ -1,7 +1,8 @@
 #include "CPuzzleSystem.h"
 
-void PuzzleSystem::renderPuzzles(string puzzle) {
-	if (puzzle == "cipher") {
+void PuzzleSystem::renderPuzzles() {
+	if (puzzleType == "cipher") {
+		CUI::GetInstance().Clear();
 		cout << "#==========================================#" << endl;
 		cout << "|                                          |" << endl;
 		cout << "|              CIPHER PUZZLE               |" << endl;
@@ -20,7 +21,8 @@ void PuzzleSystem::renderPuzzles(string puzzle) {
 			cout << "Seems like that didn't work..." << endl;
 		}
 	}
-	else if (puzzle == "riddle") {
+	else if (puzzleType == "riddle") {
+		CUI::GetInstance().Clear();
 		cout << "#==========================================#" << endl;
 		cout << "|                                          |" << endl;
 		cout << "|              RIDDLE PUZZLE               |" << endl;
@@ -32,7 +34,7 @@ void PuzzleSystem::renderPuzzles(string puzzle) {
 		cout << "|               What am I?                 |" << endl;
 		cout << "|                                          |" << endl;
 		cout << "#==========================================#" << endl;
-		cout << "Answer: ";
+		cout << "Ypur answer: ";
 		cin >> userAnswer;
 		if (userAnswer == "GLOVE") {
 			// Give evidence
@@ -42,18 +44,15 @@ void PuzzleSystem::renderPuzzles(string puzzle) {
 			cout << "Ugh, can't figure out what this means...";
 		}
 	}
-	else if (puzzle == "lock") {
+	else if (puzzleType == "lock") {
 		CUI::GetInstance().Clear();
 		renderNumber(numberPosition);
-		cout << "Your answer: ";
-		cin >> userAnswerInt;
-		if (userAnswerInt == 1234) {
-			// Give evidence
-			puzzleCompleted = true;
+		string message = "Your answer: " + userAnswer;
+		cout << message << endl;
+		if (userAnswer.length() == 6) {
+			cout << "Press enter to submit";
 		}
-		else {
-			cout << "Well that didn't seem to work...";
-		}
+		cout << systemMsg;
 	}
 }
 
@@ -222,19 +221,79 @@ void PuzzleSystem::renderNumber(int num) {
 	}
 }
 
-void PuzzleSystem::changeNum(int input) {
-	if (input == 77 && numberPosition < 10) {
+void PuzzleSystem::startPuzzles(string puzzle) {
+	if (puzzleRunning) {
+		//renderPuzzles(puzzle);
+	}
+}
+
+void PuzzleSystem::inputNum(int input) {
+	if (input == 77) {
 		numberPosition++;
+		numberPosition %= 10;
+		systemMsg = "";
 	}
-	else if (input == 75 && numberPosition > 0) {
+	else if (input == 75) {
 		numberPosition--;
+		if (numberPosition == -1) {
+			numberPosition = 9;
+		}
+		systemMsg = "";
 	}
+	//else if (input == 13 && userAnswer.length() == 4 && userAnswer == "1234") {
+		// Give evidence
+		//puzzleRunning = false;
+	//}
+	else if (input == 13) {
+		if (userAnswer.length() == 6) {
+			if (userAnswer == "180905") {
+				userAnswer = "";
+				puzzleRunning = false;
+				systemMsg = "The code works!";
+			}
+			else {
+				userAnswer = "";
+				systemMsg = "Ugh, that didn't work.";
+			}
+		}
+		else {
+			userAnswer += to_string(numberPosition);
+			systemMsg = "";
+		}
+	}
+	else if (input == 8) {
+		if (userAnswer.length() > 0) {
+			userAnswer.erase(userAnswer.length() - 1, 1);
+		}
+	}
+}
+
+void PuzzleSystem::enterNum(int input) {
+	if (input == 13) {
+		userAnswer += to_string(numberPosition);
+	}
+	else if (input == 13 && userAnswer.length() == 4 && userAnswer == "1234") {
+		// Give evidence
+		puzzleCompleted = true;
+	}
+}
+
+bool PuzzleSystem::getBool() {
+	return puzzleRunning;
+}
+
+void PuzzleSystem::setBool(bool state) {
+	puzzleRunning = state;
+}
+
+void PuzzleSystem::setPuzzle(string puzzle) {
+	puzzleType = puzzle;
 }
 
 PuzzleSystem::PuzzleSystem() {
 	puzzleType = "";
 	userAnswer = "";
-	userAnswerInt = 0;
+	systemMsg = "";
 	puzzleCompleted = false;
 	puzzleRunning = false;
 	numberPosition = 0;
