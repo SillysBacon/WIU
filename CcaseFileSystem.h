@@ -46,6 +46,7 @@ public:
 	bool getCFSState();
 	void addNotes();
 	void addDescription(string words);
+	CcaseFileSystem();
 
 };
 

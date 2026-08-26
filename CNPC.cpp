@@ -8,29 +8,52 @@ void NPC::setPerson(People p) {
 	case Sarah_Collins:
 		name = "Sarah Collins";
 		symbol = 'S';
-		age = 1;
-		occupation = "";
+		age = 39;
+		occupation = "Neighbour / Freelance Interior Designer";
+		description = "Lives alone in the property adjoining the Smith estate. Soft-spoken "
+        "and quick to smile, though it rarely reaches her eyes. Claims no alibi "
+        "for the night of the murder - she says she was home, but no one can "
+        "confirm it. A years-long property dispute with the Smiths over a "
+        "shared fence line has left more bad blood between the households than "
+			"she initially let on.";
 		killerStatus = false;
 		break;
 	case Emily_Smith:
 		name = "Emily Smith";
 		symbol = 'E';
-		age = 2;
-		occupation = "";
+		age = 47;
+		occupation = "Homemaker (formerly Corporate Lawyer)";
+		description = "Jonathan Smith's wife of eighteen years. Composed in front of "
+			"officers, but the composure cracks under pressure. Claims she was "
+			"upstairs reading at the time of the murder. Unsigned divorce papers "
+			"found hidden in her bedroom suggest the marriage was far less stable "
+			"than she's willing to admit, and recent unexplained withdrawals from "
+			"the couple's shared accounts have only deepened the questions around "
+			"her husband's finances.";
 		killerStatus = false;
 		break;
 	case Michael_Turner:
 		name = "Michael Turner";
 		symbol = 'M';
-		age = 3;
-		occupation = "";
+		age = 50;
+		occupation = "Co-Founder, Smith Holdings";
+		description = "Jonathan Smith's longtime business partner, and by most accounts "
+			"the one who actually built the company from the ground up. Defensive "
+			"and quick-tempered when questioned, particularly about the exact time "
+			"he left the mansion. Insists the maid can confirm his alibi. A "
+			"fingerprint lifted from a broken whiskey glass at the scene places him "
+			"in the study far more recently than he's admitted.";
 		killerStatus = true;
 		break;
 	case Trisha_Lopez:
 		name = "Trisha Lopez";
 		symbol = 'T';
-		age = 4;
-		occupation = "";
+		occupation = "Live-in Housekeeper";
+		description = "Has worked for the Smith household for just under three years. "
+			"Quiet, observant, and the first person to discover something was "
+			"wrong on the night of the murder. Says little unless asked directly, "
+			"and even then, chooses her words carefully - as someone who works in "
+			"a house full of secrets tends to learn to do.";
 		killerStatus = false;
 		break;
 	case Angelo_Batista:
@@ -125,6 +148,9 @@ void NPC::AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, str
 	if (nodeIndex >= 0 && nodeIndex < (int)DialougeTree.size()) {
 		DialougeTree[nodeIndex].options.push_back({ text, Go_To_Node_Index, eventState });
 	}
+}
+string NPC::GetDescription() {
+	return description;
 }
 
 string NPC::getName() {

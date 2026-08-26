@@ -18,6 +18,7 @@ class NPC :
 	int age;
 	string occupation;
 	bool killerStatus;
+	string description;
 	string dialogue;
 	struct DialogueOption {
 		string text;
@@ -84,6 +85,7 @@ public:
 	void SwitchEvidence(char input, inventorySystem* inventory);
 	void showPresentEvidence(inventorySystem* inventory);
 	bool GetisPresentOpen();
+	string GetDescription();
 	static const int PRESENT_EVIDENCE = -2;
 
 	void SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode);
