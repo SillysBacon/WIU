@@ -28,8 +28,8 @@ void CEvidence::SetEvidence(Evidence E){
 	case Gunpowder_Ziploc:
 		name = "Gunpowder Ziploc";
 		Dialogue[0] = "Has any officer been in here holding a pistol - asks Black";
-		Dialogue[1] = "“ No hermano,  just me and the forensics - said Batista";
-		Dialogue[2] = "“Funny, there seems to be a gunpowder trace here... -  Black Scoffs";
+		Dialogue[1] = "No hermano,  just me and the forensics - said Batista";
+		Dialogue[2] = "Funny, there seems to be a gunpowder trace here... -  Black Scoffs";
 		Dialogue[3] = "Detective Black places the gunpowder into a Ziploc bag";
 		description = "A Ziploc Bag with little traces of Gunpowder";
 		length = 4;

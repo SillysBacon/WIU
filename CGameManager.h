@@ -70,8 +70,12 @@ class CGameManager
 	bool CarKeysisFound = false;
 	bool jacketisFound = false;
 
+	/* NPC set*/
 	NPC* Silas = new NPC;
 	NPC* batista2 = nullptr; //added this
+	NPC* emily = nullptr; //adeded this
+	NPC* sarah = nullptr; //adeded this
+
 	vector<bool> mapVisited;
 	vector<vector<pair<string, string>>> mapIntroDialogue;
 	vector<bool> mapRemoved;

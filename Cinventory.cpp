@@ -31,6 +31,15 @@ void inventorySystem::addToInventory(string item, int id) {
 	ItemCount++;
 }
 
+void inventorySystem::removeFromInventory(int index) { //added this
+	if (index < 0 || index >= ItemCount) return;
+	for (int i = index; i < ItemCount - 1; i++) {
+		inventorySpace[i] = inventorySpace[i + 1];
+		InventoryIDS[i] = InventoryIDS[i + 1];
+	}
+	ItemCount--;
+}
+
 void inventorySystem::switchItem(int input) {
 	if (input == 72) {
 		if (itemPosition > 0) {

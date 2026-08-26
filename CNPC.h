@@ -37,7 +37,7 @@ class NPC :
 	bool isPresentEvidenceOpen = false;
 	bool evidenceCorrect = false;
 	struct IsEvidenceCorrect {
-		int ExpectedID;
+		vector<int> ExpectedIDs; //turned this to a list
 		int CorrectNode;
 		int incorrectNode;
 	};
@@ -77,7 +77,7 @@ public:
 	void AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, string text);
 	void Addeventflag();
 	vector<int> GetVisibleOptions(const DialogueNode& node);
-	void presentEvidence(inventorySystem* Inventory, int id, char input);
+	void presentEvidence(inventorySystem* Inventory, vector<int>& ids, char input); //change id to vector
 	void RenderPresentEvidence(inventorySystem* Inventory);
 	void SwitchEvidence(char input, inventorySystem* inventory);
 	void showPresentEvidence(inventorySystem* inventory);

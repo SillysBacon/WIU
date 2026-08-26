@@ -133,7 +133,7 @@ void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence:
         for (int i = 0; i < GetDialogue_Length(e); i++) {
             displayDialogue("Narrator", oPtr->runDialogue(e, i)); //change to Narrator, added this
         }
-        inventory->addToInventory(oPtr->GetEvidenceName(e), 9);
+        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId()); //change 9 to getevidenceID
         caseFileSystem.addEvidence(e);
         caseFileSystem.addDescription(Evidence.GetDescription());
         Evidence.SetFound(true);
@@ -195,7 +195,7 @@ void CGameManager::SetMaps() {
     Silas->AddNodeOption(nSR0_6, 0, nSR0_1, "hmmm");
 
     Silas->AddNodeOption(nSR0_1, 1, nSR0_7, "aight let's go, we finally getting something good hehehe.");
-    Silas->AddNodeOption(nSR0_7, 1, -1, "...");
+    Silas->AddNodeOption(nSR0_7, 1, -1, "Let me grab my stuff first...");
 
     Silas->AddNodeOption(nSR0_1, 0, -1, "Nevermind");
     nodeFlags.push_back({ Silas, nSR0_7, &IsMansionAvailable });
@@ -204,7 +204,7 @@ void CGameManager::SetMaps() {
     
     /*---- Mrs Emily Smith ----*/
     ///* Event 1 (First Interaction) */
-    NPC* emily = AddNPC(1, NPC::Emily_Smith, 7, 4);
+    emily = AddNPC(1, NPC::Emily_Smith, 7, 4);
 
 
 
@@ -253,7 +253,7 @@ void CGameManager::SetMaps() {
 
 
     /*---- Mrs Sarah Collins ----*/
-     NPC* sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
+     sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
     
      int n0 = sarah->AddDialougeNode("I haven't seen anything unusual.");
      int n1 = sarah->AddDialougeNode("I was home alone, no alibi I'm afraid.");
@@ -301,7 +301,7 @@ void CGameManager::SetMaps() {
 
      /*---- Detective Batista ----*/
 
-     NPC* batista1 = AddNPC(11, NPC::Angelo_Batista, 6, 7);
+     NPC* batista1 = AddNPC(11, NPC::Angelo_Batista, 1, 4);
      int nB1_1 = batista1->AddDialougeNode("It's a closed-room murder, domestic. The owner of this mansion, Mr. Jonathan Smith...");
      int nB1_2 = batista1->AddDialougeNode("...was found dead, El Pobre has a deep wound to the back of the neck");
      int nB1_3 = batista1->AddDialougeNode("Vamanos Viejo, The body is in the study room");
@@ -321,7 +321,7 @@ void CGameManager::SetMaps() {
      int nB3_2 = batista2->AddDialougeNode("From what I've gathered, four people had contact with Mr. Smith around the time of death...");
      int nB3_3 = batista2->AddDialougeNode("...His wife, Emily Smith; his business partner, Michael Turner; his maid, Trisha Lopez; and the neighbour, Sarah Collins");
      int nB3_4 = batista2->AddDialougeNode("They should be downstairs, OH and here is the Case files on the suspects and victim");
-     int nB3_5 = batista2->AddDialougeNode("Mr Batista hands you a Case Folder (Case Folder Unlocked Press 'C' then 2), i'm gonna be in the kitchen if you need me. ", narrator->getName());
+     int nB3_5 = batista2->AddDialougeNode("Detective Batista hands you a Case Folder (Case Folder Unlocked Press 'C'), Batista then heads down to the Kitchen ", narrator->getName());
      batista2->AddNodeOption(nB2_1, 1, nB3_2, "Im done, by the way, Who was present at the time of the crime?");
      batista2->AddNodeOption(nB3_2, 1, nB3_3, "...");
      batista2->AddNodeOption(nB3_3, 1, nB3_4, "...");
@@ -348,17 +348,27 @@ void CGameManager::SetMaps() {
      NPC* forensics2 = AddNPC(14, NPC::Forensics, 2, 6);
      int nF2_1 = forensics2->AddDialougeNode("Hi, What do you need me for?");
      int nF2_2 = forensics2->AddDialougeNode("Sure thing, just pass it to me");
-     forensics2->AddNodeOption(nF2_1, 0, -1, "Hi, Can you help me run a few test on these stuff?...");
+     /*correct node*/
+     int nF2_correct = forensics2->AddDialougeNode("...Got it, i'll pass the report to you afterwards.");
+     int nF2_3 = forensics2->AddDialougeNode("Will do, Detective Black.");
+     /*wrong node*/
+     int nF2_wrong = forensics2->AddDialougeNode("Don't think we will need the forensics for this", Silas->getName());
+
+
+     forensics2->AddNodeOption(nF2_1, 0, nF2_2, "Hi, Can you help me run a few test on these stuff?...");
      forensics2->AddNodeOption(nF2_1, 0, -1, "Never Mind");
 
      forensics2->AddNodeOption(nF2_2, 0, NPC::PRESENT_EVIDENCE, "[Give Evidence]");
-     forensics2->AddNodeOption(nF2_1, 0, nF2_1, "Back");
+     forensics2->SetEvidenceRequest(nF2_2, 3001, nF2_correct, nF2_wrong);
+     forensics2->SetEvidenceRequest(nF2_2, 3002, nF2_correct, nF2_wrong);
+     forensics2->SetEvidenceRequest(nF2_2, 3003, nF2_correct, nF2_wrong);
+     forensics2->AddNodeOption(nF2_2, 0, nF2_1, "Back");
 
+     forensics2->AddNodeOption(nF2_correct, 0, nF2_3, "No need, just pass it to Detective Batista.");
+     forensics2->AddNodeOption(nF2_3, 0, -1, "...");
 
-
-     forensics2->SetEvidenceRequest(n0, 1001, nE1_correct, nE1_wrong);
-     forensics2->AddNodeOption(nE1_correct, 0, -1, "...");
-     forensics2->AddNodeOption(nE1_wrong, 0, -1, "...");
+     forensics2->AddNodeOption(nF2_wrong, 0, NPC::PRESENT_EVIDENCE, "[Give Evidence]");
+     forensics2->AddNodeOption(nF2_wrong, 0, nF2_2, "back");
 
 
     /* Policia*/
@@ -398,7 +408,7 @@ void CGameManager::SetMaps() {
 
      /* Johnathan the victim*/
      NPC* johnathan = AddNPC(6, NPC::Jonathan_Smith, 4, 5);
-     int nJ1 = johnathan->AddDialougeNode("A deep wound can be seen at the back of his head, blunt force trauma.");
+     int nJ1 = johnathan->AddDialougeNode("A deep wound can be seen at the back of his head, blunt force trauma.", narrator->getName());
      johnathan->AddNodeOption(nJ1, 0, -1, "...");
 
 
@@ -447,6 +457,11 @@ void CGameManager::SetMaps() {
        AddObstacle(1, CObstacle::Window, 7, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
        AddObstacle(1, CObstacle::Window, 8, 9, 0)->SetDialogue(0, "A window with a stunning view to the flower ocean in the garden");
        addItems(cigarbox, CItem::CIGARS);
+
+       mapIntroDialogue[1] = {
+        {"Black", "This is gonna be a long night...Let's get this started"},
+        {"Game", "(You are now able to roam freely to collect evidence and talk to Suspects)"},
+       };
    }
 
    /*The Mansion's Toilet ROOM 2*/
@@ -554,6 +569,13 @@ void CGameManager::SetMaps() {
        Evidenceptr[CEvidence::Broken_Whiskey_Glass] = AddObstacle(6, CObstacle::Table, 3, 4, 1);
        AddObstacle(6, CObstacle::Long_Shelf, 0, 3, 1);
        Evidenceptr[CEvidence::Brass_Candlestick] = AddObstacle(6, CObstacle::Small_Shelf, 0, 0, 0);
+
+       mapIntroDialogue[6] = {
+         {"Batista", "Here he is. Dead. Cold. Ay, and a waste of good whiskey too,"},
+         {"Narrator", "Batista pointed at the body, a broken whiskey glass can be seen on the floor beside the table."},
+         {"Narrator", "Black scans the room briefly."},
+         {"Narrator", "He catches a faint smell of gunpowder in the air. He walks to the window - no sign of forced entry."}
+       };
    }
 
    /*The Mansion kitchen ROOM 7*/
@@ -914,12 +936,28 @@ void CGameManager::changeMaps(char input)
         }
         vector<int> available;
         for (int m : Connect[currentMap]) {
-            if (IsMapUnlocked(m)) {
+            if (m == 3 || m == 12) {
+                available.push_back(m); // added this
+            }
+            else if (IsMapUnlocked(m)) {
                 available.push_back(m);
             }
         }
         int destination = SelectDestination(available);
 
+        if (destination == 3 && !IsBedroomkeyPresent) {
+            displayDialogue("Silas", "This room is locked, we need something to get in first.");
+            displayDialogue("Black", "Let's talk to Mrs Smith for this.");
+            if (emily->getCurrentNode() == 0)
+            {
+                emily->Addeventflag();
+            }
+            return;
+        }
+        if (destination == 12 && !IsCollinAvailable) {
+            displayDialogue("Silas", "This room is locked, we need something to get in first.");
+            return;
+        }
 
         if (destination != -1) {
             map[currentMap].removePosition(

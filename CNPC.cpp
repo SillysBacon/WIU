@@ -224,9 +224,9 @@ void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 
 			if (next == PRESENT_EVIDENCE) {
 				auto it = evidenceRequests.find(currentNode);
-				int expectedID = -1;
+				vector<int> expectedIDs;
 				if (it != evidenceRequests.end()) {
-					expectedID = it->second.ExpectedID;
+					expectedIDs = it->second.ExpectedIDs;
 				}
 
 				isPresentEvidenceOpen = true;
@@ -241,13 +241,16 @@ void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 						SwitchEvidence((char)evInput, inventory);
 					}
 					else {
-						presentEvidence(inventory, expectedID, (char)evInput);
+						presentEvidence(inventory, expectedIDs, (char)evInput);
 					}
 				}
 
 				if (it != evidenceRequests.end()) {
 					if (evidenceCorrect) {
 						currentNode = it->second.CorrectNode;
+						if (person == Forensics) {                          // <-- added this
+							inventory->removeFromInventory(PresentPosition); // <-- added this
+						}
 					}
 					else {
 						currentNode = it->second.incorrectNode;
@@ -279,11 +282,11 @@ int NPC::getCurrentNode() {
 }
 
 void NPC::SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode) {
-	IsEvidenceCorrect check;
-	check.ExpectedID = expectedItemID;
-	check.CorrectNode = correctNode;
-	check.incorrectNode = incorrectNode;
-	evidenceRequests[nodeIndex] = check;
+	//IsEvidenceCorrect check;
+	evidenceRequests[nodeIndex].ExpectedIDs.push_back(expectedItemID);
+	evidenceRequests[nodeIndex].CorrectNode = correctNode;
+	evidenceRequests[nodeIndex].incorrectNode = incorrectNode;
+	//evidenceRequests[nodeIndex] = check;
 }
 
 void NPC::RenderPresentEvidence(inventorySystem* Inventory) {
@@ -314,14 +317,20 @@ void NPC::SwitchEvidence(char input, inventorySystem* inventory) {
 	}
 }
 
-void NPC::presentEvidence(inventorySystem* Inventory, int id, char input) {
+void NPC::presentEvidence(inventorySystem* Inventory, vector<int>& ids, char input) {
 	if (input == 0 || input == (char)224) {
 		SwitchEvidence(input, Inventory);
 	}
 	else if (input == 13) {
 		if (Inventory->GetItemCount() > 0) {
 			int chosenID = Inventory->GetInventoryID(PresentPosition);
-			evidenceCorrect = (chosenID == id);
+			evidenceCorrect = false; // changed this whole function
+			for (int expected : ids) {
+				if (chosenID == expected) {
+					evidenceCorrect = true;
+					break;
+				}
+			}
 		}
 		else {
 			evidenceCorrect = false;
