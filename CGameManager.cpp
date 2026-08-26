@@ -1106,6 +1106,10 @@ void CGameManager::changeMaps(char input)
             int evidenceIndex = -1;
             for (int i = 0; i < MAX_EVIDENCE; i++) { // change this part too and added evidence index
                 if (ObstacleInteract == Evidenceptr[i]) {
+                    if (i == 0) {
+                        puzzleSystem.setBool(true);
+                        puzzleSystem.setPuzzle("lock");
+                    }
                     isEvidenceTile = true;
                     evidenceIndex = i;
                     break;
@@ -1231,6 +1235,10 @@ void CGameManager::RunGame() {
                 map[currentMap].RenderMap();
             }
             continue;
+        }
+        else if (puzzleSystem.getBool() == true) {
+            puzzleSystem.inputNum(input);
+            puzzleSystem.renderPuzzles();
         }
 
         else if (input == 'i' && caseFileSystem.getCFSState() == false) {
