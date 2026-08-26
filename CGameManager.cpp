@@ -125,19 +125,17 @@ void CGameManager::checkForAllEvidence(CObstacle* oPtr)
     }
 }
 
-// CGameManager.cpp
 void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence::Evidence e)
 {
     if (oPtr != nullptr && oPtr == ptr) {
         Evidence.SetEvidence(e);
         for (int i = 0; i < GetDialogue_Length(e); i++) {
-            displayDialogue("Narrator", oPtr->runDialogue(e, i)); //change to Narrator, added this
+            displayDialogue("Narrator", oPtr->runDialogue(e, i));
         }
-        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), ""); //change 9 to getevidenceID
+        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), "");
         caseFileSystem.addEvidence(e);
-        caseFileSystem.addDescription(Evidence.GetDescription());
         Evidence.SetFound(true);
-        ptr = nullptr; // consume it so it can't be picked up twice
+        ptr = nullptr;
     }
 }
 
@@ -1244,15 +1242,15 @@ void CGameManager::changeMaps(char input)
             checkNodeFlags(NPCInteract);
             if (hasShownEmilyEvi1) {
                 emily->Addeventflag();
-                hasShownEmilyEvi1 = false; // added this to make sure it dont add again
+                hasShownEmilyEvi1 = false;
             }
             if (hasFinishEmily) {
                 emily->Addeventflag();
-                hasFinishEmily = false; // added this to make sure it dont add again
+                hasFinishEmily = false;
             }
             if (hasTalkToSarah1) {
                 sarah->Addeventflag();
-                hasTalkToSarah1 = false; // added this to make sure it dont add again
+                hasTalkToSarah1 = false; 
             }
             map[currentMap].RenderMap();
 
@@ -1263,7 +1261,7 @@ void CGameManager::changeMaps(char input)
         else if (ObstacleInteract != nullptr) {
             bool isEvidenceTile = false;
             int evidenceIndex = -1;
-            for (int i = 0; i < MAX_EVIDENCE; i++) { // change this part too and added evidence index
+            for (int i = 0; i < MAX_EVIDENCE; i++) {
                 if (ObstacleInteract == Evidenceptr[i]) {
                     if (i == 9) {
                         puzzleSystem.setBool(true);
@@ -1278,7 +1276,7 @@ void CGameManager::changeMaps(char input)
             if (isEvidenceTile) {
                 checkForAllEvidence(ObstacleInteract);
 
-                switch (ObstacleInteract->GetEvidenceId()) { // adjust if the getter name differs
+                switch (ObstacleInteract->GetEvidenceId()) {
                 case 3001:
                     candlestickFound = true;
                     break;
