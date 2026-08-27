@@ -164,6 +164,19 @@ void CUI::HandleArrow(int input) {
 }
 
 void CUI::HandleEnter() {
+    if (isControlsOpen) {
+        isControlsOpen = false;
+        if (controlsFromPause) {
+            isPauseMenuOpen = true;
+            RenderPauseMenu();
+        }
+        else {
+            isStartMenuOpen = true;
+            RenderStartMenu();
+        }
+        return;
+    }
+
     if (isSpeedSettingOpen) {
         isSpeedSettingOpen = false;
         isSettingsOpen = true;
@@ -179,11 +192,17 @@ void CUI::HandleEnter() {
             break;
         case 1:
             isPauseMenuOpen = false;
-            isSettingsOpen = true;
-            Settings[1] = "Return to Pause Menu";
-            RenderSettings();
+            isControlsOpen = true;
+            controlsFromPause = true;
+            RenderControls();
             break;
         case 2:
+            isPauseMenuOpen = false;
+            isSettingsOpen = true;
+            Settings[1] = "RETURN TO PAUSE MENU";
+            RenderSettings();
+            break;
+        case 3:
             isPauseMenuOpen = false;
             isPauseLoopActive = false;
             ExitToDesktop = true;
@@ -196,16 +215,22 @@ void CUI::HandleEnter() {
         switch (StartMenuPos) {
         case 0:
             isStartMenuOpen = false;
-            Settings[MaxSetting - 1] = "Resume Game";
+            Settings[MaxSetting - 1] = "RESUME";
             isRunning = false;
             GameStart = true;
             break;
-        case 1:
+        case 1: 
+            isStartMenuOpen = false;
+            isControlsOpen = true;
+            controlsFromPause = false;
+            RenderControls();
+            break;
+        case 2:
             isStartMenuOpen = false;
             isSettingsOpen = true;
             RenderSettings();
             break;
-        case 2:
+        case 3:
             GameStart = false;
             isRunning = false;
             break;
@@ -223,7 +248,7 @@ void CUI::HandleEnter() {
         case 1:
             isSettingsOpen = false;
             if (PausedFromGame) {
-                Settings[1] = "Return to Start Menu";
+                Settings[1] = "RESUME TO PAUSE MENU";
                 PausedFromGame = false;
                 isPauseMenuOpen = true;
                 RenderPauseMenu();
@@ -362,7 +387,22 @@ void  CUI::Clear() {
     FillConsoleOutputAttribute(hConsole, csbi.wAttributes, cellCount, homeCoords, &count);
     SetConsoleCursorPosition(hConsole, homeCoords);
 }
-
+void CUI::RenderControls() {
+    Clear();
+    cout << "       [CONTROLS]\n";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+    cout << "   W / A / S / D    - Move\n\n";
+    cout << "   E                - Interact\n\n";
+    cout << "   I                - Inventory\n\n";
+    cout << "   C                - Case File\n\n";
+    cout << "   M                - Map Navigation\n\n";
+    cout << "   Enter / Space    - Confirm / Continue\n\n";
+    cout << "   Tab              - Toggle Auto-Skip Dialogue\n\n";
+    cout << "   Esc              - Pause\n\n";
+    cout << "   Arrow Keys       - To select Option\n";
+    cout << "+~~~~~~~~~~~~~~~~~~~~~~~~+\n";
+    cout << "\n   [Press Enter to go back]";
+}
 
 CUI::CUI() {
     SetTextSpeed(35);
