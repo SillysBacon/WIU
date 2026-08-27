@@ -8,52 +8,29 @@ void NPC::setPerson(People p) {
 	case Sarah_Collins:
 		name = "Sarah Collins";
 		symbol = 'S';
-		age = 39;
-		occupation = "Neighbour / Freelance Interior Designer";
-		description = "Lives alone in the property adjoining the Smith estate. Soft-spoken "
-			"and quick to smile, though it rarely reaches her eyes. Claims no alibi "
-			"for the night of the murder - she says she was home, but no one can "
-			"confirm it. A years-long property dispute with the Smiths over a "
-			"shared fence line has left more bad blood between the households than "
-			"she initially let on.";
+		age = 1;
+		occupation = "";
 		killerStatus = false;
 		break;
 	case Emily_Smith:
 		name = "Emily Smith";
 		symbol = 'E';
-		age = 47;
-		occupation = "Homemaker (formerly Corporate Lawyer)";
-		description = "Jonathan Smith's wife of eighteen years. Composed in front of "
-			"officers, but the composure cracks under pressure. Claims she was "
-			"upstairs reading at the time of the murder. Unsigned divorce papers "
-			"found hidden in her bedroom suggest the marriage was far less stable "
-			"than she's willing to admit, and recent unexplained withdrawals from "
-			"the couple's shared accounts have only deepened the questions around "
-			"her husband's finances.";
+		age = 2;
+		occupation = "";
 		killerStatus = false;
 		break;
 	case Michael_Turner:
 		name = "Michael Turner";
 		symbol = 'M';
-		age = 50;
-		occupation = "Co-Founder, Smith Holdings";
-		description = "Jonathan Smith's longtime business partner, and by most accounts "
-			"the one who actually built the company from the ground up. Defensive "
-			"and quick-tempered when questioned, particularly about the exact time "
-			"he left the mansion. Insists the maid can confirm his alibi. A "
-			"fingerprint lifted from a broken whiskey glass at the scene places him "
-			"in the study far more recently than he's admitted.";
+		age = 3;
+		occupation = "";
 		killerStatus = true;
 		break;
 	case Trisha_Lopez:
 		name = "Trisha Lopez";
 		symbol = 'T';
-		occupation = "Live-in Housekeeper";
-		description = "Has worked for the Smith household for just under three years. "
-			"Quiet, observant, and the first person to discover something was "
-			"wrong on the night of the murder. Says little unless asked directly, "
-			"and even then, chooses her words carefully - as someone who works in "
-			"a house full of secrets tends to learn to do.";
+		age = 4;
+		occupation = "";
 		killerStatus = false;
 		break;
 	case Angelo_Batista:
@@ -150,11 +127,16 @@ void NPC::AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, str
 	}
 }
 
+void NPC::AddNodeEnding(int nodeIndex, int eventState, int Go_To_Node_Index, string text, int selPath) {
+	DialogueNode node;
+	if (nodeIndex >= 0 && nodeIndex < (int)DialougeTree.size()) {
+		DialougeTree[nodeIndex].options.push_back({ text, Go_To_Node_Index, eventState });
+	}
+	path = selPath;
+}
+
 string NPC::getName() {
 	return name;
-}
-string NPC::GetDescription() {
-	return description;
 }
 
 char NPC::getSymbol() {
@@ -172,7 +154,6 @@ string NPC::getOccupation() {
 bool NPC::getKillerStatus() {
 	return killerStatus;
 }
-
 
 bool NPC::isSuspect()
 {
@@ -217,12 +198,7 @@ void NPC::RenderDialougeSystem(bool typetext, CMap* map) {
 	}
 }
 void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
-	if (Eventstate >= 0 && Eventstate < (int)eventStartNodes.size() && eventStartNodes[Eventstate] != -1) {
-		currentNode = eventStartNodes[Eventstate];
-	}
-	else {
-		currentNode = 0;
-	}
+	currentNode = 0;
 	selectedOption = 0;
 	int lastnode = -1;
 	bool talking = true;
@@ -276,13 +252,52 @@ void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 						presentEvidence(inventory, expectedIDs, (char)evInput);
 					}
 				}
-				 
-				if (it != evidenceRequests.end()) { //change and added these
-					if (evidenceCorrect && matchedIndex >= 0 && matchedIndex < (int)it->second.CorrectNode.size()) {
-						currentNode = it->second.CorrectNode[matchedIndex];
-						if (person == Forensics) {
-							lastRemovedEvidenceID = expectedIDs[matchedIndex];
-							inventory->removeFromInventory(PresentPosition);
+
+				if (it != evidenceRequests.end()) {
+					if (evidenceCorrect) {
+						int tem;
+						tem = currentNode;
+						currentNode = it->second.CorrectNode;
+						if (person == Forensics) {                          // <-- added this
+							inventory->removeFromInventory(PresentPosition); // <-- added this
+						}
+						else if (person == Harvey_Denn) {
+							int id;
+							storeEvidenceId[evidenceCounter] = id = inventory->GetInventoryID(PresentPosition);
+							evidenceCounter++;
+
+							if (evidenceCounter == 2) {
+								if (tem == 3) {
+									int EviID1 = storeEvidenceId[0];
+									int EviID2 = storeEvidenceId[1];
+									set<int> givenEvidence = { EviID1, EviID2 };
+									numOfWrongEvidence =  checkEvidence(2, 3, givenEvidence);
+									talking = false;
+								}
+								else if (tem == 5) {
+									int EviID1 = storeEvidenceId[0];
+									int EviID2 = storeEvidenceId[1];
+									set<int> givenEvidence = { EviID1, EviID2 };
+									numOfWrongEvidence = checkEvidence(2, 5, givenEvidence);
+									talking = false;
+
+								}
+							}
+							
+							else if (evidenceCounter == 4) {
+								if (tem == 4) {
+									int EviID1 = storeEvidenceId[0];
+									int EviID2 = storeEvidenceId[1];
+									int EviID3 = storeEvidenceId[2];
+									int EviID4 = storeEvidenceId[3];
+									set<int> givenEvidence = { EviID1, EviID2, EviID3, EviID4 };
+									numOfWrongEvidence = checkEvidence(4, 4, givenEvidence);
+									talking = false;
+								}
+							}
+
+
+
 						}
 					}
 					else {
@@ -314,14 +329,32 @@ int NPC::getCurrentNode() {
 	return currentNode;
 }
 
-int NPC::getCurrentEvent() { //added this to get event
-	return Eventstate;
+void NPC::setIsEvidenceValid(bool input)
+{
+	isEvidenceValid = input;
+}
+
+bool NPC::getIsEvidenceValid()
+{
+	return isEvidenceValid;
+}
+
+int NPC::getPath()
+{
+	return path;
+}
+
+int NPC::getNumOfWrongEvidence()
+{
+	return numOfWrongEvidence;
 }
 
 void NPC::SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode) {
+	//IsEvidenceCorrect check;
 	evidenceRequests[nodeIndex].ExpectedIDs.push_back(expectedItemID);
-	evidenceRequests[nodeIndex].CorrectNode.push_back(correctNode);
+	evidenceRequests[nodeIndex].CorrectNode = correctNode;
 	evidenceRequests[nodeIndex].incorrectNode = incorrectNode;
+	//evidenceRequests[nodeIndex] = check;
 }
 
 void NPC::RenderPresentEvidence(inventorySystem* Inventory) {
@@ -357,17 +390,19 @@ void NPC::presentEvidence(inventorySystem* Inventory, vector<int>& ids, char inp
 		SwitchEvidence(input, Inventory);
 	}
 	else if (input == 13) {
-		matchedIndex = -1;
 		if (Inventory->GetItemCount() > 0) {
 			int chosenID = Inventory->GetInventoryID(PresentPosition);
-			for (int i = 0; i < (int)ids.size(); i++) {
-				if (chosenID == ids[i]) {
-					matchedIndex = i;
+			evidenceCorrect = false; // changed this whole function
+			for (int expected : ids) {
+				if (chosenID == expected) {
+					evidenceCorrect = true;
 					break;
 				}
 			}
 		}
-		evidenceCorrect = (matchedIndex != -1);
+		else {
+			evidenceCorrect = false;
+		}
 		isPresentEvidenceOpen = false;
 	}
 	else if (input == 27) {
@@ -386,13 +421,32 @@ bool NPC::GetisPresentOpen() {
 	return isPresentEvidenceOpen;
 }
 
-int NPC::getLastRemovedEvidenceID() {
-	return lastRemovedEvidenceID;
+int NPC::checkEvidence(int evidenceCounter, int currentNode, const set<int>& evidenceInput) {
+	int NumOFIncorrect = 0;
+	static const map<int, set<int>> evidenceSet = {
+		{3, {3001, 3009}},
+		{4, {3002, 3003}},
+		{5, {4001, 4002, 4003, 4004}}
+	};
+	auto evidenceRequired = evidenceSet.at(currentNode);
+	if (evidenceCounter == static_cast<int>(evidenceRequired.size()) && evidenceInput == evidenceRequired) {
+		setIsEvidenceValid(true);
+		path = currentNode;
+	}
+	else {
+		for (int requiredID : evidenceRequired) {
+			if (evidenceInput.find(requiredID) == evidenceInput.end()) {
+				NumOFIncorrect++;
+			}
+		}
+		setIsEvidenceValid(false);
+		return NumOFIncorrect;
+	}
 }
 
 NPC::NPC() {
 	ResetDialogueTree();
-	Eventstate = 0;
+	int Eventstate = 0;
 	person = Sarah_Collins;
 	name = "";
 	symbol = '\0';
@@ -401,11 +455,4 @@ NPC::NPC() {
 	killerStatus = false;
 	SetPosX(0);
 	SetPosY(0);
-	eventStartNodes.resize(10, -1); // added this, event states 0 through 9
-}
-
-void NPC::SetEventStartNode(int eventState, int nodeIndex) { //added this
-	if (eventState >= 0 && eventState < (int)eventStartNodes.size()) {
-		eventStartNodes[eventState] = nodeIndex;
-	}
 }
