@@ -16,11 +16,6 @@ class CGameManager
 		string itemName;
 		CItem::Items itemType;
 	};
-	struct NodeEvidence { //new stuff for handing evidence
-		NPC* npc;
-		int node;
-		CEvidence::Evidence evidenceType;
-	};
 	struct NodeFlags {
 		NPC* npc;
 		int node;
@@ -28,12 +23,6 @@ class CGameManager
 	};
 	vector<NodeFlags> nodeFlags;
 	void checkNodeFlags(NPC* npc);
-
-	vector<NodeItems> nodeItems;
-	void checkNodeItems(NPC* npc);
-
-	vector<NodeEvidence> nodeEvidence;
-	void checkNodeEvidence(NPC* npc);
 
 	int static const MAX_MAPS = 15;
 	static const int MAX_OBSTACLE = 200;
@@ -58,6 +47,8 @@ class CGameManager
 	CItem Items;
 	vector<CItem*> allItems;
 	CItem* addItems(CObstacle* obstacle, CItem::Items type);
+	vector<NodeItems> nodeItems;
+	void checkNodeItems(NPC* npc);
 	bool CanTravel = false;
 	bool CanTravel2 = false; //added this
 	bool itemExists = false;
@@ -76,17 +67,10 @@ class CGameManager
 	/*Has interact to*/
 	bool hasTalkToSilas = false;
 	bool hasTalkToBatista = false;
+	bool hasFoundEvidenceForEmily = false;
 	bool hasShownEmilyEvi1 = false;
 	bool hasFinishEmily = false;
 	bool hasTalkToSarah1 = false;
-	bool hasShownEviToSarah = false;
-	bool hasTalkToSarah2 = false;
-	bool hasTalkToTrisha = false;
-	bool hasShownEmilyGlass = false;
-	bool hasTalkToMichael1 = false;
-	bool hasTalkToMichael2 = false;
-	bool hasTalkToMichael3 = false;
-	bool takeAPiss = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;
@@ -94,31 +78,17 @@ class CGameManager
 	bool gunpowderFound = false;
 	bool bankStatementFound = false;
 	bool divorcePapersFound = false;
-	bool gloveFound = false;
-	bool shoeboxFound = false;
-	bool whiskeyGlassRptCollected = false;
 
 	/*Has found item*/
 	bool NotebookisFound = false;
 	bool CarKeysisFound = false;
 	bool jacketisFound = false;
 
-	/*has passed to batista */
-	bool hasPassCandle = false;
-	bool hasPassGlass = false;
-	bool hasPassGlove = false;
-
-	/* NPC and node set*/
+	/* NPC set*/
 	NPC* Silas = new NPC;
 	NPC* batista2 = nullptr; //added this
-	NPC* batista3 = nullptr; //added this
 	NPC* emily = nullptr; //adeded this
 	NPC* sarah = nullptr; //adeded this
-	NPC* michael = nullptr; //added this
-	int nB4_1_id = -1; //for batista event stuff
-	int nB5_1_candle_id;
-	int nB5_1_glass_id;
-	int nB5_1_glove_id;
 
 	vector<bool> mapVisited;
 	vector<vector<pair<string, string>>> mapIntroDialogue;
@@ -138,6 +108,7 @@ public:
 	void PlayIntroDialogue(int mapIndex);
 	void RemoveRoom(int mapIndex);
 	int GetDialogue_Length(CEvidence::Evidence e);
+	//string runDialogue(CEvidence::Evidence e, int num);
 	void checkForAllEvidence(CObstacle* oPtr);
 	void checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence::Evidence e);
 	CGameManager* GetEvidencePtr();
