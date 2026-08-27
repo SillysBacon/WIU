@@ -1,0 +1,16 @@
+W - Up movement
+A - Left movement
+S - Down movement
+D - Right movement
+E - Interact
+M - Map Navigation
+I - Open Inventory 
+C - Open Case Files
+	1 - For Suspect files
+	2 - For Evidence files
+	3 - For Case Documents
+Arrow keys - selection and UI
+Enter - To select/skip dialogue
+space - skip Dialouge
+Esc - To enter Pause menu/To Escape
+Tab - Auto Skip
