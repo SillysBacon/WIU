@@ -14,47 +14,6 @@ CObstacle* CGameManager::AddObstacle(int mapIndex, CObstacle::Furniture type, in
     mapObstacles[mapIndex].push_back(Furniture);
     return Furniture;
 }
-void CGameManager::EmilyEndingDialogue()
-{
-    displayDialogue("Narrator", "After further investigation...");
-    displayDialogue("Narrator", "And the court trial...");
-    displayDialogue("Narrator", "Emily was found guilty");
-    displayDialogue("Narrator", "however...");
-    displayDialogue("Narrator", "she was not the killer");
-    displayDialogue("Narrator", "The killer is still yet to be found");
-    displayDialogue("Narrator", "Lurking in the shadows...");
-    displayDialogue("Narrator", "He/she managed to escape this time...");
-    displayDialogue("Narrator", "Will there be a next time?...");
-    displayDialogue("Narrator", "THE END");
-    IsGameRunning = false;
-}
-void CGameManager::MichaelEndingDialogue()
-{
-    displayDialogue("Narrator", "After further investigation...");
-    displayDialogue("Narrator", "And the court trial...");
-    displayDialogue("Narrator", "Michael was found...");
-    displayDialogue("Narrator", "GUILTY");
-    displayDialogue("Narrator", "Sentenced to jail for life");
-    displayDialogue("Narrator", "With no friend or family to visit him");
-    displayDialogue("Narrator", "Repaying for his sins in Willow Creaks bad people prison");
-    displayDialogue("Narrator", "THE END");
-    IsGameRunning = false;
-
-}
-void CGameManager::SarahEndingDialogue()
-{
-    displayDialogue("Narrator", "After further investigation...");
-    displayDialogue("Narrator", "And the court trial...");
-    displayDialogue("Narrator", "Sarah was found guilty");
-    displayDialogue("Narrator", "however...");
-    displayDialogue("Narrator", "she was not the killer");
-    displayDialogue("Narrator", "The killer is still yet to be found");
-    displayDialogue("Narrator", "Lurking in the shadows...");
-    displayDialogue("Narrator", "He/she managed to escape this time...");
-    displayDialogue("Narrator", "Will there be a next time?...");
-    displayDialogue("Narrator", "THE END");
-    IsGameRunning = false;
-}
 
 NPC* CGameManager::AddNPC(int mapIndex, NPC::People type, int x, int y)
 {
@@ -399,10 +358,12 @@ void CGameManager::SetMaps() {
     emily->AddNodeOption(nE5_1, 4, -1, "Never mind.");
 
     emily->AddNodeOption(nE1_correct3, 4, -1, "Hmmm... interesting");
-    nodeFlags.push_back({ emily, nE4_correct2, &hasShownEmilyGlass });
+    nodeFlags.push_back({ emily, nE1_correct3, &hasShownEmilyGlass });
  
 
-    emily->AddNodeOption(nE1_wrong3, 4, -1, "Sorry");
+    emily->AddNodeOption(nE1_wrong3, 4, nE5_1, "Sorry");
+
+    emily->AddNodeOption(nE5_2, 4, -1, "...");
 
 
     emily->SetEventStartNode(4, nE5_1);
@@ -489,7 +450,7 @@ void CGameManager::SetMaps() {
 
      sarah->AddNodeOption(nS2_1, 1, nS2_2, "Sorry, but is it possible for me to check your house?");
      sarah->AddNodeOption(nS2_1, 1, NPC::PRESENT_EVIDENCE, "[Present Evidence?]");
-     sarah->SetEvidenceRequest(nE3_5, 3008, nS2_correct1, nS2_wrong1);
+     sarah->SetEvidenceRequest(nS2_1, 3008, nS2_correct1, nS2_wrong1);
      sarah->AddNodeOption(nS2_1, 0, -1, "Never mind.");
 
      sarah->AddNodeOption(nS2_2, 1, nS2_3, "We need to confirm your claims, if you are clear, we can cross your name off");
@@ -610,10 +571,10 @@ void CGameManager::SetMaps() {
 
      michael->SetEventStartNode(1, nM2_1);
 
+
      /* Event 3 (nothing) */
      int nM3_1 = michael->AddDialougeNode("Hey...");
      michael->AddNodeOption(nM3_1, 2, -1, "Hey...");
-     nodeFlags.push_back({ michael, nM2_13, &hasTalkToMichael2 });
 
      michael->SetEventStartNode(2, nM3_1);
 
@@ -646,44 +607,46 @@ void CGameManager::SetMaps() {
      /*wrong*/
      int nM4_wrong = michael->AddDialougeNode("Wha…What does this have to do with me?");
 
-     michael->AddNodeOption(nM4_1, 2, nM4_2, "One more thing, Mr. Turner. Do you drink whiskey?");
-     michael->AddNodeOption(nM4_2, 2, nM4_3, "...");
-     michael->AddNodeOption(nM4_3, 2, nM4_4, "Because we found a broken whiskey glass in the study.");
-     michael->AddNodeOption(nM4_4, 2, nM4_5, "...");
-     michael->AddNodeOption(nM4_5, 2, nM4_6, "...");
-     michael->AddNodeOption(nM4_6, 2, nM4_7, "No? You've been business partners for years, yet you didnt know he doesn't drink whiskey?");
-     michael->AddNodeOption(nM4_7, 2, nM4_8, "Fair enough,...So if he didn't drink, and you say you left before anyone else came by...");
-     michael->AddNodeOption(nM4_8, 2, NPC::PRESENT_EVIDENCE, "[Present Evidence?]");
-     michael->SetEvidenceRequest(nM4_8, 3009, nM4_1_correct1, nM4_wrong);
-     michael->SetEvidenceRequest(nM4_8, 3009, nM4_2_correct1, nM4_wrong);
+     michael->AddNodeOption(nM4_1, 3, nM4_2, "One more thing, Mr. Turner. Do you drink whiskey?");
+     michael->AddNodeOption(nM4_2, 3, nM4_3, "...");
+     michael->AddNodeOption(nM4_3, 3, nM4_4, "Because we found a broken whiskey glass in the study.");
+     michael->AddNodeOption(nM4_4, 3, nM4_5, "...");
+     michael->AddNodeOption(nM4_5, 3, nM4_6, "...");
+     michael->AddNodeOption(nM4_6, 3, nM4_7, "No? You've been business partners for years, yet you didnt know he doesn't drink whiskey?");
+     michael->AddNodeOption(nM4_7, 3, nM4_8, "Fair enough,...So if he didn't drink, and you say you left before anyone else came by...");
+     michael->AddNodeOption(nM4_8, 3, NPC::PRESENT_EVIDENCE, "[Present Evidence?]");
+     michael->SetEvidenceRequest(nM4_8, 3005, nM4_1_correct1, nM4_wrong);
+     michael->SetEvidenceRequest(nM4_8, 3006, nM4_2_correct1, nM4_wrong);
 
      /*correct1*/
-     michael->AddNodeOption(nM4_1_correct1, 2, nM4_1_correct2, "...");
-     michael->AddNodeOption(nM4_1_correct2, 2, nM4_1_correct3, "...");
-     michael->AddNodeOption(nM4_1_correct3, 2, nM4_1_correct4, "...");
-     michael->AddNodeOption(nM4_1_correct4, 2, nM4_1_correct5, "...");
-     michael->AddNodeOption(nM4_1_correct5, 2, nM4_1_correct6, "And?");
-     michael->AddNodeOption(nM4_1_correct6, 2, nM4_1_correct7, "...");
-     michael->AddNodeOption(nM4_1_correct7, 2, nM4_1_correct8, "...");
-     michael->AddNodeOption(nM4_1_correct8, 2, nM4_1_correct9, "...");
-     michael->AddNodeOption(nM4_1_correct9, 2, -1, "*nods head");
+     michael->AddNodeOption(nM4_1_correct1, 3, nM4_1_correct2, "...");
+     michael->AddNodeOption(nM4_1_correct2, 3, nM4_1_correct3, "...");
+     michael->AddNodeOption(nM4_1_correct3, 3, nM4_1_correct4, "...");
+     michael->AddNodeOption(nM4_1_correct4, 3, nM4_1_correct5, "...");
+     michael->AddNodeOption(nM4_1_correct5, 3, nM4_1_correct6, "And?");
+     michael->AddNodeOption(nM4_1_correct6, 3, nM4_1_correct7, "...");
+     michael->AddNodeOption(nM4_1_correct7, 3, nM4_1_correct8, "...");
+     michael->AddNodeOption(nM4_1_correct8, 3, nM4_1_correct9, "...");
+     michael->AddNodeOption(nM4_1_correct9, 3, -1, "*nods head");
      nodeFlags.push_back({ michael, nM4_1_correct9, &hasTalkToMichael3 });
 
      /*correct2*/
-     michael->AddNodeOption(nM4_2_correct1, 2, nM4_2_correct2, "...");
-     michael->AddNodeOption(nM4_2_correct2, 2, nM4_2_correct3, "...");
-     michael->AddNodeOption(nM4_2_correct3, 2, nM4_8, "*nods head");
+     michael->AddNodeOption(nM4_2_correct1, 3, nM4_2_correct2, "...");
+     michael->AddNodeOption(nM4_2_correct2, 3, nM4_2_correct3, "...");
+     michael->AddNodeOption(nM4_2_correct3, 3, nM4_8, "*nods head");
 
      /*wrong*/
-     michael->AddNodeOption(nM4_wrong, 2, nM4_8, "*nods head");
+     michael->AddNodeOption(nM4_wrong, 3, nM4_8, "*nods head");
 
-     michael->SetEventStartNode(2, nM4_1);
+     michael->SetEventStartNode(3, nM4_1);
+
+
 
      /* Event 5 (default from then on) */
      int nM5_1 = michael->AddDialougeNode("Hey...");
-     michael->AddNodeOption(nM5_1, 3, -1, "Hey...");
+     michael->AddNodeOption(nM5_1, 4, -1, "Hey...");
 
-     michael->SetEventStartNode(3, nM5_1);
+     michael->SetEventStartNode(4, nM5_1);
      /*--------------------------------------------------------------------------------------------------------------------------------------*/
     /*---- Trisha Lopez (The Maid) ----*/
      NPC* trisha = AddNPC(7, NPC::Trisha_Lopez, 10, 6);
@@ -726,45 +689,6 @@ void CGameManager::SetMaps() {
      batista1->AddNodeOption(nB1_2, 0, nB1_3, "...");
      batista1->AddNodeOption(nB1_3, 0, -1, "...");
 
-
-     /*---- Mr Harvey Denn (prosecutor) ----*/
-     harvey = AddNPC(10, NPC::Harvey_Denn, 5, 5);
-
-     int nH0 = harvey->AddDialougeNode("what up dawg");
-     int nH1 = harvey->AddDialougeNode("No problems, gentlemen.");
-     int nH2 = harvey->AddDialougeNode("I see... , so who do you think is the murderer?");
-     int nH3 = harvey->AddDialougeNode("Could you show me the evidence you collected?");
-     int nH4 = harvey->AddDialougeNode("No problems, gentlemen.");
-     int nH5 = harvey->AddDialougeNode("No problems, gentlemen.");
-     int nH6 = harvey->AddDialougeNode("No problems, gentlemen.");
-
-     harvey->AddNodeOption(nH0, 0, nH2, "Submit Report and Evidence");
-     harvey->AddNodeOption(nH0, 0, nH1, "Ah, nothing, just checking in on you. We will come back later to submit the report.");
-     harvey->AddNodeOption(nH1, 0, -1, "leave");
-     harvey->AddNodeOption(nH2, 0, nH3, "Emily Smith (the wife)");
-     harvey->AddNodeOption(nH2, 0, nH4, "Michael Turner (business partner)");
-     harvey->AddNodeOption(nH2, 0, nH5, "Sarah Collins (neighbor)");
-     harvey->AddNodeOption(nH2, 0, nH6, "Trisha Lopez (maid)");
-     harvey->AddNodeOption(nH3, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
-     harvey->AddNodeOption(nH4, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
-     harvey->AddNodeOption(nH5, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
-     harvey->AddNodeOption(nH3, 0, -1, "leave");
-     harvey->AddNodeOption(nH4, 0, -1, "leave");
-     harvey->AddNodeOption(nH5, 0, -1, "leave");
-
-     int nH1_correct = harvey->AddDialougeNode("I need more evidence");
-     int nH1_wrong = harvey->AddDialougeNode("NIL"); // nothing here just to ensure the function can run
-
-     for (int j = 1; j < 12; j++) {
-         harvey->SetEvidenceRequest(nH3, 3000 + j, nH1_correct, nH1_wrong);
-     }
-     for (int j = 1; j < 12; j++) {
-         harvey->SetEvidenceRequest(nH4, 3000 + j, nH1_correct, nH1_wrong);
-     }
-     for (int j = 1; j < 12; j++) {
-         harvey->SetEvidenceRequest(nH5, 3000 + j, nH1_correct, nH1_wrong);
-     }
-     harvey->AddNodeOption(nH1_correct, 0, nH3, "sure");
 
      /* --Event 2 (in study room) */
 
@@ -951,19 +875,6 @@ void CGameManager::SetMaps() {
        AddObstacle(2, CObstacle::BathTub, 0, 4, 1)->SetDialogue(0, "A big ahh bath tub, a rubber duck sits inside it");
        AddObstacle(2, CObstacle::Flower, 0, 2, 1)->SetDialogue(0, "A Potted Plant, Nothing much");
 
-       if (takeAPiss)
-       {
-           mapIntroDialogue[2] = {
-             {"Narrator", "Black locks the door behind him, relieving himself with a quiet sigh."},
-             {"Narrator", "As he finishes, his eyes land on something in the trash can"},
-             {"Narrator", "a glove, a dark tint staining the palm. He zips up, buckles his belt, then crouches down..."},
-             {"Narrator", "using a wad of toilet paper to pick it up without touching it directly."},
-             {"Narrator", "The stain isn't part of the glove's design — dark red, flaking at the edges where it's dried. Black brings it closer, catching a faint metallic scent."},
-             {"Black", "Smells like iron"},
-             { "Game", "[Suspicious glove added to your evidence inventory]" }
-
-           };
-       }
 
 
 
@@ -994,14 +905,7 @@ void CGameManager::SetMaps() {
        AddObstacle(4, CObstacle::Desk, 0, 2, 1);
        AddObstacle(4, CObstacle::Small_Shelf, 6, 2, 1);
        AddObstacle(2, CObstacle::Door, 3, 0, 0);
-       if (hasTalkToTrisha)
-       {
-           mapIntroDialogue[2] = {
-              {"Narrator", "Black walks in, a stack of folded clothes and a pile of unfolded clothes is seen on the bed."},
-              {"Black", "I guess she really was here folding clothes"},
 
-           };
-       }
 
    }
 
@@ -1062,16 +966,16 @@ void CGameManager::SetMaps() {
        AddObstacle(5, CObstacle::Window, 0, 4, 0)->SetDialogue(0, "A window with a stunning view to the living room sofa...");
        AddObstacle(5, CObstacle::Window, 0, 3, 0)->SetDialogue(0, "A window with a stunning view to the living room sofa...");
 
-       if (hasTalkToMichael3) {
-           mapIntroDialogue[5] = {
-               {"Narrator", "Black winces, pressing a hand to his stomach"},
-               {"Black", "Ah shucks,Too much coffee just now. Do you know where the toilet is?"},
-               {"Silas", "Just around the corner beside the Living room"},
-               {"Game", "[Head to the toilet, Black has to take a piss.]"}
+       //if (hasTalkToMichael3) {
+       //    mapIntroDialogue[5] = {
+       //        {"Narrator", "Black winces, pressing a hand to his stomach"},
+       //        {"Black", "Ah shucks,Too much coffee just now. Do you know where the toilet is?"},
+       //        {"Silas", "Just around the corner beside the Living room"},
+       //        {"Game", "[Head to the toilet, Black has to take a piss.]"}
 
-           };
-           takeAPiss = true;
-       }
+       //    };
+       //    takeAPiss = true;
+       //}
 
    }
 
@@ -1280,7 +1184,30 @@ void CGameManager::SetMaps() {
    {
        map[12].SetRoom(15, 10, 2, 0);//collin Porch
        map[12].SetName("Collin Porch");
+       for (int y = 0; y < 14; y += 3)//  tree col
+       {
+           AddObstacle(11, CObstacle::Tree, 5, y, 0);
+       }
+       for (int y = 0; y < 6; y++)// top flower bed
+       {
+           for (int x = 7; x < 19; x++)
+           {
+               AddObstacle(11, CObstacle::Flower, x, y, 0);
+           }
+       }
 
+       for (int y = 9; y < 15; y++)// bottom flower bed
+       {
+           for (int x = 7; x < 19; x++)
+           {
+               AddObstacle(11, CObstacle::Flower, x, y, 0);
+           }
+       }
+
+       mapIntroDialogue[11] = {
+         {"Black", "Dang, their porch looks the same"},
+         {"Silas", "fr"}
+       };
    }
 
 
@@ -1530,17 +1457,67 @@ void CGameManager::changeMaps(char input)
                 map[currentMap].RenderMap();
             }
 
-            if (!mapVisited[currentMap]) {
+            if (currentMap == 4 && hasTalkToTrisha)
+            {
+                mapIntroDialogue[4] = {
+                    {"Narrator", "Black walks in, a stack of folded clothes and a pile of unfolded clothes is seen on the bed."},
+                    {"Black", "I guess she really was here folding clothes"},
+                };
+
+                PlayIntroDialogue(currentMap);
+                hasTalkToTrisha = false;
+            }
+
+            if (currentMap == 1 && hasTalkedToMichaelAgain)
+            {
+                mapIntroDialogue[1] = {
+                    {"Narrator", "Black winces, pressing a hand to his stomach."},
+                    {"Black", "Ah shucks... too much coffee just now."},
+                    {"Black", "Do you know where the toilet is?"},
+                    {"Silas", "Just around the corner beside the living room."},
+                    {"Game", "[Head to the toilet, Black has to take a piss.]"}
+                };
+
+                PlayIntroDialogue(currentMap);
+
+                hasTalkedToMichaelAgain = false;
+                takeAPiss = true;
+            }
+
+            if (currentMap == 2 && takeAPiss)
+            {
+                mapIntroDialogue[2] = {
+                    {"Narrator", "Black locks the door behind him, relieving himself with a quiet sigh."},
+                    {"Narrator", "As he finishes, his eyes land on something in the trash can"},
+                    {"Narrator", "a glove, a dark tint staining the palm."},
+                    {"Narrator", "He zips up, buckles his belt, then crouches down..."},
+                    {"Narrator", "using a wad of toilet paper to pick it up without touching it directly."},
+                    {"Narrator", "The stain isn't part of the glove's design — dark red, flaking at the edges where it's dried."},
+                    {"Narrator", "Black brings it closer, catching a faint metallic scent."},
+                    {"Black", "Smells like iron"},
+                    {"Game", "[Suspicious glove added to your evidence inventory]"}
+                };
+
+                PlayIntroDialogue(currentMap);
+
+                Evidence.SetEvidence(CEvidence::Suspicious_Glove);
+                inventory->addToInventory(
+                    Evidence.GetName(),
+                    Evidence.GetId(),
+                    Evidence.GetDescription()
+                );
+                caseFileSystem.addEvidence(CEvidence::Suspicious_Glove);
+                caseFileSystem.addDescription(Evidence.GetDescription());
+
+                takeAPiss = false;
+            }
+
+            if (!mapVisited[currentMap])
+            {
                 PlayIntroDialogue(currentMap);
                 mapVisited[currentMap] = true;
-                if (currentMap == 2 && takeAPiss) {
-                    Evidence.SetEvidence(CEvidence::Suspicious_Glove);
-                    inventory->addToInventory(Evidence.GetName(), Evidence.GetId(), Evidence.GetDescription());
-                    caseFileSystem.addEvidence(CEvidence::Suspicious_Glove);
-                    caseFileSystem.addDescription(Evidence.GetDescription());
-                    takeAPiss = false;
-                }
             }
+
 
             CUI::GetInstance().typeText("You are now at "); CUI::GetInstance().typeText(map[currentMap].GetName()); CUI::GetInstance().typeText(".\n");
         }
@@ -1579,20 +1556,8 @@ void CGameManager::changeMaps(char input)
             if (NPCInteract->isSuspect() == true) {
                 caseFileSystem.addSuspect(NPCInteract->getPerson());
             }
-            if (harvey->getIsEvidenceValid() == true) {
-                switch (harvey->getPath()) {
-                case 3:
-                    EmilyEndingDialogue();
-                    break;
-                case 4:
-                    MichaelEndingDialogue();
-                    break;
-                case 5:
-                    SarahEndingDialogue();
-                    break;
-                }
-            }
-            else if (NPCInteract == batista3) 
+
+            if (NPCInteract == batista3) 
             {
 
                 if (hasPassCandle) {
@@ -1616,13 +1581,14 @@ void CGameManager::changeMaps(char input)
             }
 
             NPCInteract->dialougesystem(&map[currentMap], inventory);
-            if (harvey->getNumOfWrongEvidence() != 0) {
-                int num = harvey->getNumOfWrongEvidence();
-                string text = "I need more evidence, you got " + std::to_string(num) + " evidence wrong";
-                displayDialogue("Harvey", text);
-            }
             checkNodeItems(NPCInteract);
             checkNodeEvidence(NPCInteract);
+            if (whiskeyGlassRptCollected && hasShownEmilyGlass && michael->getCurrentEvent() == 2)
+            {
+                michael->Addeventflag();
+                whiskeyGlassRptCollected = false;
+            }
+
             checkNodeFlags(NPCInteract);
 
             if (hasShownEmilyEvi1) {
@@ -1651,6 +1617,8 @@ void CGameManager::changeMaps(char input)
             }
             if (hasTalkToMichael3) {
                 michael->Addeventflag();
+                hasTalkedToMichaelAgain = true;
+                takeAPiss = true;
                 hasTalkToMichael3 = false;
             }
             int removedID = NPCInteract->getLastRemovedEvidenceID();
@@ -1673,32 +1641,18 @@ void CGameManager::changeMaps(char input)
         }
         else if (ObstacleInteract != nullptr) {
             bool isEvidenceTile = false;
-            bool puzzleActivated = false;
             int evidenceIndex = -1;
-            for (int i = 0; i < MAX_EVIDENCE; i++) {
+            for (int i = 0; i < MAX_EVIDENCE; i++) { // change this part too and added evidence index
                 if (ObstacleInteract == Evidenceptr[i]) {
                     if (i == 9) {
-                        if (puzzleSystem.getCompletion()) {
-                            isEvidenceTile = true;
-                        }
-                        else {
-                            puzzleSystem.setBool(true);
-                            puzzleSystem.setPuzzle("lock");
-                            puzzleActivated = true;
-
-                            // NEW: override with custom dialogue instead of the obstacle's default line
-                            displayDialogue("Narrator", "A peculiar safe catches your eye... looks like it needs solving.");
-                            puzzleSystem.renderPuzzles();
-                        }
+                        puzzleSystem.setBool(true);
+                        puzzleSystem.setPuzzle("lock");
                     }
-                    else {
-                        isEvidenceTile = true;
-                        evidenceIndex = i;
-                        break;
-                    }
+                    isEvidenceTile = true;
+                    evidenceIndex = i;
+                    break;
                 }
             }
-
 
             if (isEvidenceTile) {
                 checkForAllEvidence(ObstacleInteract);
@@ -1725,9 +1679,6 @@ void CGameManager::changeMaps(char input)
                 case 3009:
                     shoeboxFound = true;
                     break;
-                case 3005:
-                    whiskeyGlassRptCollected = true;
-                    break;  
                 }
                 if (candlestickFound && whiskeyGlassFound && gunpowderFound) 
                 {
@@ -1742,12 +1693,9 @@ void CGameManager::changeMaps(char input)
                 {
                     sarah->Addeventflag();
                 }
-                if (whiskeyGlassRptCollected && hasShownEmilyGlass && hasTalkToMichael2)
-                {
-                    michael->Addeventflag();
-                }
+
             }
-            else if (!puzzleActivated) {
+            else {
                 CItem* foundItem = ObstacleInteract->GetItemPtr();
                 if (foundItem != nullptr) {
                     inventory->addToInventory(foundItem->GetItemName(), foundItem->GetId(), foundItem->GetInventoryDialogue());
@@ -1834,9 +1782,11 @@ void CGameManager::checkNodeEvidence(NPC* npc) {
             inventory->addToInventory(Evidence.GetName(), Evidence.GetId(), Evidence.GetDescription());
             caseFileSystem.addEvidence(r.evidenceType);
             caseFileSystem.addDescription(Evidence.GetDescription());
+            if (r.evidenceType == CEvidence::BrokenWhiskey_Glass_Report) {
+                whiskeyGlassRptCollected = true;
+            }
         }
     }
-        
 }
 
 void CGameManager::displayDialogue(string c, string t) {
@@ -1895,19 +1845,7 @@ void CGameManager::RunGame() {
 
         else if (puzzleSystem.getBool() == true) {
             puzzleSystem.inputNum(input);
-            if (input == 'b') {
-                puzzleSystem.setBool(false);
-                map[currentMap].RenderMap();
-            }
-            else {
-                puzzleSystem.renderPuzzles();
-                if (puzzleSystem.getActivateDialogue()) {
-                    map[currentMap].RenderMap();
-                    displayDialogue("Narrator", "The safe has been unlocked!");
-                    puzzleSystem.setActivateDialogue(false);
-
-                }
-            }
+            puzzleSystem.renderPuzzles();
         }
 
         else if (inventory->getInventoryState() == false) {

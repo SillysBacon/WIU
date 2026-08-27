@@ -52,8 +52,7 @@ void PuzzleSystem::renderPuzzles() {
 		if (userAnswer.length() == 6) {
 			cout << "Press enter to submit";
 		}
-		cout << systemMsg << endl;
-		cout << "Press [B] to exit";
+		cout << systemMsg;
 	}
 }
 
@@ -251,8 +250,6 @@ void PuzzleSystem::inputNum(int input) {
 				userAnswer = "";
 				puzzleRunning = false;
 				systemMsg = "The code works!";
-				puzzleCompleted = true;
-				activateDialogue = true;
 			}
 			else {
 				userAnswer = "";
@@ -268,9 +265,6 @@ void PuzzleSystem::inputNum(int input) {
 		if (userAnswer.length() > 0) {
 			userAnswer.erase(userAnswer.length() - 1, 1);
 		}
-	}
-	else if (input == 'b') {
-		puzzleRunning = false;
 	}
 }
 
@@ -288,18 +282,6 @@ bool PuzzleSystem::getBool() {
 	return puzzleRunning;
 }
 
-bool PuzzleSystem::getCompletion() {
-	return puzzleCompleted;
-}
-
-bool PuzzleSystem::getActivateDialogue() {
-	return activateDialogue;
-}
-
-void PuzzleSystem::setActivateDialogue(bool activation) {
-	activateDialogue = activation;
-}
-
 void PuzzleSystem::setBool(bool state) {
 	puzzleRunning = state;
 }
@@ -314,6 +296,5 @@ PuzzleSystem::PuzzleSystem() {
 	systemMsg = "";
 	puzzleCompleted = false;
 	puzzleRunning = false;
-	activateDialogue = false;
 	numberPosition = 0;
 }
