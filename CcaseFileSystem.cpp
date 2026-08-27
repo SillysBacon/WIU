@@ -191,10 +191,6 @@ void CcaseFileSystem::addSuspect(NPC::People name)
 	discoveredSuspect.push_back(p);
 }
 
-void CcaseFileSystem::addDocument()
-{
-
-}
 
 void CcaseFileSystem::showFiles(char input) {
 	if (input == 'c') {
