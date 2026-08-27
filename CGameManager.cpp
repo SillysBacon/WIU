@@ -125,17 +125,19 @@ void CGameManager::checkForAllEvidence(CObstacle* oPtr)
     }
 }
 
+// CGameManager.cpp
 void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence::Evidence e)
 {
     if (oPtr != nullptr && oPtr == ptr) {
         Evidence.SetEvidence(e);
         for (int i = 0; i < GetDialogue_Length(e); i++) {
-            displayDialogue("Narrator", oPtr->runDialogue(e, i));
+            displayDialogue("Narrator", oPtr->runDialogue(e, i)); //change to Narrator, added this
         }
-        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), "");
+        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), ""); //change 9 to getevidenceID
         caseFileSystem.addEvidence(e);
+        caseFileSystem.addDescription(Evidence.GetDescription());
         Evidence.SetFound(true);
-        ptr = nullptr;
+        ptr = nullptr; // consume it so it can't be picked up twice
     }
 }
 
@@ -518,15 +520,28 @@ void CGameManager::SetMaps() {
      nodeFlags.push_back({ batista2, nB3_5, &IsProsecutorAvailable });//added this
 
      /* --Event 4 (in Kitchen) */
-     NPC* batista3 = AddNPC(7, NPC::Angelo_Batista, 12, 4);
+     batista3 = AddNPC(7, NPC::Angelo_Batista, 12, 4);
      int nB4_1 = batista3->AddDialougeNode("Anything I'll be here...");
      batista3->AddNodeOption(nB4_1, 0, -1, "Ok Cabron...");
 
      /* --Event 5 (in Kitchen if there is report) */ //add if there is report condition
-     int nB5_1 = batista3->AddDialougeNode("Oh hey, the reports from the forensics came back, here you go");
-     int nB5_2 = batista3->AddDialougeNode("(You took the report, it is in your evidence)");
-     batista3->AddNodeOption(nB5_1, 1, nB5_2, "Thanks");
-     batista3->AddNodeOption(nB5_2, 1, -1, "...");
+     //int nB5_1 = batista3->AddDialougeNode("Oh hey, the reports from the forensics came back, here you go");
+     int nB5_1_candle = batista3->AddDialougeNode("Oh hey, the reports from the forensics came back, here you go (You Recieved a Brass Candlestick Report)");
+     int nB5_1_glass = batista3->AddDialougeNode("Oh hey, the reports from the forensics came back, here you go (You Recieved a Broken Whiskey Glass Report)");
+     int nB5_1_glove = batista3->AddDialougeNode("Oh hey, the reports from the forensics came back, here you go (You Recieved a Suspicious Glove Report)");
+     nodeEvidence.push_back({ batista3, nB5_1_candle, CEvidence::Brass_Candlestick_Report });
+     nodeEvidence.push_back({ batista3, nB5_1_glass, CEvidence::BrokenWhiskey_Glass_Report });
+     nodeEvidence.push_back({ batista3, nB5_1_glove, CEvidence::Suspicious_Glove_Report });
+     batista3->AddNodeOption(nB5_1_candle, 0, -1, "Take Brass Candlestick Report");
+     batista3->AddNodeOption(nB5_1_glass, 0, -1, "Take Broken Whiskey Glass Report");
+     batista3->AddNodeOption(nB5_1_glove, 0, -1, "Take Broken Whiskey Glass Report");
+
+     nB4_1_id = nB4_1;
+     //nB5_1_id = nB5_1;
+     
+     nB5_1_candle_id = nB5_1_candle;
+     nB5_1_glass_id = nB5_1_glass;
+     nB5_1_glove_id = nB5_1_glove;
 
      /*Forensics*/
      NPC* forensics1 = AddNPC(6, NPC::Forensics, 2, 6);
@@ -549,14 +564,14 @@ void CGameManager::SetMaps() {
      forensics2->AddNodeOption(nF2_2, 0, NPC::PRESENT_EVIDENCE, "[Give Evidence]");
      forensics2->SetEvidenceRequest(nF2_2, 3001, nF2_correct, nF2_wrong);
      forensics2->SetEvidenceRequest(nF2_2, 3002, nF2_correct, nF2_wrong);
-     forensics2->SetEvidenceRequest(nF2_2, 3003, nF2_correct, nF2_wrong);
+     forensics2->SetEvidenceRequest(nF2_2, 3004, nF2_correct, nF2_wrong);
      forensics2->AddNodeOption(nF2_2, 0, nF2_1, "Back");
 
      forensics2->AddNodeOption(nF2_correct, 0, nF2_3, "No need, just pass it to Detective Batista.");
      forensics2->AddNodeOption(nF2_3, 0, -1, "...");
 
-     forensics2->AddNodeOption(nF2_wrong, 0, NPC::PRESENT_EVIDENCE, "[Give Evidence]");
-     forensics2->AddNodeOption(nF2_wrong, 0, nF2_2, "back");
+     forensics2->AddNodeOption(nF2_wrong, 0, nF2_2, "Back");
+
 
 
     /* Policia*/
@@ -1061,12 +1076,12 @@ void CGameManager::SetMaps() {
     Connect[5] = { 1, 7 };
     Connect[6] = { 1 };
     Connect[7] = { 1, 5 };
-    Connect[8] = { 0, 1, 9, 10 };
+    Connect[8] = { 9, 12 };
     Connect[9] = { 8 };
     Connect[10] = { 0, 1 };
     Connect[11] = { 0, 6 };
     Connect[12] = { 0, 8 };
-    Connect[13] = { 0, 1 };
+    Connect[13] = { 0, 1, 12 };
     Connect[14] = { 1, 2, 3, 4 };
 
 }
@@ -1237,20 +1252,58 @@ void CGameManager::changeMaps(char input)
             if (NPCInteract->isSuspect() == true) {
                 caseFileSystem.addSuspect(NPCInteract->getPerson());
             }
-            NPCInteract->dialougesystem(&map[currentMap],inventory);
+
+            if (NPCInteract == batista3) 
+            {
+
+                if (hasPassCandle) {
+                    batista3->SetEventStartNode(0, nB5_1_candle_id);
+                    hasPassCandle = false;
+                }
+
+                else if (hasPassGlass) {
+                    batista3->SetEventStartNode(0, nB5_1_glass_id);
+                    hasPassGlass = false;
+                }
+
+                else if (hasPassGlove) {
+                    batista3->SetEventStartNode(0, nB5_1_glove_id);
+                    hasPassGlove = false;
+                }
+
+                else {
+                    batista3->SetEventStartNode(0, nB4_1_id);
+                }
+            }
+
+            NPCInteract->dialougesystem(&map[currentMap], inventory);
             checkNodeItems(NPCInteract);
+            checkNodeEvidence(NPCInteract);
             checkNodeFlags(NPCInteract);
+
             if (hasShownEmilyEvi1) {
                 emily->Addeventflag();
-                hasShownEmilyEvi1 = false;
+                hasShownEmilyEvi1 = false; // added this to make sure it dont add again
             }
             if (hasFinishEmily) {
                 emily->Addeventflag();
-                hasFinishEmily = false;
+                hasFinishEmily = false; // added this to make sure it dont add again
             }
             if (hasTalkToSarah1) {
                 sarah->Addeventflag();
-                hasTalkToSarah1 = false; 
+                hasTalkToSarah1 = false; // added this to make sure it dont add again
+            }
+            int removedID = NPCInteract->getLastRemovedEvidenceID();
+            switch (removedID) {
+            case 3001:
+                hasPassCandle = true;
+                break;
+            case 3002:
+                hasPassGlass = true; // adjust name to whatever you actually called it
+                break;
+            case 3004:
+                hasPassGlove = true; // adjust name to whatever you actually called it
+                break;
             }
             map[currentMap].RenderMap();
 
@@ -1261,7 +1314,7 @@ void CGameManager::changeMaps(char input)
         else if (ObstacleInteract != nullptr) {
             bool isEvidenceTile = false;
             int evidenceIndex = -1;
-            for (int i = 0; i < MAX_EVIDENCE; i++) {
+            for (int i = 0; i < MAX_EVIDENCE; i++) { // change this part too and added evidence index
                 if (ObstacleInteract == Evidenceptr[i]) {
                     if (i == 9) {
                         puzzleSystem.setBool(true);
@@ -1276,7 +1329,7 @@ void CGameManager::changeMaps(char input)
             if (isEvidenceTile) {
                 checkForAllEvidence(ObstacleInteract);
 
-                switch (ObstacleInteract->GetEvidenceId()) {
+                switch (ObstacleInteract->GetEvidenceId()) { // adjust if the getter name differs
                 case 3001:
                     candlestickFound = true;
                     break;
@@ -1285,6 +1338,9 @@ void CGameManager::changeMaps(char input)
                     break;
                 case 3003:
                     gunpowderFound = true;
+                    break;
+                case 3004:
+                    gloveFound = true;
                     break;
                 case 3010:
                     bankStatementFound = true;
@@ -1351,6 +1407,7 @@ void CGameManager::checkNodeItems(NPC* npc) {
     for (int i = 0; i < (int)nodeItems.size(); i++) {
         NodeItems r = nodeItems[i];
         if (r.npc == npc && npc->getCurrentNode() == r.node) {
+            bool itemExists = false;
             for (int j = 0; j < inventory->GetItemCount(); j++) {
                 if (inventory->GetInventoryID(j) == r.itemType) {
                     itemExists = true;
@@ -1365,8 +1422,34 @@ void CGameManager::checkNodeItems(NPC* npc) {
             if (r.itemType == CItem::MASTER_BEDROOM_KEY) {
                 IsBedroomkeyPresent = true;
             }
+            if (r.itemType == CItem::NEIGHBOUR_HOUSE_KEY) {   
+                IsCollinAvailable = true;
+            }
         }
     }
+}
+
+void CGameManager::checkNodeEvidence(NPC* npc) {
+    for (int i = 0; i < (int)nodeEvidence.size(); i++) {
+        NodeEvidence r = nodeEvidence[i];
+        if (r.npc == npc && npc->getCurrentNode() == r.node) {
+            Evidence.SetEvidence(r.evidenceType);
+            bool alreadyHas = false;
+            for (int j = 0; j < inventory->GetItemCount(); j++) {
+                if (inventory->GetInventoryID(j) == Evidence.GetId()) {
+                    alreadyHas = true;
+                    break;
+                }
+            }
+            if (alreadyHas) {
+                continue;
+            }
+            inventory->addToInventory(Evidence.GetName(), Evidence.GetId(), Evidence.GetDescription());
+            caseFileSystem.addEvidence(r.evidenceType);
+            caseFileSystem.addDescription(Evidence.GetDescription());
+        }
+    }
+        
 }
 
 void CGameManager::displayDialogue(string c, string t) {

@@ -11,10 +11,10 @@ void NPC::setPerson(People p) {
 		age = 39;
 		occupation = "Neighbour / Freelance Interior Designer";
 		description = "Lives alone in the property adjoining the Smith estate. Soft-spoken "
-        "and quick to smile, though it rarely reaches her eyes. Claims no alibi "
-        "for the night of the murder - she says she was home, but no one can "
-        "confirm it. A years-long property dispute with the Smiths over a "
-        "shared fence line has left more bad blood between the households than "
+			"and quick to smile, though it rarely reaches her eyes. Claims no alibi "
+			"for the night of the murder - she says she was home, but no one can "
+			"confirm it. A years-long property dispute with the Smiths over a "
+			"shared fence line has left more bad blood between the households than "
 			"she initially let on.";
 		killerStatus = false;
 		break;
@@ -149,9 +149,6 @@ void NPC::AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, str
 		DialougeTree[nodeIndex].options.push_back({ text, Go_To_Node_Index, eventState });
 	}
 }
-string NPC::GetDescription() {
-	return description;
-}
 
 string NPC::getName() {
 	return name;
@@ -171,6 +168,10 @@ string NPC::getOccupation() {
 
 bool NPC::getKillerStatus() {
 	return killerStatus;
+}
+
+string NPC::getDialogue() {
+	return dialogue;
 }
 
 bool NPC::isSuspect()
@@ -280,6 +281,7 @@ void NPC::dialougesystem(CMap* map, inventorySystem* inventory) {
 					if (evidenceCorrect && matchedIndex >= 0 && matchedIndex < (int)it->second.CorrectNode.size()) {
 						currentNode = it->second.CorrectNode[matchedIndex];
 						if (person == Forensics) {
+							lastRemovedEvidenceID = expectedIDs[matchedIndex];
 							inventory->removeFromInventory(PresentPosition);
 						}
 					}
@@ -382,6 +384,10 @@ void NPC::showPresentEvidence(inventorySystem* inventory) {
 
 bool NPC::GetisPresentOpen() {
 	return isPresentEvidenceOpen;
+}
+
+int NPC::getLastRemovedEvidenceID() {
+	return lastRemovedEvidenceID;
 }
 
 NPC::NPC() {

@@ -35,6 +35,7 @@ class NPC :
 	int selectedOption = 0;
 	int Eventstate;
 	int PresentPosition = 0;
+	int lastRemovedEvidenceID = -1;
 	bool isPresentEvidenceOpen = false;
 	bool evidenceCorrect = false;
 	int matchedIndex = -1; // added this
@@ -44,6 +45,7 @@ class NPC :
 		int incorrectNode;
 	};
 	unordered_map<int, IsEvidenceCorrect> evidenceRequests;
+
 public:
 	enum People
 	{
@@ -72,6 +74,8 @@ public:
 	string setDialogue(string text);
 	int getCurrentNode();//for items
 	int getCurrentEvent();//for items
+	int getLastRemovedEvidenceID();
+
 
 	void ResetDialogueTree();
 	void RenderDialougeSystem(bool typetext, CMap* map);

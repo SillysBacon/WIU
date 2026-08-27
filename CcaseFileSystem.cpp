@@ -23,7 +23,6 @@ void CcaseFileSystem::changeFiles(int input) {
 			if (currentFiles < (int)discoveredDocument.size() - 1) currentFiles++;
 		}
 		break;
-
 	case 75:
 		if (currentView == CFSView::EVIDENCE) {
 			if (currentEvidenceFiles > 0) currentEvidenceFiles--;
@@ -36,7 +35,10 @@ void CcaseFileSystem::changeFiles(int input) {
 		}
 		break;
 	}
+
+	
 }
+
 void CcaseFileSystem::addDocument()
 {
 	discoveredDocument = {
@@ -86,7 +88,6 @@ void CcaseFileSystem::addDocument()
 	};
 }
 
-
 void CcaseFileSystem::addDescription(string words)
 {
 	evidenceDescription = words;
@@ -120,7 +121,7 @@ void CcaseFileSystem::renderFiles() {
 	{
 		cout << "             " << currentFiles + 1 << " / " << discoveredDocument.size() << endl;
 		cout << "#=============================#" << endl;
-		cout << discoveredDocument[currentFiles] << endl << endl;
+		cout << discoveredDocument[currentFiles] << endl << endl << "Description:" << endl; //still need getDoc func here for push
 		cout << "#=============================#";
 	}
 	
@@ -129,16 +130,17 @@ void CcaseFileSystem::renderFiles() {
 void CcaseFileSystem::renderEvidenceFiles() {
 	CUI::GetInstance().Clear();
 	if (discoveredEvidence.empty()) {
+
 		cout << "#=============================#" << endl << endl;
 		cout << "No evidences collected yet" << endl << endl;
 		cout << "#=============================#";
+
 	}
 	else
 	{
 		cout << "             " << currentEvidenceFiles + 1 << " / " << discoveredEvidence.size() << endl;
 		cout << "#=============================#" << endl;
-		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl
-			<< "Description:" << discoveredEvidence[currentEvidenceFiles].GetDescription() << endl;
+		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl << "Description:" + evidenceDescription << endl;
 		cout << "#=============================#";
 	}
 }
@@ -158,7 +160,7 @@ void CcaseFileSystem::renderSuspectFiles()
 		cout << discoveredSuspect[currentSuspectFiles].getName() << endl;
 		cout << "Age: " << discoveredSuspect[currentSuspectFiles].getAge() << endl;
 		cout << "Occupation: " << discoveredSuspect[currentSuspectFiles].getOccupation() << endl;
-		cout << "Description: " << discoveredSuspect[currentSuspectFiles].GetDescription() << endl;
+		//cout << "Description: " << endl;
 		cout << "#=============================#";
 	}
 }
@@ -189,6 +191,11 @@ void CcaseFileSystem::addSuspect(NPC::People name)
 	discoveredSuspect.push_back(p);
 }
 
+void CcaseFileSystem::addDocument()
+{
+
+}
+
 void CcaseFileSystem::showFiles(char input) {
 	if (input == 'c') {
 		isCFSOpen = !isCFSOpen;
@@ -211,10 +218,6 @@ bool CcaseFileSystem::getCFSState() {
 //	currentNotes[currentSuspectFiles]++;
 //	renderSuspectFiles();
 //	
-//}
-//
-//void CcaseFileSystem::renderNotes() {
-//
 //}
 
 CcaseFileSystem::CcaseFileSystem() {
