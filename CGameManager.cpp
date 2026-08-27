@@ -14,6 +14,47 @@ CObstacle* CGameManager::AddObstacle(int mapIndex, CObstacle::Furniture type, in
     mapObstacles[mapIndex].push_back(Furniture);
     return Furniture;
 }
+void CGameManager::EmilyEndingDialogue()
+{
+    displayDialogue("Narrator", "After further investigation...");
+    displayDialogue("Narrator", "And the court trial...");
+    displayDialogue("Narrator", "Emily was found guilty");
+    displayDialogue("Narrator", "however...");
+    displayDialogue("Narrator", "she was not the killer");
+    displayDialogue("Narrator", "The killer is still yet to be found");
+    displayDialogue("Narrator", "Lurking in the shadows...");
+    displayDialogue("Narrator", "He/she managed to escape this time...");
+    displayDialogue("Narrator", "Will there be a next time?...");
+    displayDialogue("Narrator", "THE END");
+    IsGameRunning = false;
+}
+void CGameManager::MichaelEndingDialogue()
+{
+    displayDialogue("Narrator", "After further investigation...");
+    displayDialogue("Narrator", "And the court trial...");
+    displayDialogue("Narrator", "Michael was found...");
+    displayDialogue("Narrator", "GUILTY");
+    displayDialogue("Narrator", "Sentenced to jail for life");
+    displayDialogue("Narrator", "With no friend or family to visit him");
+    displayDialogue("Narrator", "Repaying for his sins in Willow Creaks bad people prison");
+    displayDialogue("Narrator", "THE END");
+    IsGameRunning = false;
+
+}
+void CGameManager::SarahEndingDialogue()
+{
+    displayDialogue("Narrator", "After further investigation...");
+    displayDialogue("Narrator", "And the court trial...");
+    displayDialogue("Narrator", "Sarah was found guilty");
+    displayDialogue("Narrator", "however...");
+    displayDialogue("Narrator", "she was not the killer");
+    displayDialogue("Narrator", "The killer is still yet to be found");
+    displayDialogue("Narrator", "Lurking in the shadows...");
+    displayDialogue("Narrator", "He/she managed to escape this time...");
+    displayDialogue("Narrator", "Will there be a next time?...");
+    displayDialogue("Narrator", "THE END");
+    IsGameRunning = false;
+}
 
 NPC* CGameManager::AddNPC(int mapIndex, NPC::People type, int x, int y)
 {
@@ -685,6 +726,45 @@ void CGameManager::SetMaps() {
      batista1->AddNodeOption(nB1_2, 0, nB1_3, "...");
      batista1->AddNodeOption(nB1_3, 0, -1, "...");
 
+
+     /*---- Mr Harvey Denn (prosecutor) ----*/
+     harvey = AddNPC(10, NPC::Harvey_Denn, 5, 5);
+
+     int nH0 = harvey->AddDialougeNode("what up dawg");
+     int nH1 = harvey->AddDialougeNode("No problems, gentlemen.");
+     int nH2 = harvey->AddDialougeNode("I see... , so who do you think is the murderer?");
+     int nH3 = harvey->AddDialougeNode("Could you show me the evidence you collected?");
+     int nH4 = harvey->AddDialougeNode("No problems, gentlemen.");
+     int nH5 = harvey->AddDialougeNode("No problems, gentlemen.");
+     int nH6 = harvey->AddDialougeNode("No problems, gentlemen.");
+
+     harvey->AddNodeOption(nH0, 0, nH2, "Submit Report and Evidence");
+     harvey->AddNodeOption(nH0, 0, nH1, "Ah, nothing, just checking in on you. We will come back later to submit the report.");
+     harvey->AddNodeOption(nH1, 0, -1, "leave");
+     harvey->AddNodeOption(nH2, 0, nH3, "Emily Smith (the wife)");
+     harvey->AddNodeOption(nH2, 0, nH4, "Michael Turner (business partner)");
+     harvey->AddNodeOption(nH2, 0, nH5, "Sarah Collins (neighbor)");
+     harvey->AddNodeOption(nH2, 0, nH6, "Trisha Lopez (maid)");
+     harvey->AddNodeOption(nH3, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
+     harvey->AddNodeOption(nH4, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
+     harvey->AddNodeOption(nH5, 0, NPC::PRESENT_EVIDENCE, "[Present Evidence]");
+     harvey->AddNodeOption(nH3, 0, -1, "leave");
+     harvey->AddNodeOption(nH4, 0, -1, "leave");
+     harvey->AddNodeOption(nH5, 0, -1, "leave");
+
+     int nH1_correct = harvey->AddDialougeNode("I need more evidence");
+     int nH1_wrong = harvey->AddDialougeNode("NIL"); // nothing here just to ensure the function can run
+
+     for (int j = 1; j < 12; j++) {
+         harvey->SetEvidenceRequest(nH3, 3000 + j, nH1_correct, nH1_wrong);
+     }
+     for (int j = 1; j < 12; j++) {
+         harvey->SetEvidenceRequest(nH4, 3000 + j, nH1_correct, nH1_wrong);
+     }
+     for (int j = 1; j < 12; j++) {
+         harvey->SetEvidenceRequest(nH5, 3000 + j, nH1_correct, nH1_wrong);
+     }
+     harvey->AddNodeOption(nH1_correct, 0, nH3, "sure");
 
      /* --Event 2 (in study room) */
 
@@ -1499,8 +1579,20 @@ void CGameManager::changeMaps(char input)
             if (NPCInteract->isSuspect() == true) {
                 caseFileSystem.addSuspect(NPCInteract->getPerson());
             }
-
-            if (NPCInteract == batista3) 
+            if (harvey->getIsEvidenceValid() == true) {
+                switch (harvey->getPath()) {
+                case 3:
+                    EmilyEndingDialogue();
+                    break;
+                case 4:
+                    MichaelEndingDialogue();
+                    break;
+                case 5:
+                    SarahEndingDialogue();
+                    break;
+                }
+            }
+            else if (NPCInteract == batista3) 
             {
 
                 if (hasPassCandle) {
@@ -1524,6 +1616,11 @@ void CGameManager::changeMaps(char input)
             }
 
             NPCInteract->dialougesystem(&map[currentMap], inventory);
+            if (harvey->getNumOfWrongEvidence() != 0) {
+                int num = harvey->getNumOfWrongEvidence();
+                string text = "I need more evidence, you got " + std::to_string(num) + " evidence wrong";
+                displayDialogue("Harvey", text);
+            }
             checkNodeItems(NPCInteract);
             checkNodeEvidence(NPCInteract);
             checkNodeFlags(NPCInteract);
