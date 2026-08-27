@@ -7,6 +7,8 @@
 #include <string>
 #include <conio.h>
 #include <vector>
+#include <map>
+#include <set>
 #include <unordered_map>
 using namespace std;
 
@@ -40,11 +42,16 @@ class NPC :
 	bool evidenceCorrect = false;
 	int matchedIndex = -1; // added this
 	struct IsEvidenceCorrect {
-		vector<int> ExpectedIDs; //turned this to a list
-		vector<int> CorrectNode; //same for this
+		vector<int> ExpectedIDs; //same for this
 		int incorrectNode;
+		int CorrectNode;
 	};
 	unordered_map<int, IsEvidenceCorrect> evidenceRequests;
+	int path;
+	int storeEvidenceId[4];
+	int evidenceCounter = 0;
+	bool isEvidenceValid;
+	int numOfWrongEvidence;
 
 public:
 	enum People
@@ -82,6 +89,7 @@ public:
 	void dialougesystem(CMap* map, inventorySystem* inventory);
 	int AddDialougeNode(string npcDialouge, string ovrdSpeaker = ""); //ovrdSpeaker = overide speaker for Narrator
 	void AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, string text);
+	void AddNodeEnding(int nodeIndex, int eventState, int Go_To_Node_Index, string text, int selPath);
 	void Addeventflag();
 	vector<int> GetVisibleOptions(const DialogueNode& node);
 	void presentEvidence(inventorySystem* Inventory, vector<int>& ids, char input); //change id to vector
@@ -90,6 +98,11 @@ public:
 	void showPresentEvidence(inventorySystem* inventory);
 	bool GetisPresentOpen();
 	string GetDescription();
+	void setIsEvidenceValid(bool input);
+	bool getIsEvidenceValid();
+	int getPath();
+	int getNumOfWrongEvidence();
+	int checkEvidence(int evidenceCounter, int currentNode, const set<int>& evidenceInput);
 	static const int PRESENT_EVIDENCE = -2;
 
 	void SetEvidenceRequest(int nodeIndex, int expectedItemID, int correctNode, int incorrectNode);
