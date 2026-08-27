@@ -82,7 +82,7 @@ void CMap::RenderMap() {
                 temp = temp + MAP[i][j];
                 cout << temp;
             }
-            else if(MAP[i][j] == '\0') {
+            else if (MAP[i][j] == '\0') {
                 cout << "  ";
             }
             else {

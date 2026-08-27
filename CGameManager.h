@@ -84,9 +84,9 @@ class CGameManager
 	bool hasTalkToTrisha = false;
 	bool hasShownEmilyGlass = false;
 	bool hasTalkToMichael1 = false;
-	bool hasTalkToMichael2 = false;
 	bool hasTalkToMichael3 = false;
 	bool takeAPiss = false;
+	bool hasTalkedToMichaelAgain = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;

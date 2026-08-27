@@ -269,8 +269,8 @@ void CUI::HandleEnter() {
 
 void CUI::RenderStartMenu() {
     Clear();
-    string title = "A Liar's Paradox";
-    int boxWidth = (int)title.length() + 6;
+    string title = "\033[31mTHE FINAL VERDICT\033[0m";
+    int boxWidth = (int)title.length() + -3;
     cout << "+" << std::string(boxWidth - 2, '~') << "+\n";
     cout << "|  ";
     cout << title;
@@ -280,10 +280,10 @@ void CUI::RenderStartMenu() {
 
     for (int i = 0; i < MaxStartOptions; i++) {
         if (i == StartMenuPos) {
-            cout << "   ~> " << StartMenuOptions[i] << endl << endl;
+            cout << "    ~>  " << StartMenuOptions[i] << endl << endl;
         }
         else {
-            cout << "      " << StartMenuOptions[i] << endl << endl;
+            cout << "        " << StartMenuOptions[i] << endl << endl;
         }
     }
 }
