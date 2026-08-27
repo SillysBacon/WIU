@@ -153,6 +153,9 @@ void NPC::AddNodeOption(int nodeIndex, int eventState, int Go_To_Node_Index, str
 string NPC::getName() {
 	return name;
 }
+string NPC::GetDescription() {
+	return description;
+}
 
 char NPC::getSymbol() {
 	return symbol;
