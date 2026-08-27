@@ -76,10 +76,11 @@ class CGameManager
 	/*Has interact to*/
 	bool hasTalkToSilas = false;
 	bool hasTalkToBatista = false;
-	bool hasFoundEvidenceForEmily = false;
 	bool hasShownEmilyEvi1 = false;
 	bool hasFinishEmily = false;
 	bool hasTalkToSarah1 = false;
+	bool hasShownEviToSarah = false;
+	bool hasTalkToSarah2 = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;
@@ -88,6 +89,7 @@ class CGameManager
 	bool bankStatementFound = false;
 	bool divorcePapersFound = false;
 	bool gloveFound = false;
+	bool shoeboxFound = false;
 
 	/*Has found item*/
 	bool NotebookisFound = false;
@@ -105,6 +107,7 @@ class CGameManager
 	NPC* batista3 = nullptr; //added this
 	NPC* emily = nullptr; //adeded this
 	NPC* sarah = nullptr; //adeded this
+	NPC* michael = nullptr; //added this
 	int nB4_1_id = -1; //for batista event stuff
 	int nB5_1_candle_id;
 	int nB5_1_glass_id;

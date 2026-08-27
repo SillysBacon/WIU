@@ -170,9 +170,6 @@ bool NPC::getKillerStatus() {
 	return killerStatus;
 }
 
-string NPC::getDialogue() {
-	return dialogue;
-}
 
 bool NPC::isSuspect()
 {

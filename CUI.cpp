@@ -36,7 +36,7 @@ void CUI::typeText(const string text) {
     }
 
     while (_kbhit()) {
-        (void)_getch(); 
+        (void)_getch();
     }
 }
 
@@ -219,7 +219,7 @@ void CUI::HandleEnter() {
             isRunning = false;
             GameStart = true;
             break;
-        case 1: 
+        case 1:
             isStartMenuOpen = false;
             isControlsOpen = true;
             controlsFromPause = false;

@@ -80,11 +80,9 @@ void CcaseFileSystem::addDocument()
 		"Residence: Willow's Creek Mansion\n\n"
 		"Known Associates: Emily Smith (wife), Michael Turner (business\n"
 		"partner / co-founder), Sarah Collins (neighbour).\n\n"
-		"Notes: Recent bank statements show a pattern of large,\n"
-		"unexplained cash withdrawals over several months. Associates\n"
-		"describe growing secrecy around personal finances in the\n"
-		"period leading up to his death. Relationship with his wife had\n"
-		"reportedly grown strained, though the extent is unconfirmed."
+		"Notes: A wealthy businessman and owner of the mansion.\n"
+		"reserved and composed, he keeps to himself\n"
+		"often seeming preoccupied even when his wife tries to get his attention.\n"
 	};
 }
 
@@ -140,7 +138,8 @@ void CcaseFileSystem::renderEvidenceFiles() {
 	{
 		cout << "             " << currentEvidenceFiles + 1 << " / " << discoveredEvidence.size() << endl;
 		cout << "#=============================#" << endl;
-		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl << "Description:" + evidenceDescription << endl;
+		cout << discoveredEvidence[currentEvidenceFiles].GetName() << endl << endl
+			<< "Description:" + discoveredEvidence[currentEvidenceFiles].GetDescription() << endl;
 		cout << "#=============================#";
 	}
 }

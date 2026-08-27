@@ -131,13 +131,13 @@ void CGameManager::checkForEvidence(CObstacle* oPtr, CObstacle*& ptr, CEvidence:
     if (oPtr != nullptr && oPtr == ptr) {
         Evidence.SetEvidence(e);
         for (int i = 0; i < GetDialogue_Length(e); i++) {
-            displayDialogue("Narrator", oPtr->runDialogue(e, i)); //change to Narrator, added this
+            displayDialogue("Narrator", oPtr->runDialogue(e, i));
         }
-        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), ""); //change 9 to getevidenceID
+        inventory->addToInventory(oPtr->GetEvidenceName(e), oPtr->GetEvidenceId(), ""); 
         caseFileSystem.addEvidence(e);
         caseFileSystem.addDescription(Evidence.GetDescription());
         Evidence.SetFound(true);
-        ptr = nullptr; // consume it so it can't be picked up twice
+        ptr = nullptr; 
     }
 }
 
@@ -171,7 +171,7 @@ void CGameManager::SetMaps() {
 
     // Adding NPCs to the map
     NPC* narrator = new NPC();
-    narrator->setPerson(NPC::Narrator); //Narrator for dialogue
+    narrator->setPerson(NPC::Narrator);
 
     mapNPCs.resize(MAX_MAPS);
 
@@ -201,7 +201,8 @@ void CGameManager::SetMaps() {
     nodeFlags.push_back({ Silas, nSR0_7, &IsMansionAvailable });
     nodeFlags.push_back({ Silas, nSR0_7, &CanTravel });
 
-    
+   
+    /*--------------------------------------------------------------------------------------------------------------------------------------*/
     /*---- Mrs Emily Smith ----*/
     ///* Event 1 (First Interaction) */
     emily = AddNPC(1, NPC::Emily_Smith, 7, 4);
@@ -366,7 +367,7 @@ void CGameManager::SetMaps() {
 
 
 
-
+    /*--------------------------------------------------------------------------------------------------------------------------------------*/
     /*---- Mrs Sarah Collins ----*/
     /* Event 1 (first convo) */
      sarah = AddNPC(1, NPC::Sarah_Collins, 3, 3);
@@ -461,14 +462,63 @@ void CGameManager::SetMaps() {
      sarah->AddNodeOption(nS2_correct6, 1, nS2_correct7, "...");
      sarah->AddNodeOption(nS2_correct7, 1, nS2_correct8, "...");
      sarah->AddNodeOption(nS2_correct8, 1, -1, "...");
-
+     nodeFlags.push_back({ sarah, nS1_14, &hasShownEviToSarah });
 
 
      sarah->SetEventStartNode(1, nS2_1);
+     
+
+     /* Event 3 (Present shoebox evidence)*/
+     int nS3_1 = sarah->AddDialougeNode("...Y-Yes?");
+     int nS3_2 = sarah->AddDialougeNode("N-No, We..We were pretty nice to each other...");
+
+     /*correct*/
+     int nS3_correct1 = sarah->AddDialougeNode("Sarah gasped and took a small step back.", narrator->getName());
+     int nS3_correct2 = sarah->AddDialougeNode("Sarah stared at the box of photos, hands trembling", narrator->getName());
+     int nS3_correct3 = sarah->AddDialougeNode("She presses a hand to her mouth for a second, trying to steady her breathing.", narrator->getName());
+     int nS3_correct4 = sarah->AddDialougeNode("The second I heard he was murdered, I knew...");
+     int nS3_correct5 = sarah->AddDialougeNode(" I knew how this would look. Years of complaints, photos, letters...");
+     int nS3_correct6 = sarah->AddDialougeNode("Yes...I didn't think it through. I just panicked.");
+     int nS3_correct7 = sarah->AddDialougeNode("I didn't know what to say, so I said 'no' and hoped it would be enough");
+     int nS3_correct8 = sarah->AddDialougeNode("I was angry about the fence.About the tree. ");
+     int nS3_correct9 = sarah->AddDialougeNode("About six years of him treating it like it didn't matter...");
+     int nS3_correct10 = sarah->AddDialougeNode("But angry isn't the same as...I didn't do this.");
+
+     int nS3_wrong1 = sarah->AddDialougeNode("pick the shoebox of pictures breh...", Silas->getName());
 
 
+     sarah->AddNodeOption(nS3_1, 2, nS3_2, "Do you and the Smiths have any altercation before?");
+     sarah->AddNodeOption(nS3_2, 2, NPC::PRESENT_EVIDENCE, "LIE DETECTED! [Present Evidence]");
+     sarah->SetEvidenceRequest(nS3_2, 3009, nS3_correct1, nS3_wrong1);
+     sarah->AddNodeOption(nS3_2, 2, -1, "Never mind then...");
+
+     sarah->AddNodeOption(nS3_correct1, 2, nS3_correct2, "You were angry with the Smiths over property, correct? Why did you lie?");
+     sarah->AddNodeOption(nS3_correct2, 2, nS3_correct3, "...");
+     sarah->AddNodeOption(nS3_correct3, 2, nS3_correct4, "...");
+     sarah->AddNodeOption(nS3_correct4, 2, nS3_correct5, "...");
+     sarah->AddNodeOption(nS3_correct5, 2, nS3_correct6, "So you lied to protect yourself,");
+     sarah->AddNodeOption(nS3_correct6, 2, nS3_correct7, "...");
+     sarah->AddNodeOption(nS3_correct7, 2, nS3_correct8, "...");
+     sarah->AddNodeOption(nS3_correct8, 2, nS3_correct9, "...");
+     sarah->AddNodeOption(nS3_correct9, 2, nS3_correct10, "...");
+     sarah->AddNodeOption(nS3_correct10, 2, -1, "I see...");
+     nodeFlags.push_back({ sarah, nS3_correct10, &hasTalkToSarah2 });
+     
+
+     sarah->AddNodeOption(nS3_wrong1, 1, nS3_2, "My bad...");
+
+     sarah->SetEventStartNode(2, nS3_1);
+
+     /* Event 4 (Default from now on)*/
+     int nS4_1 = sarah->AddDialougeNode("...Y-Yes?");
+     sarah->AddNodeOption(nS4_1, 3, -1, "nothing");
+
+     sarah->SetEventStartNode(3, nS4_1);
+
+     /*--------------------------------------------------------------------------------------------------------------------------------------*/
      /*---- Mr Michael Turner -----*/
-     NPC* michael = AddNPC(5, NPC::Michael_Turner, 10, 8);
+     /* Event 1 (first convo) */
+     michael = AddNPC(5, NPC::Michael_Turner, 10, 8);
 
      int nM1_1 = michael->AddDialougeNode("Hey...");
      int nM1_2 = michael->AddDialougeNode("Yes, I am. W-Well I would say i'm more of the founder and he is the Co Founder.");
@@ -484,8 +534,39 @@ void CGameManager::SetMaps() {
 
      michael->AddNodeOption(nM1_4, 0, -1, "... Ok, we will.");
 
+     /* Event 2 (first convo) */
+
+     int nM2_1 = michael->AddDialougeNode("Hey...");
+     int nM2_2 = michael->AddDialougeNode("Yes, I am. W-Well I would say i'm more of the founder and he is the Co Founder.");
+     int nM2_3 = michael->AddDialougeNode("Claim? CLAIM? It's a fact, Detective. The maid saw me leave, ask her yourself.");
+     int nM2_4 = michael->AddDialougeNode("Michael points to the direction of the kitchen, where the maid is.", narrator->getName());
+     int nM2_5 = michael->AddDialougeNode("Turner's jaw loosens slightly, though his hand doesn't stop turning the watch", narrator->getName());
+     int nM2_6 = michael->AddDialougeNode("...Right. Of course.");
+     int nM2_7 = michael->AddDialougeNode("We were talking about the business,The consulting firm. I proposed something");
+     int nM2_8 = michael->AddDialougeNode("a way to cover our capital shortfall without waiting on a slow investor pipeline.");
+     int nM2_9 = michael->AddDialougeNode("...Restructuring some of the client funds.Temporarily.Just to bridge the gap until new capital came in.");
+     int nM2_10 = michael->AddDialougeNode("It was temporary...but, Jonathan didn't see it that way. He refused."); 
+     int nM2_11 = michael->AddDialougeNode("Said it crossed a line he wasn't willing to cross, no matter how bad things got.");
+     int nM2_12 = michael->AddDialougeNode("We argued. Loudly, probably, I won't pretend otherwise. Then I left.");
+     int nM2_13 = michael->AddDialougeNode("About 16:15. Like i said, the maid saw me out.");
+
+     michael->AddNodeOption(nM2_1, 0, nM2_2, "You are Mr Turner right? You're the business partner of Mr Smith?");
+     michael->AddNodeOption(nM2_1, 0, -1, "Never mind");
+     michael->AddNodeOption(nM2_2, 0, nM2_3, "Right... It says here, you claim you left the Smith mansion at 16:15pm. Correct?");
+     michael->AddNodeOption(nM2_3, 0, nM2_4, "...");
+     michael->AddNodeOption(nM2_4, 0, nM2_5, "It's not personal, Mr. Turner. We're confirming everyone's timeline");
+     michael->AddNodeOption(nM2_5, 0, nM2_6, "...");
+     michael->AddNodeOption(nM2_6, 0, nM2_7, "...");
+     michael->AddNodeOption(nM2_7, 0, nM2_8, "...");
+     michael->AddNodeOption(nM2_8, 0, nM2_9, "...");
+     michael->AddNodeOption(nM2_9, 0, nM2_10, "That's not restructuring, Mr. Turner. That's moving client money without their knowledge.");
+     michael->AddNodeOption(nM2_10, 0, nM2_11, "...");
+     michael->AddNodeOption(nM2_11, 0, nM2_12, "...");
+     michael->AddNodeOption(nM2_12, 0, nM2_13, "Just to double check, What time was that?");
+     michael->AddNodeOption(nM2_13, 0, -1, "Thanks Mr Turner");
 
 
+     /*--------------------------------------------------------------------------------------------------------------------------------------*/
      /*---- Detective Batista ----*/
 
      NPC* batista1 = AddNPC(11, NPC::Angelo_Batista, 1, 4);
@@ -543,6 +624,8 @@ void CGameManager::SetMaps() {
      nB5_1_glass_id = nB5_1_glass;
      nB5_1_glove_id = nB5_1_glove;
 
+
+     /*--------------------------------------------------------------------------------------------------------------------------------------*/
      /*Forensics*/
      NPC* forensics1 = AddNPC(6, NPC::Forensics, 2, 6);
      int nF1 = forensics1->AddDialougeNode("Sorry, a little busy now, come back later...");
@@ -614,6 +697,9 @@ void CGameManager::SetMaps() {
      int nJ1 = johnathan->AddDialougeNode("A deep wound can be seen at the back of his head, blunt force trauma.", narrator->getName());
      johnathan->AddNodeOption(nJ1, 0, -1, "...");
 
+     NPC* johnathan2 = AddNPC(14, NPC::Jonathan_Smith, 4, 5);
+     int nJ2 = johnathan2->AddDialougeNode("A deep wound can be seen at the back of his head, blunt force trauma.", narrator->getName());
+     johnathan2->AddNodeOption(nJ2, 0, -1, "...");
 
 
        /*ROOMS AND MAPS*/
@@ -870,6 +956,15 @@ void CGameManager::SetMaps() {
 
        AddObstacle(9, CObstacle::Flower, 9, 2, 1);
        AddObstacle(9, CObstacle::Door, 0, 3, 1);
+
+       mapIntroDialogue[9] = {
+          {"Black", "Woah, Smells like freshly baked bread"},
+          {"Silas", "Of course, the bread is right there."},
+          {"Black", "So what she say about baking bread was true"},
+          {"Narrator", "Detective Black stares at the bread"},
+          {"Black", "Do you think she will notice if i take a little bite?"},
+          {"Silas", "Bro..." }
+       };
    }
 
 
@@ -1293,6 +1388,10 @@ void CGameManager::changeMaps(char input)
                 sarah->Addeventflag();
                 hasTalkToSarah1 = false; // added this to make sure it dont add again
             }
+            if (hasTalkToSarah2) {
+                sarah->Addeventflag();
+                hasTalkToSarah2 = false; // added this to make sure it dont add again
+            }
             int removedID = NPCInteract->getLastRemovedEvidenceID();
             switch (removedID) {
             case 3001:
@@ -1348,6 +1447,9 @@ void CGameManager::changeMaps(char input)
                 case 3011:
                     divorcePapersFound = true;
                     break;
+                case 3009:
+                    shoeboxFound = true;
+                    break;
                 }
                 if (candlestickFound && whiskeyGlassFound && gunpowderFound) 
                 {
@@ -1356,8 +1458,11 @@ void CGameManager::changeMaps(char input)
                 }
                 if (bankStatementFound && divorcePapersFound) 
                 {
-                    hasFoundEvidenceForEmily = true;
                     emily->Addeventflag();
+                }
+                if (shoeboxFound)
+                {
+                    sarah->Addeventflag();
                 }
             }
             else {
