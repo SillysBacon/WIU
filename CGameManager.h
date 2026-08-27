@@ -81,6 +81,12 @@ class CGameManager
 	bool hasTalkToSarah1 = false;
 	bool hasShownEviToSarah = false;
 	bool hasTalkToSarah2 = false;
+	bool hasTalkToTrisha = false;
+	bool hasShownEmilyGlass = false;
+	bool hasTalkToMichael1 = false;
+	bool hasTalkToMichael2 = false;
+	bool hasTalkToMichael3 = false;
+	bool takeAPiss = false;
 
 	/*Has found Evidence*/
 	bool candlestickFound = false;
@@ -90,6 +96,7 @@ class CGameManager
 	bool divorcePapersFound = false;
 	bool gloveFound = false;
 	bool shoeboxFound = false;
+	bool whiskeyGlassRptCollected = false;
 
 	/*Has found item*/
 	bool NotebookisFound = false;
