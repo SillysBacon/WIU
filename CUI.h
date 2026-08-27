@@ -25,7 +25,7 @@ class CUI
 	bool isSkipPressed = false;
 
 	int const static MaxPauseOptions = 4;
-	string PauseMenuOptions[MaxPauseOptions] = { "CONTINUE", "CONTROLS ", "SETTINGS", "EXIT" };
+	string PauseMenuOptions[MaxPauseOptions] = { "CONTINUE", "CONTROLS ", "SETTINGS", "EXIT"};
 	int PauseMenuPos;
 	bool GetSkip();
 	void SkipReset();

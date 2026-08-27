@@ -1283,11 +1283,9 @@ void CGameManager::changeMaps(char input)
                         evidenceIndex = i;
                         break;
                     }
-                   /* isEvidenceTile = true;
-                    evidenceIndex = i;
-                    break;*/
                 }
             }
+            ///Code needed here
 
             if (isEvidenceTile) {
                 checkForAllEvidence(ObstacleInteract);
@@ -1320,6 +1318,7 @@ void CGameManager::changeMaps(char input)
                     emily->Addeventflag();
                 }
             }
+            //bum
             else if (!puzzleActivated) {
                 CItem* foundItem = ObstacleInteract->GetItemPtr();
                 if (foundItem != nullptr) {
@@ -1404,10 +1403,9 @@ void CGameManager::RunGame() {
     map[currentMap].RenderMap();
     TestDialogue();
     while (IsGameRunning) {
-    
         char input = _getch();
 
-        if (input == 27 && !caseFileSystem.getCFSState() && !inventory->getInventoryState()) {
+        if (input == 27) {
             bool keepPlaying = CUI::GetInstance().PauseMenu();
             if (!keepPlaying) {
                 IsGameRunning = false;
@@ -1439,7 +1437,6 @@ void CGameManager::RunGame() {
             }
             continue;
         }
-
         else if (puzzleSystem.getBool() == true) {
             puzzleSystem.inputNum(input);
             if (input == 'b') {
